@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs"
+    "module": "commonjs",
+	"types": ["node"]
   },
   "include": [
-    "src/**/*.ts"
-  ],
+	"src/**/*.ts"
+],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
+        "node_modules",
+        "**/*.spec.ts"
+    ]
 }
