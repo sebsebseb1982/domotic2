@@ -1,0 +1,13 @@
+{
+  "name": "domotic",
+  "version": "2.0.0",
+  "description": "A packaged foo fooer for fooing foos",
+  "dependencies": {
+    "node-rest-client": "^3.1.0",
+    "xml2json": "^0.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^9.6.2",
+    "typescript": "^2.8.1"
+  }
+}
