@@ -3,6 +3,18 @@ let parser = require('xml2json');
 
 const avrHTTPAddress = 'http://192.168.1.152';
 
+interface MasterVolume {
+    value: number;
+}
+
+interface Item {
+    MasterVolume: MasterVolume;
+}
+
+export interface AVRStatus {
+    item:Item;
+}
+
 export class AVR {
     client;
 
@@ -42,8 +54,8 @@ export class AVR {
         this.sendCommand('PutZone_InputFunction/TUNER');
     }
 
-    setVolume(volumedB) {
-            this.getStatus((status) => {
+    setVolume(volumedB: number) {
+            this.getStatus((status: AVRStatus) => {
             let initialVolumedB = status.item.MasterVolume.value;
             let deltaVolumedB = volumedB - initialVolumedB
 
@@ -65,9 +77,6 @@ export class AVR {
         this.client.get(
             avrHTTPAddress + '/goform/formMainZone_MainZoneXml.xml',
             (data, response) => {
-                // parsed response body as js object
-                //console.log(data);
-                // raw response
                 callback(JSON.parse(parser.toJson(data)));
             }
         );
