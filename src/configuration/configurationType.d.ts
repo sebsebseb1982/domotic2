@@ -1,3 +1,8 @@
+export interface IConfigurationHueBridge {
+    username: string;
+    timeOut: number;
+}
+
 export interface IConfigurationNotifiyMyAndroid {
     hostname: string;
     port: number;
@@ -6,4 +11,5 @@ export interface IConfigurationNotifiyMyAndroid {
 
 export interface IConfiguration {
     nma:IConfigurationNotifiyMyAndroid;
+    hue:IConfigurationHueBridge;
 }

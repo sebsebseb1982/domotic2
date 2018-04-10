@@ -3,21 +3,6 @@ import {Configuration} from "./../configuration/configuration";
 
 let http = require("http");
 
-let getQueryParams = (notification: Notification) => {
-
-    let queryParams = '&application=' + encodeURI(this.application);
-    queryParams += '&event=' + encodeURI(notification.title);
-    if(notification.description) {
-        queryParams += '&description=' + encodeURI(notification.description);
-    }
-    if(notification.url) {
-        queryParams += '&url=' + notification.url;
-    }
-    queryParams += '&priority=1';
-
-    return queryParams;
-};
-
 export class NotifyMyAndroidNotifier implements INotifier{
     configuration: Configuration;
 
@@ -29,7 +14,7 @@ export class NotifyMyAndroidNotifier implements INotifier{
         var options = {
             hostname: this.configuration.nma.hostname,
             port: this.configuration.nma.port,
-            path: `/publicapi/notify?apikey=${this.configuration.nma.apiKey}${getQueryParams(notification)}`,
+            path: `/publicapi/notify?apikey=${this.configuration.nma.apiKey}${this.getQueryParams(notification)}`,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,5 +32,20 @@ export class NotifyMyAndroidNotifier implements INotifier{
             console.log('problem with request: ' + e.message);
         });
         req.end();
+    }
+
+    private getQueryParams(notification: Notification) {
+
+        let queryParams = '&application=' + encodeURI(this.application);
+        queryParams += '&event=' + encodeURI(notification.title);
+        if(notification.description) {
+            queryParams += '&description=' + encodeURI(notification.description);
+        }
+        if(notification.url) {
+            queryParams += '&url=' + notification.url;
+        }
+        queryParams += '&priority=1';
+
+        return queryParams;
     }
 }
