@@ -1,4 +1,7 @@
-node_modules
 .idea
 **.iml
+
+node_modules
 src/**/*.js
+
+src/configuration/configuration.ts
