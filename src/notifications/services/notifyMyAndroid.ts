@@ -1,5 +1,6 @@
-import {Notification, INotifier} from "./notifications";
-import {Configuration} from "./../configuration/configuration";
+import {INotifier} from "../notifier";
+import {MyNotification} from "../myNotification";
+import {Configuration} from "../../configuration/configuration";
 
 let http = require("http");
 
@@ -10,7 +11,7 @@ export class NotifyMyAndroidNotifier implements INotifier{
         this.configuration = new Configuration();
     }
 
-    notify(notification: Notification) {
+    notify(notification: MyNotification) {
         var options = {
             hostname: this.configuration.nma.hostname,
             port: this.configuration.nma.port,
@@ -34,7 +35,7 @@ export class NotifyMyAndroidNotifier implements INotifier{
         req.end();
     }
 
-    private getQueryParams(notification: Notification) {
+    private getQueryParams(notification: MyNotification) {
 
         let queryParams = '&application=' + encodeURI(this.application);
         queryParams += '&event=' + encodeURI(notification.title);

@@ -1,6 +1,7 @@
 import {Configuration} from "../configuration/configuration";
-import {NotifyMyAndroidNotifier} from "../notifications/notifyMyAndroid";
-import {INotifier, Notification} from "../notifications/notifications";
+import {NotifyMyAndroidNotifier} from "../notifications/services/notifyMyAndroid";
+import {INotifier} from "../notifications/notifier";
+import {MyNotification} from "../notifications/myNotification";
 import {IHueBridge, IHueLamp, IHueLampState} from "./hue";
 
 let hue = require("node-hue-api");
@@ -62,6 +63,6 @@ export class HueLampManager {
     }
 
     private handleError(error, message) {
-        this.notifier.notify(new Notification(error, message));
+        this.notifier.notify(new MyNotification(error, message));
     }
 }
