@@ -1,16 +1,17 @@
 let Client = require('node-rest-client').Client;
 let parser = require('xml2json');
 
-interface MasterVolume {
-    value: number;
+interface IValue {
+    value: string;
 }
 
-interface Item {
-    MasterVolume: MasterVolume;
+interface IItem {
+    MasterVolume: IValue;
+    Power: IValue;
 }
 
-export interface AVRStatus {
-    item: Item;
+export interface IAVRStatus {
+    item: IItem;
 }
 
 export class DenonAVR {
@@ -46,9 +47,9 @@ export class DenonAVR {
     }
 
     setVolume(volumedB: number) {
-        this.getStatus().then((status: AVRStatus) => {
+        this.getStatus().then((status: IAVRStatus) => {
 
-            let initialVolumedB = status.item.MasterVolume.value;
+            let initialVolumedB = parseInt(status.item.MasterVolume.value);
             let deltaVolumedB = volumedB - initialVolumedB
 
             let ellapsedTime = 0;
@@ -66,7 +67,7 @@ export class DenonAVR {
         });
     }
 
-    getStatus(): Promise<AVRStatus> {
+    getStatus(): Promise<IAVRStatus> {
         return new Promise((resolve, reject) => {
             this.client.get(
                 `http://${this.avrIPAddress}/goform/formMainZone_MainZoneXml.xml`,

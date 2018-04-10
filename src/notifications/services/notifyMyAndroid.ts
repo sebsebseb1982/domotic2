@@ -11,6 +11,10 @@ export class NotifyMyAndroidNotifier implements INotifier{
         this.configuration = new Configuration();
     }
 
+    notifyError(error: string, message: string) {
+        this.notify(new MyNotification(`Error : ${error}`, message, 2));
+    }
+
     notify(notification: MyNotification) {
         var options = {
             hostname: this.configuration.nma.hostname,
