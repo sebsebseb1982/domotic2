@@ -1,12 +1,16 @@
 import {Configuration} from "../configuration/configuration";
+import {NotifyMyAndroidNotifier} from "../notifications/services/notifyMyAndroid";
+import {INotifier} from "../notifications/notifier";
 
 let http = require('http');
 
 export class SurveillanceStation {
     configuration: Configuration;
+    notifier: INotifier;
 
     constructor() {
         this.configuration = new Configuration();
+        this.notifier =  new NotifyMyAndroidNotifier('Surveillance Station');
     }
 
     setHomeMode(state) {
@@ -40,6 +44,7 @@ export class SurveillanceStation {
                 });
             });
             req.on('error', function(err) {
+                this.notifier.notifyError('Erreur lors de la récupération du SID pour Surveillance Station', err);
                 reject(err);
             });
             req.end();
