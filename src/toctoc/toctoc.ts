@@ -11,7 +11,7 @@ export class TocToc {
     notifier: NotifyMyAndroidNotifier;
     surveillanceStation: SurveillanceStation;
 
-    console() {
+    constructor() {
         this.configuration = new Configuration();
         this.notifier =  new NotifyMyAndroidNotifier('Toc Toc');
         this.surveillanceStation = new SurveillanceStation();
@@ -58,7 +58,6 @@ export class TocToc {
     }
 
     private saveNewPresenceStatus(presenceStatus: boolean) {
-
         this.surveillanceStation.setHomeMode(!presenceStatus);
 
         MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
