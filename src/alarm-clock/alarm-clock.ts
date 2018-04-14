@@ -15,9 +15,8 @@ export class AlarmClock {
     hueLampManager: HueLampManager;
 
     constructor() {
-        console.log(process.argv, process.argv[2], process.argv[3]);
-        this.progressiveWakeUpDuration = (process.argv[2] ? parseInt(process.argv[2]) : 45) * 60 * 1000;
-        this.wakeUpDuration = (process.argv[3] ? parseInt(process.argv[3]) : 10) * 60 * 1000;
+        this.progressiveWakeUpDuration = (process.argv[1] ? parseInt(process.argv[1]) : 45) * 60 * 1000;
+        this.wakeUpDuration = (process.argv[2] ? parseInt(process.argv[2]) : 10) * 60 * 1000;
         this.startTime = 0;
 
         this.toctoc = new TocToc();
