@@ -11,5 +11,8 @@
   "devDependencies": {
     "@types/node": "^9.6.2",
     "typescript": "^2.8.1"
+  },
+  "scripts": {
+    "start-radio-only-if-present": "let TocToc = require('/home/pi/domotic2/src/toctoc/toctoc.js').TocToc; new TocToc().updatePresence()"
   }
 }
