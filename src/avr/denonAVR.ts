@@ -1,5 +1,3 @@
-import {Parser} from "xml2js";
-
 let Client = require('node-rest-client').Client;
 
 interface IValue {
@@ -17,11 +15,9 @@ export interface IAVRStatus {
 
 export class DenonAVR {
     client;
-    parser: Parser;
 
     constructor(private avrIPAddress: string) {
         this.client = new Client();
-        this.parser = new Parser();
     }
 
     sendCommand(command: string) {
@@ -74,12 +70,8 @@ export class DenonAVR {
         return new Promise((resolve, reject) => {
             this.client.get(
                 `http://${this.avrIPAddress}/goform/formMainZone_MainZoneXml.xml`,
-                (statusXML, response) => {
-                    console.log('AVR status XML:'+ statusXML);
-                    this.parser.parseString(statusXML, (statusJSON) => {
-                        console.log('AVR status JSON', statusJSON);
-                        resolve(statusJSON);
-                    });
+                (avrStatus, response) => {
+                    resolve(avrStatus);
                 }
             );
         });
