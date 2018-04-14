@@ -57,7 +57,7 @@ export class AlarmClock {
             }
 
             setTimeout(() => {
-                this.hueLampManager.setState(lamps.simulateurAube, {
+                this.hueLampManager.setState(lamps.chevetSebastien, {
                     on: false
                 });
             }, this.progressiveWakeUpDuration + this.wakeUpDuration);
