@@ -76,6 +76,7 @@ export class DenonAVR {
                 `http://${this.avrIPAddress}/goform/formMainZone_MainZoneXml.xml`,
                 (statusXML, response) => {
                     this.parser.parseString(statusXML, (statusJSON) => {
+                        console.debug('AVR status', statusJSON);
                         resolve(statusJSON);
                     });
                 }
