@@ -13,6 +13,6 @@
     "typescript": "^2.8.1"
   },
   "scripts": {
-    "start-radio-only-if-present": "let TocToc = require('/home/pi/domotic2/src/toctoc/toctoc.js').TocToc; new TocToc().updatePresence()"
+    "start-radio-only-if-present": "node -e 'let TocToc = require(\"/home/pi/domotic2/src/toctoc/toctoc.js\").TocToc; new TocToc().updatePresence()'"
   }
 }
