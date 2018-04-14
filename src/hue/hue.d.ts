@@ -1,5 +1,5 @@
 export interface IHueLamp {
-    id: string;
+    id: number;
     label: string;
 }
 

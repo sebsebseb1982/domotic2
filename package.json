@@ -13,6 +13,9 @@
   },
   "scripts": {
     "update-presence": "node -e 'let TocToc = require(\"/home/pi/domotic2/src/toctoc/toctoc.js\").TocToc; new TocToc().updatePresence()'",
-    "start-radio-only-if-present": "node -e 'let Radio = require(\"/home/pi/domotic2/src/radio/radio.js\").Radio; new Radio().startTunerOnlyIfPresent()'"
+
+    "start-radio-only-if-present": "node -e 'let Radio = require(\"/home/pi/domotic2/src/radio/radio.js\").Radio; new Radio().startTunerOnlyIfPresent()'",
+
+    "wake-me-up": "node -e 'let AlarmClock = require(\"/home/pi/domotic2/src/alarm-clock/alarm-clock.js\").AlarmClock; new AlarmClock().wakeMeUp()'"
   }
 }
