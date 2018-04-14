@@ -3,8 +3,6 @@ import {IConfiguration} from "../configuration/configurationType";
 import {Configuration} from "../configuration/configuration";
 import {TocToc} from "../toctoc/toctoc";
 
-const argv = require('minimist')(process.argv.slice(2));
-
 export class Radio {
     avr: DenonAVR;
     configuration: IConfiguration;
@@ -21,7 +19,7 @@ export class Radio {
             if (status.item.Power.value === 'ON') {
                 console.log('AVR is already in use !');
             } else {
-                let duration2 = duration || argv.duration || 5;
+                let duration2 = duration || parseInt(process.argv[1]) || 1;
                 console.log(`AVR started for ${duration2} minutes`);
                 let retry = 10 * 1000 /* ms */;
                 let ellapsedTime = 0;
