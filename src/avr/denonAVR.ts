@@ -71,8 +71,13 @@ export class DenonAVR {
         return new Promise((resolve, reject) => {
             this.client.get(
                 `http://${this.avrIPAddress}/goform/formMainZone_MainZoneXml.xml`,
-                (data, response) => {
-                    resolve(JSON.parse(parser.toJson(data)));
+                (statusXMLString, response) => {
+                    console.log('statusXMLString:', statusXMLString);
+                    let statusJsonString = parser.toJson(statusXMLString);
+                    console.log('statusJsonString:', statusJsonString);
+                    let statusJsonParsed = JSON.parse(statusJsonString);
+                    console.log('statusJsonParsed:', statusJsonParsed);
+                    resolve(statusJsonParsed);
                 }
             );
         });
