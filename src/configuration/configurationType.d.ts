@@ -43,4 +43,5 @@ export interface IConfiguration {
     toctoc: IConfigurationTocToc;
     thermospi: IConfigurationThermospi;
     adminMailAddress: string;
+    smtps: string;
 }
