@@ -16,7 +16,7 @@ export class Alarm {
 
     notifyIfDisarmed() {
         this.toctoc.ifPresent(() => {
-            let notification = new MyNotification('Oubli ?', 'L\\\'alarme n\\\'est pas enclench&eacute;e, est-ce normal ?');
+            let notification = new MyNotification('Oubli ?', `L'alarme n'est pas enclenchée, est-ce normal ?`);
             this.mail.send(notification);
             this.nma.notify(notification);
         });
