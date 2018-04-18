@@ -1,4 +1,13 @@
 export class MyNotification {
-    constructor(private title: string, private description: string, private priority?: number, private url?: string) {
+    constructor(title: string, description: string, priority?: number, url?: string) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.url = url;
     }
+
+    title: string;
+    description?: string;
+    priority?: number;
+    url?: string;
 }
