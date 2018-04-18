@@ -1,11 +1,4 @@
 export class MyNotification {
-    constructor(title: string, description: string, priority?: number, url?: string) {
-        this.title = encodeURIComponent(title);
-        this.description = encodeURIComponent(description);
+    constructor(private title: string, private description: string, private priority?: number, private url?: string) {
     }
-
-    title: string;
-    description?: string;
-    priority?: number;
-    url?: string;
 }
