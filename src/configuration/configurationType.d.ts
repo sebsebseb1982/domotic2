@@ -42,4 +42,5 @@ export interface IConfiguration {
     synology: IConfigurationSynology;
     toctoc: IConfigurationTocToc;
     thermospi: IConfigurationThermospi;
+    adminMailAddress: string;
 }

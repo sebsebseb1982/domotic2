@@ -4,7 +4,7 @@ import {Configuration} from "../../configuration/configuration";
 
 let http = require("http");
 
-export class NotifyMyAndroidNotifier implements INotifier{
+export class NotifyMyAndroidNotifierService implements INotifier{
     configuration: Configuration;
 
     constructor(private application: string) {
@@ -47,9 +47,10 @@ export class NotifyMyAndroidNotifier implements INotifier{
             queryParams += '&description=' + encodeURI(notification.description);
         }
         if(notification.url) {
-            queryParams += '&url=' + notification.url;
+            queryParams += `&url=${notification.url}`;
         }
-        queryParams += '&priority=1';
+        queryParams += `&priority=${notification.priority ? notification.priority : 1}`;
+
 
         return queryParams;
     }

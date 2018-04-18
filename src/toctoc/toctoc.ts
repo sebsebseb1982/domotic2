@@ -1,5 +1,5 @@
 import {Configuration} from "../configuration/configuration";
-import {NotifyMyAndroidNotifier} from "../notifications/services/notifyMyAndroid";
+import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import {INotifier} from "../notifications/notifier";
 import {SurveillanceStation} from "../synology/surveillanceStation";
 
@@ -8,12 +8,12 @@ let MongoClient = require('mongodb').MongoClient;
 
 export class TocToc {
     configuration: Configuration;
-    notifier: NotifyMyAndroidNotifier;
+    notifier: NotifyMyAndroidNotifierService;
     surveillanceStation: SurveillanceStation;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier =  new NotifyMyAndroidNotifier('Toc Toc');
+        this.notifier =  new NotifyMyAndroidNotifierService('Toc Toc');
         this.surveillanceStation = new SurveillanceStation();
     }
 
@@ -37,11 +37,11 @@ export class TocToc {
         });
     }
 
-    ifPresent(ifCallback, elseCallback) {
+    ifPresent(ifCallback, elseCallback?) {
         this.execIf(true, ifCallback, elseCallback);
     }
 
-    ifAbsent(ifCallback, elseCallback) {
+    ifAbsent(ifCallback, elseCallback?) {
         this.execIf(false, ifCallback, elseCallback);
     }
 

@@ -1,5 +1,5 @@
 import {Configuration} from "../configuration/configuration";
-import {NotifyMyAndroidNotifier} from "../notifications/services/notifyMyAndroid";
+import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import {INotifier} from "../notifications/notifier";
 import {MyNotification} from "../notifications/myNotification";
 import {IHueBridge, IHueLamp, IHueLampState} from "./hue";
@@ -13,7 +13,7 @@ export class HueLampManager {
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier =  new NotifyMyAndroidNotifier('Hue bridge');
+        this.notifier =  new NotifyMyAndroidNotifierService('Hue bridge');
     }
 
     setState(lamp:IHueLamp, state:IHueLampState) {
