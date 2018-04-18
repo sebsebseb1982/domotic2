@@ -1,3 +1,5 @@
+import * as SMTPTransport from "nodemailer/lib/smtp-transport";
+
 export interface IConfigurationHueBridge {
     username: string;
     timeOut: number;
@@ -43,5 +45,5 @@ export interface IConfiguration {
     toctoc: IConfigurationTocToc;
     thermospi: IConfigurationThermospi;
     adminMailAddress: string;
-    smtps: string;
+    smtp: SMTPTransport.Options;
 }

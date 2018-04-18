@@ -1,16 +1,17 @@
 import {Configuration} from "../../configuration/configuration";
 import {MyNotification} from "../myNotification";
 import * as SendmailTransport from "nodemailer/lib/sendmail-transport";
+import * as Mail from "nodemailer/lib/mailer";
 
 let nodemailer = require('nodemailer');
 
 export class MailService {
     configuration: Configuration;
-    mailTransport: SendmailTransport;
+    mailTransport: Mail;
 
     constructor() {
         this.configuration = new Configuration();
-        this.mailTransport = nodemailer.createTransport(this.configuration.adminMailAddress);
+        this.mailTransport = nodemailer.createTransport(this.configuration.smtp);
     }
 
     send(notification: MyNotification, mailAddressesToNotify?: string[]) {
@@ -22,6 +23,6 @@ export class MailService {
             sendmail: true
         };
 
-        let mailTransport = new SendmailTransport(mailOptions);
+        this.mailTransport.sendMail(mailOptions);
     }
 }
