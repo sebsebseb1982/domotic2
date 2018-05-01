@@ -11,7 +11,7 @@ export class Alarm {
     constructor() {
         this.toctoc = new TocToc();
         this.mail = new MailService();
-        this.nma = new NotifyMyAndroidNotifierService('');
+        this.nma = new NotifyMyAndroidNotifierService('Alarme');
     }
 
     notifyIfDisarmed() {
