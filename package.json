@@ -7,6 +7,7 @@
     "mongodb": "^2.2.12",
     "node-hue-api": "^2.4.2",
     "node-rest-client": "^3.1.0",
+    "node-googlehome": "0.0.5",
     "nodemailer": "^4.6.4"
   },
   "devDependencies": {

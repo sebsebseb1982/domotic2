@@ -37,6 +37,11 @@ export interface IConfigurationTocToc {
     scriptPath: string;
 }
 
+export interface IConfigurationGoogleHome {
+    hostname: string;
+    language: string;
+}
+
 export interface IConfiguration {
     nma:IConfigurationNotifiyMyAndroid;
     hue:IConfigurationHueBridge;
@@ -46,4 +51,5 @@ export interface IConfiguration {
     thermospi: IConfigurationThermospi;
     adminMailAddress: string;
     smtp: SMTPTransport.Options;
+    googleHome: IConfigurationGoogleHome;
 }
