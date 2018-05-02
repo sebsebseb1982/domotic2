@@ -13,8 +13,8 @@ export class GoogleHomeService {
     }
 
     speak(somethingToSay: string) {
-        console.log('Google Home va énoncer le message suivant : ', somethingToSay);
-        this.device.speak(somethingToSay)
+        console.log('Google Home va énoncer le message suivant : ', somethingToSay.substring(0,199));
+        this.device.speak(somethingToSay.substring(0,199))
             .then(console.log)
             .catch(console.log);
     }

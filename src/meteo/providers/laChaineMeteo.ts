@@ -8,12 +8,18 @@ export class LaChaineMeteo {
 
     constructor(private urlPageVille: string) {
         this.meteoDuJour = new Promise((resolve, reject) => {
-            request.get(urlPageVille, (error, response, html) => {
-                let $ = cheerio.load(html);
-                resolve({
-                    texte: $('#texte_description').text()
-                });
-            });
+            request.get(
+                {
+                    uri: urlPageVille,
+                    encoding: 'utf8'
+                },
+                (error, response, html) => {
+                    let $ = cheerio.load(html);
+                    resolve({
+                        texte: $('#texte_description').text()
+                    });
+                }
+            );
         });
     }
 }
