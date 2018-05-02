@@ -9,7 +9,7 @@ let googleHome = new GoogleHomeService();
     googleHome.speak(meteo.texte);
 });*/
 
-new GenericMeteoProvider('http://www.meteocity.com/france/talence_v33522/', '.dataDescription span:not[class=linkHeureparheure]').meteoDuJour.then((meteo:IMeteo) => {
+new GenericMeteoProvider('http://www.meteocity.com/france/talence_v33522/', '.dataDescription span:not(class=linkHeureparheure)').meteoDuJour.then((meteo:IMeteo) => {
     googleHome.speak(meteo.texte);
 });
 
