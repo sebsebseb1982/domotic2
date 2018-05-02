@@ -9,6 +9,7 @@ export class GoogleHomeService {
     constructor() {
         this.configuration = new Configuration();
         this.device = new GoogleHome.Connecter(this.configuration.googleHome.hostname);
+        this.device.config({lang: this.configuration.googleHome.language});
     }
 
     speak(somethingToSay: string) {
