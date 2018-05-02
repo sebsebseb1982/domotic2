@@ -20,6 +20,7 @@ export class GoogleHomeService {
     }
 
     playMedia(mediaURL: string) {
+        console.log('Google Home va lire le fichier suivant : ', mediaURL);
         this.device.playMedia(mediaURL)
             .then(console.log)
             .catch(console.log);
