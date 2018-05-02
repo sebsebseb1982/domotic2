@@ -1,7 +1,7 @@
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
-import {LaChaineMeteo} from "../meteo/providers/laChaineMeteo";
+import {LaChaineMeteo} from "../meteo/scrapers/laChaineMeteo";
 import {IMeteo} from "../meteo/model/meteo";
-import {GenericMeteoProvider} from "../meteo/providers/generic";
+import {GenericMeteoScraper} from "../meteo/scrapers/generic";
 
 let googleHome = new GoogleHomeService();
 
@@ -9,7 +9,7 @@ let googleHome = new GoogleHomeService();
     googleHome.speak(meteo.texte);
 });*/
 
-new GenericMeteoProvider('http://www.meteocity.com/france/talence_v33522/', '.dataDescription span:not(.linkHeureparheure)').meteoDuJour.then((meteo:IMeteo) => {
+new GenericMeteoScraper('http://www.meteocity.com/france/talence_v33522/', '.dataDescription span:not(.linkHeureparheure)', 'utf8').meteoDuJour.then((meteo:IMeteo) => {
     googleHome.speak(meteo.texte);
 });
 
