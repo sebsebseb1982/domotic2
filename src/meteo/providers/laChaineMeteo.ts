@@ -1,14 +1,19 @@
 import * as cheerio from 'cheerio';
+import * as request from 'request';
 import {IMeteo} from "../model/meteo";
 
 export class LaChaineMeteo {
-    constructor(private urlPageVille: string) {
-        cheerio.load();
-    }
 
-    get meteoDuJour():IMeteo {
-        return {
-            texte:'tutu'
-        }
+    meteoDuJour:Promise<IMeteo>;
+
+    constructor(private urlPageVille: string) {
+        this.meteoDuJour = new Promise((resolve, reject) => {
+            request.get(urlPageVille, (error, response, html) => {
+                let $ = cheerio.load(html);
+                resolve({
+                    texte: $('#texte_description').text()
+                });
+            });
+        });
     }
 }
