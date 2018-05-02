@@ -11,7 +11,7 @@ export class LaChaineMeteo {
             request.get(
                 {
                     uri: urlPageVille,
-                    encoding: 'utf8'
+                    encoding: 'binary'
                 },
                 (error, response, html) => {
                     let $ = cheerio.load(html);
