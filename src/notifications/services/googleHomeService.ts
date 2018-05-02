@@ -15,7 +15,7 @@ export class GoogleHomeService {
 
     speak(somethingToSay: string) {
         console.log('Google Home va énoncer le message suivant : ', somethingToSay);
-        googleHome.notify(somethingToSay, () => {});
+        googleHome.notify(somethingToSay, (res) => {console.log(res)});
     }
 
     play(mediaURL: string) {
