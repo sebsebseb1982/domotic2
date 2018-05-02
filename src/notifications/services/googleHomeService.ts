@@ -8,8 +8,7 @@ export class GoogleHomeService {
 
     constructor() {
         this.configuration = new Configuration();
-        let device = new GoogleHome.Connecter(this.configuration);
-        console.log('device',device);
+        let device = new GoogleHome.Connecter(this.configuration.googleHome.hostname);
     }
 
     speak(somethingToSay: string) {
