@@ -13,6 +13,7 @@ export class GoogleHomeService {
     }
 
     speak(somethingToSay: string) {
+        console.log('Google Home va énoncer le message suivant : ', somethingToSay);
         this.device.speak(somethingToSay)
             .then(console.log)
             .catch(console.log);
