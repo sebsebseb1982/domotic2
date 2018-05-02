@@ -3,11 +3,14 @@
   "version": "2.0.0",
   "description": "A packaged foo fooer for fooing foos",
   "dependencies": {
+    "@types/cheerio": "^0.22.7",
     "@types/nodemailer": "^4.6.0",
+    "@types/request": "^2.47.0",
+    "cheerio": "^1.0.0-rc.2",
     "mongodb": "^2.2.12",
+    "node-googlehome": "0.0.5",
     "node-hue-api": "^2.4.2",
     "node-rest-client": "^3.1.0",
-    "node-googlehome": "0.0.5",
     "nodemailer": "^4.6.4"
   },
   "devDependencies": {
