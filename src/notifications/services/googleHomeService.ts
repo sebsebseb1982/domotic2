@@ -15,15 +15,11 @@ export class GoogleHomeService {
 
     speak(somethingToSay: string) {
         console.log('Google Home va énoncer le message suivant : ', somethingToSay);
-        googleHome.notify(somethingToSay)
-            .then(console.log)
-            .catch(console.log);
+        googleHome.notify(somethingToSay);
     }
 
     play(mediaURL: string) {
         console.log('Google Home va lire le fichier suivant : ', mediaURL);
-        googleHome.play(mediaURL)
-            .then(console.log)
-            .catch(console.log);
+        googleHome.play(mediaURL);
     }
 }
