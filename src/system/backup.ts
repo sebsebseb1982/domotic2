@@ -14,7 +14,7 @@ export class Backup {
 
         childProcess.stdout.on('data', (data) => {
             console.log(data);
-            let mailBackup = new MyNotification('Backup CRON', data.toString().replace(/[\r\n]/gi, '\r\n'));
+            let mailBackup = new MyNotification('Backup CRON', data.toString().replace(/\r\n/gi, '<br />'));
             this.mail.send(mailBackup);
         });
     }
