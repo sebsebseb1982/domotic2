@@ -13,7 +13,7 @@ export class Backup {
         let childProcess = child.exec('crontab -l');
 
         childProcess.stdout.on('data', (data) => {
-            console.log(data);
+            console.log(((data.toString() || '').match(/\r\n/gi) || []).length);
             let mailBackup = new MyNotification('Backup CRON', data.toString().replace(/\r\n/gi, '<br />'));
             this.mail.send(mailBackup);
         });
