@@ -22,4 +22,4 @@ new GenericMeteoScraper({
 */
 
 
-googleHome.play('maison.sebastienblondy.com:28985/random-tune.mp3');
+googleHome.play('http://maison.sebastienblondy.com:28985/random-tune');
