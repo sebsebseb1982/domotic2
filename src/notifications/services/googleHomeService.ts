@@ -1,7 +1,6 @@
 import {Configuration} from "../../configuration/configuration";
 
-//const GoogleHome = require('node-googlehome');
-let googleHome = require('google-home-notifier');
+const GoogleHome = require('node-googlehome');
 
 export class GoogleHomeService {
     configuration: Configuration;
@@ -9,17 +8,21 @@ export class GoogleHomeService {
 
     constructor() {
         this.configuration = new Configuration();
-        googleHome.ip(this.configuration.googleHome.hostname, this.configuration.googleHome.language);
-        googleHome.device('Salon', this.configuration.googleHome.language);
+        this.device = new GoogleHome.Connecter(this.configuration.googleHome.hostname);
+        this.device.config({lang: this.configuration.googleHome.language});
     }
 
     speak(somethingToSay: string) {
         console.log('Google Home va énoncer le message suivant : ', somethingToSay);
-        googleHome.notify(somethingToSay, (res) => {console.log(res)});
+        this.device.speak(somethingToSay)
+            .then(console.log)
+            .catch(console.log);
     }
 
     play(mediaURL: string) {
         console.log('Google Home va lire le fichier suivant : ', mediaURL);
-        googleHome.play(mediaURL, () => {});
+        this.device.playMedia(mediaURL)
+            .then(console.log)
+            .catch(console.log);
     }
 }
