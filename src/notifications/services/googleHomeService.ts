@@ -9,7 +9,7 @@ export class GoogleHomeService {
     constructor() {
         this.configuration = new Configuration();
         googleHome.ip(this.configuration.googleHome.hostname, this.configuration.googleHome.language);
-        googleHome.device('Test', this.configuration.googleHome.language);
+        googleHome.device('', this.configuration.googleHome.language);
     }
 
     speak(somethingToSay: string) {
