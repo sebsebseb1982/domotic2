@@ -16,7 +16,7 @@ export class LaChaineMeteo {
                 (error, response, html) => {
                     let $ = cheerio.load(html);
                     resolve({
-                        texte: $('#texte_description').text()
+                        texte: $('#texte_description').text().trim().replace(/\s*/g, ' ')
                     });
                 }
             );
