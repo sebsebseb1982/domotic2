@@ -26,7 +26,7 @@ new GenericMeteoScraper({
     selecteurCSS: '.txt3.description-article',
     encoding: 'utf8'
 }).meteoDuJour.then((meteo:IMeteo) => {
-    googleHome.speak(meteo.texte);
+    googleHome.speak(meteo.texte.substring(0,199));
 });
 
 
