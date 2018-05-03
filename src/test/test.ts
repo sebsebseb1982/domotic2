@@ -29,5 +29,12 @@ new GenericMeteoScraper({
     googleHome.speak(meteo.texte);
 });*/
 
-googleHome.play('http://sebastienblondy.com/JR%20Train%20Departure%20Melodies%20MP3/JR%20Astro%20Boy%20V2.mp3');
+/*googleHome.play('http://sebastienblondy.com/JR%20Train%20Departure%20Melodies%20MP3/JR%20Astro%20Boy%20V2.mp3');*/
+
+const testFolder = 'http://sebastienblondy.com/JR%20Train%20Departure%20Melodies%20MP3/';
+const fs = require('fs');
+
+fs.readdirSync(testFolder).forEach(file => {
+    console.log(file);
+})
 
