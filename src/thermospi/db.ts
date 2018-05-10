@@ -28,18 +28,17 @@ export class ThermospiDB {
                         {
                             sort: [['date','desc']],
                             limit: 2
-                        },
-                        (err2, result) => {
-                            if (err2) {
-                                this.notifier.notifyError(error, err2);
-                                resolve(err2);
-                            } else {
-                                console.log('result:', result);
-                                resolve(result);
-                            }
-                            db.close();
                         }
-                    );
+                    ).toArray((err2, result) => {
+                        if (err2) {
+                            this.notifier.notifyError(error, err2);
+                            resolve(err2);
+                        } else {
+                            console.log('result:', result);
+                            resolve(result);
+                        }
+                        db.close();
+                    });
                 }
             });
         });
