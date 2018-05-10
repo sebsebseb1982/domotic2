@@ -114,6 +114,7 @@ export class ThermospiDB {
                     if(err) {
                         this.notifier.notifyError('Erreur lors de la mise à jour de l\'état de ventilation de la maison', err.message);
                     }
+                    (db as any).close();
                 }
             );
         });
