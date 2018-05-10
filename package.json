@@ -9,7 +9,6 @@
     "cheerio": "^1.0.0-rc.2",
     "google-home-notifier": "^1.2.0",
     "mongodb": "^2.2.12",
-    "node-googlehome": "0.0.5",
     "node-hue-api": "^2.4.2",
     "node-rest-client": "^3.1.0",
     "nodemailer": "^4.6.4",

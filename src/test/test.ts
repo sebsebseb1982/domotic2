@@ -2,6 +2,7 @@ import {GoogleHomeService} from "../notifications/services/googleHomeService";
 import {LaChaineMeteo} from "../meteo/scrapers/laChaineMeteo";
 import {IMeteo} from "../meteo/model/meteo";
 import {GenericMeteoScraper} from "../meteo/scrapers/generic";
+import {ThermospiDB} from "../thermospi/db";
 
 let googleHome = new GoogleHomeService();
 
@@ -21,5 +22,7 @@ new GenericMeteoScraper({
 });
 */
 
+let db = new ThermospiDB();
+db.currentInsideTemperature;
 
 googleHome.play('http://maison.sebastienblondy.com:28985/random-tune');
