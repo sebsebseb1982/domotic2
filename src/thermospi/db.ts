@@ -36,6 +36,7 @@ export class ThermospiDB {
                             this.notifier.notifyError(error, err2);
                             reject(err2);
                         } else {
+                            console.log('a',results);
                             resolve(_.mean(_.map(results, 'temperature')));
                         }
                         db.close();
@@ -67,6 +68,7 @@ export class ThermospiDB {
                             this.notifier.notifyError(error, err2);
                             reject(err2);
                         } else {
+                            console.log('b',results);
                             resolve(_.mean(_.map(results, 'temperature')));
                         }
                         db.close();
