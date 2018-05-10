@@ -111,8 +111,9 @@ export class ThermospiDB {
                 },
                 {},
                 (err, result) => {
-                    console.log(err);
-                    this.notifier.notifyError('Erreur lors de la mise à jour de l\'état de ventilation de la maison', 'tutu');
+                    if(err) {
+                        this.notifier.notifyError('Erreur lors de la mise à jour de l\'état de ventilation de la maison', err.message);
+                    }
                 }
             );
         });
