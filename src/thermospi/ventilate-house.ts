@@ -2,8 +2,7 @@ import {GoogleHomeService} from "../notifications/services/googleHomeService";
 import {TocToc} from "../toctoc/toctoc";
 import {ThermospiDB} from "./db";
 
-const temperatureLowValue = 19;
-const temperatureHighValue = 22;
+const maxInsideTemperature = 22;
 
 export class VentilateHouse {
     googleHome: GoogleHomeService;
@@ -25,8 +24,10 @@ export class VentilateHouse {
                 console.log('Températures intérieures : ', currentInsideTemperature);
                 console.log('Températures extérieures : ', currentOutsideTemperature);
 
-                if(currentInsideTemperature > temperatureLowValue) {
+                if(currentInsideTemperature > maxInsideTemperature && currentInsideTemperature > currentOutsideTemperature) {
                     this.googleHome.speak('Vous pouvez ouvrir les fenêtres pour aérer !');
+                } else {
+                    this.googleHome.speak('Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !');
                 }
             });
         });
