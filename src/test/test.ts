@@ -3,6 +3,7 @@ import {LaChaineMeteo} from "../meteo/scrapers/laChaineMeteo";
 import {IMeteo} from "../meteo/model/meteo";
 import {GenericMeteoScraper} from "../meteo/scrapers/generic";
 import {ThermospiDB} from "../thermospi/db";
+import {VentilateHouse} from "../thermospi/ventilate-house";
 
 let googleHome = new GoogleHomeService();
 
@@ -22,9 +23,7 @@ new GenericMeteoScraper({
 });
 */
 
-let db = new ThermospiDB();
-db.currentInsideTemperature.then((temperature:number) => {
-    console.log('Temperature intérieure : ', temperature);
-});
+let ventilate = new VentilateHouse();
+ventilate.check();
 
 //googleHome.play('http://maison.sebastienblondy.com:28985/random-tune');
