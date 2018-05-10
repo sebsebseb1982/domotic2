@@ -8,6 +8,7 @@
     "@types/request": "^2.47.0",
     "cheerio": "^1.0.0-rc.2",
     "google-home-notifier": "^1.2.0",
+    "lodash": "^4.17.10",
     "mongodb": "^2.2.12",
     "node-hue-api": "^2.4.2",
     "node-rest-client": "^3.1.0",
@@ -15,6 +16,7 @@
     "request": "^2.85.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.108",
     "@types/node": "^9.6.2",
     "typescript": "^2.8.1"
   },
