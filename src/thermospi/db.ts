@@ -33,7 +33,7 @@ export class ThermospiDB {
                     ).toArray((err2, results:ITemperature[]) => {
                         if (err2) {
                             this.notifier.notifyError(error, err2);
-                            resolve(err2);
+                            reject(err2);
                         } else {
                             resolve(_.mean(_.map(results, 'temperature')));
                         }

@@ -23,6 +23,8 @@ new GenericMeteoScraper({
 */
 
 let db = new ThermospiDB();
-db.currentInsideTemperature;
+db.currentInsideTemperature.then((temperature:number) => {
+    console.log('Temperature intérieure : ', temperature);
+});
 
-googleHome.play('http://maison.sebastienblondy.com:28985/random-tune');
+//googleHome.play('http://maison.sebastienblondy.com:28985/random-tune');
