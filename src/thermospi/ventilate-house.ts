@@ -10,6 +10,7 @@ export class VentilateHouse {
     constructor() {
         this.googleHome = new GoogleHomeService();
         this.toctoc = new TocToc();
+        this.db = new ThermospiDB();
     }
 
     check(): void {
