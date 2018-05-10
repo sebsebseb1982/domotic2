@@ -17,17 +17,33 @@ export class VentilateHouse {
 
     check(): void {
         this.toctoc.ifPresent(() => {
-            Promise.all([this.db.currentInsideTemperature, this.db.currentOutsideTemperature]).then((temperatures) => {
+            Promise.all([
+                this.db.getCurrentInsideTemperature(),
+                this.db.getCurrentOutsideTemperature(),
+                this.db.isWindowsOpened(),
+            ]).then((temperatures) => {
                 let currentInsideTemperature = temperatures[0];
                 let currentOutsideTemperature = temperatures[1];
+                let windowsOpened = temperatures[2];
 
                 console.log('Températures intérieures : ', currentInsideTemperature);
                 console.log('Températures extérieures : ', currentOutsideTemperature);
+                console.log('Fenêtres ouvertes : ', windowsOpened);
 
                 if(currentInsideTemperature > maxInsideTemperature && currentInsideTemperature > currentOutsideTemperature) {
-                    this.googleHome.speak('Vous pouvez ouvrir les fenêtres pour aérer !');
+                    if(!windowsOpened) {
+                        let somethingToSay = 'Vous pouvez ouvrir les fenêtres pour aérer !';
+                        console.log(somethingToSay);
+                        //this.googleHome.say(somethingToSay);
+                        this.db.setWindowsOpened(true);
+                    }
                 } else {
-                    this.googleHome.speak('Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !');
+                    if(windowsOpened) {
+                        let somethingToSay = 'Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !';
+                        console.log(somethingToSay);
+                        //this.googleHome.say(somethingToSay);
+                        this.db.setWindowsOpened(false);
+                    }
                 }
             });
         });

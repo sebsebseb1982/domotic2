@@ -9,7 +9,7 @@ let googleHome = new GoogleHomeService();
 
 /*
 new LaChaineMeteo('http://france.lachainemeteo.com/meteo-france/ville/previsions-meteo-talence-5432-0.php').meteoDuJour.then((meteo:IMeteo) => {
-    googleHome.speak(meteo.texte);
+    googleHome.say(meteo.texte);
 });
 */
 
@@ -19,7 +19,7 @@ new GenericMeteoScraper({
     selecteurCSS: '.dataDescription span:not(.linkHeureparheure)',
     encoding: 'utf8'
 }).meteoDuJour.then((meteo:IMeteo) => {
-    googleHome.speak(meteo.texte);
+    googleHome.say(meteo.texte);
 });
 */
 

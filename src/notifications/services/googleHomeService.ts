@@ -12,7 +12,7 @@ export class GoogleHomeService {
         googleHome.device('', this.configuration.googleHome.language);
     }
 
-    speak(somethingToSay: string) {
+    say(somethingToSay: string) {
         console.log('Google Home va énoncer le message suivant : ', somethingToSay);
         googleHome.notify(somethingToSay.substring(0,199), () => {});
     }
