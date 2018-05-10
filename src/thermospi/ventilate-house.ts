@@ -34,14 +34,14 @@ export class VentilateHouse {
                     if(!windowsOpened) {
                         let somethingToSay = 'Vous pouvez ouvrir les fenêtres pour aérer !';
                         console.log(somethingToSay);
-                        //this.googleHome.say(somethingToSay);
+                        this.googleHome.say(somethingToSay);
                         this.db.setWindowsOpened(true);
                     }
                 } else {
                     if(windowsOpened) {
                         let somethingToSay = 'Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !';
                         console.log(somethingToSay);
-                        //this.googleHome.say(somethingToSay);
+                        this.googleHome.say(somethingToSay);
                         this.db.setWindowsOpened(false);
                     }
                 }

@@ -2,6 +2,7 @@ import {Configuration} from "../configuration/configuration";
 import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import {INotifier} from "../notifications/notifier";
 import {SurveillanceStation} from "../synology/surveillanceStation";
+import {ThermospiDB} from "../thermospi/db";
 
 let exec = require('child_process').exec;
 let MongoClient = require('mongodb').MongoClient;
@@ -10,11 +11,13 @@ export class TocToc {
     configuration: Configuration;
     notifier: NotifyMyAndroidNotifierService;
     surveillanceStation: SurveillanceStation;
+    thermospiDB:ThermospiDB;
 
     constructor() {
         this.configuration = new Configuration();
         this.notifier =  new NotifyMyAndroidNotifierService('Toc Toc');
         this.surveillanceStation = new SurveillanceStation();
+        this.thermospiDB = new ThermospiDB();
     }
 
     updatePresence() {
@@ -59,6 +62,9 @@ export class TocToc {
 
     private saveNewPresenceStatus(presenceStatus: boolean) {
         this.surveillanceStation.setHomeMode(!presenceStatus);
+        if(!presenceStatus) {
+            this.thermospiDB.setWindowsOpened(false);
+        }
 
         MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
             if (err) {
