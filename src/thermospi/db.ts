@@ -1,6 +1,7 @@
 import {ITemperature} from "./temperature";
 import {Configuration} from "../configuration/configuration";
 import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
+import * as _ from "lodash";
 
 let MongoClient = require('mongodb').MongoClient;
 
@@ -29,13 +30,12 @@ export class ThermospiDB {
                             sort: [['date','desc']],
                             limit: 2
                         }
-                    ).toArray((err2, result) => {
+                    ).toArray((err2, results:ITemperature[]) => {
                         if (err2) {
                             this.notifier.notifyError(error, err2);
                             resolve(err2);
                         } else {
-                            console.log('result:', result);
-                            resolve(result);
+                            resolve(_.mean(_.map(results, 'temperature')));
                         }
                         db.close();
                     });

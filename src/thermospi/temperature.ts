@@ -1,3 +1,5 @@
 export interface ITemperature {
-    value:number;
+    value: number;
+    probe: number;
+    date: Date;
 }
