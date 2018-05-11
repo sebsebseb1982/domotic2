@@ -73,9 +73,9 @@ export class Timelapse {
             transition: true,
             transitionDuration: 1, // seconds
             videoBitrate: 1024,
-            videoCodec: 'libx264',
+            videoCodec: 'libass',
             size: '640x?',
-            format: 'mp4',
+            format: 'mkv',
             pixelFormat: 'yuv420p'
         };
 
