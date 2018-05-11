@@ -22,7 +22,7 @@ export class Timelapse {
         this.occurence = 100;
         this.period = 100;
 
-        console.log(`This timelapse will last ${Math.round((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
+        console.log(`This timelapse will last less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
     }
 
     private takePhotos():Promise<string[]> {
@@ -73,7 +73,7 @@ export class Timelapse {
             transition: true,
             transitionDuration: 1, // seconds
             videoBitrate: 1024,
-            videoCodec: 'libass',
+            videoCodec: 'mpeg4',
             size: '640x?',
             format: 'mp4',
             pixelFormat: 'yuv420p'
