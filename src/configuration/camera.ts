@@ -22,12 +22,12 @@ export abstract class AbstractConfigurationCamera {
 
 export class AxisCamera extends AbstractConfigurationCamera {
     get stillImageUrl() {
-        return `http://${this.user}:${encodeURI(this.password)}@${this.hostname}:${this.port}/jpg/image.jpg?size=3`;
+        return `http://${this.user}:${encodeURIComponent(this.password)}@${this.hostname}:${this.port}/jpg/image.jpg?size=3`;
     }
 }
 
 export class FoscamCamera extends AbstractConfigurationCamera {
     get stillImageUrl() {
-        return `http://${this.hostname}:${this.port}/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=${this.user}&pwd=${encodeURI(this.password)}`;
+        return `http://${this.hostname}:${this.port}/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=${this.user}&pwd=${encodeURIComponent(this.password)}`;
     }
 }
