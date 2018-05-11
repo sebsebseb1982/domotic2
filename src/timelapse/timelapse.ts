@@ -27,6 +27,7 @@ export class Timelapse {
         this.processStartDate = new Date();
         this.camera = this.configuration.cameras[1];
 
+        console.log(this.camera.stillImageUrl);
         console.log(`This timelapse will lasts less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
     }
 
