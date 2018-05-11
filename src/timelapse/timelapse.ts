@@ -5,6 +5,8 @@ import * as _ from "lodash";
 import {INotifier} from "../notifications/notifier";
 import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 
+let videoshow = require('videoshow');
+
 export class Timelapse {
     configuration: Configuration;
     stillImageUrl: string;
@@ -64,8 +66,36 @@ export class Timelapse {
         });
     }
 
+    private transformToVideo(photos: string[]) {
+        var videoOptions = {
+            fps: 25,
+            loop: 5, // seconds
+            transition: true,
+            transitionDuration: 1, // seconds
+            videoBitrate: 1024,
+            videoCodec: 'libx264',
+            size: '640x?',
+            format: 'mp4',
+            pixelFormat: 'yuv420p'
+        };
+
+        videoshow(photos, videoOptions)
+            .save(`${this.configuration.general.tempDir}/video.mp4`)
+            .on('start', function (command) {
+                console.log('ffmpeg process started:', command)
+            })
+            .on('error', function (err, stdout, stderr) {
+                console.error('Error:', err)
+                console.error('ffmpeg stderr:', stderr)
+            })
+            .on('end', function (output) {
+                console.error('Video created in:', output)
+            })
+    }
+
     start() {
         this.takePhotos().then((photos: string[]) => {
+            this.transformToVideo(photos);
             this.clean(photos);
         });
     }
