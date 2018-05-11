@@ -90,13 +90,13 @@ export class Timelapse {
             })
             .on('end', function (output) {
                 console.error('Video created in:', output)
+                this.clean(photos);
             })
     }
 
     start() {
         this.takePhotos().then((photos: string[]) => {
             this.transformToVideo(photos);
-            this.clean(photos);
         });
     }
 }
