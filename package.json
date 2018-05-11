@@ -3,26 +3,24 @@
   "version": "2.0.0",
   "description": "A packaged foo fooer for fooing foos",
   "dependencies": {
-    "@types/cheerio": "^0.22.7",
-    "@types/nodemailer": "^4.6.0",
-    "@types/request": "^2.47.0",
     "cheerio": "^1.0.0-rc.2",
     "get-pixels": "^3.3.0",
     "gif-encoder": "^0.6.1",
-    "gifencoder": "^1.1.0",
     "google-home-notifier": "^1.2.0",
     "lodash": "^4.17.10",
     "mongodb": "^2.2.12",
     "node-hue-api": "^2.4.2",
     "node-rest-client": "^3.1.0",
     "nodemailer": "^4.6.4",
-    "request": "^2.85.0",
-    "videoshow": "^0.1.11"
+    "request": "^2.85.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.108",
     "@types/mongodb": "^3.0.18",
     "@types/node": "^9.6.2",
+    "@types/cheerio": "^0.22.7",
+    "@types/nodemailer": "^4.6.0",
+    "@types/request": "^2.47.0",
     "typescript": "^2.8.1"
   },
   "scripts": {

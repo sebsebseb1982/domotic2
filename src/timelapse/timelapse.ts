@@ -5,7 +5,8 @@ import * as _ from "lodash";
 import {INotifier} from "../notifications/notifier";
 import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 
-let videoshow = require('videoshow');
+let getPixels = require('get-pixels')
+let GifEncoder = require('gif-encoder');
 
 export class Timelapse {
     configuration: Configuration;
@@ -22,7 +23,7 @@ export class Timelapse {
         this.occurence = 100;
         this.period = 100;
 
-        console.log(`This timelapse will last less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
+        console.log(`This timelapse will lasts less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
     }
 
     private takePhotos():Promise<string[]> {
@@ -66,37 +67,33 @@ export class Timelapse {
         });
     }
 
-    private transformToVideo(photos: string[]) {
-        var videoOptions = {
-            fps: 25,
-            loop: 5, // seconds
-            transition: true,
-            transitionDuration: 1, // seconds
-            videoBitrate: 1024,
-            videoCodec: 'mpeg4',
-            size: '640x?',
-            format: 'mp4',
-            pixelFormat: 'yuv420p'
-        };
+transforrmToGIF(photos: string[]) {
+    let gif = new GifEncoder(1280, 720);
+    let file = require('fs').createWriteStream(`${this.configuration.general.tempDir}/test.gif`);
 
-        videoshow(photos, videoOptions)
-            .save(`${this.configuration.general.tempDir}/video.mp4`)
-            .on('start', function (command) {
-                console.log('ffmpeg process started:', command)
-            })
-            .on('error', function (err, stdout, stderr) {
-                console.error('Error:', err)
-                console.error('ffmpeg stderr:', stderr)
-            })
-            .on('end', function (output) {
-                console.error('Video created in:', output)
-                this.clean(photos);
-            })
+    gif.pipe(file);
+    gif.setQuality(20);
+    gif.setDelay(33);
+    gif.writeHeader();
+
+    var addToGif = function(images, counter = 0) {
+        getPixels(images[counter], function(err, pixels) {
+            gif.addFrame(pixels.data);
+            gif.read();
+            if (counter === images.length - 1) {
+                gif.finish();
+                this.clean();
+            } else {
+                addToGif(images, ++counter);
+            }
+        })
     }
+    addToGif(photos);
+}
 
     start() {
         this.takePhotos().then((photos: string[]) => {
-            this.transformToVideo(photos);
+            this.transforrmToGIF(photos);
         });
     }
 }
