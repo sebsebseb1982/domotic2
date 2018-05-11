@@ -42,14 +42,28 @@ export interface IConfigurationGoogleHome {
     language: string;
 }
 
+export interface IConfigurationCamera {
+    label:string;
+    hostname:string;
+    port:number;
+    user:string;
+    password:string;
+}
+
+export interface IGeneralConfiguration {
+    tempDir:string;
+}
+
 export interface IConfiguration {
-    nma:IConfigurationNotifiyMyAndroid;
-    hue:IConfigurationHueBridge;
-    avr:IConfigurationAVR;
+    nma: IConfigurationNotifiyMyAndroid;
+    hue: IConfigurationHueBridge;
+    avr: IConfigurationAVR;
     synology: IConfigurationSynology;
     toctoc: IConfigurationTocToc;
     thermospi: IConfigurationThermospi;
     adminMailAddress: string;
     smtp: SMTPTransport.Options;
     googleHome: IConfigurationGoogleHome;
+    cameras: IConfigurationCamera[];
+    general: IGeneralConfiguration;
 }
