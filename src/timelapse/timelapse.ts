@@ -6,6 +6,7 @@ import {INotifier} from "../notifications/notifier";
 import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import * as moment from 'moment';
 import {AbstractConfigurationCamera} from "../configuration/camera";
+import {RequestOptions} from "http";
 
 let getPixels = require('get-pixels');
 let GifEncoder = require('gif-encoder');
@@ -27,7 +28,7 @@ export class Timelapse {
         this.processStartDate = new Date();
         this.camera = this.configuration.cameras[2];
 
-        console.log(this.camera.stillImageUrl);
+        console.log(this.camera.stillImagePath);
         console.log(`This timelapse will lasts less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
     }
 
@@ -40,7 +41,15 @@ export class Timelapse {
                     () => {
                         let photoPath = `${this.configuration.general.tempDir}/snapshot-${photoIndex}-${process.pid}.jpg`;
                         let photo = fs.createWriteStream(photoPath);
-                        http.get(this.stillImageUrl, (response) => {
+                        let options1: RequestOptions = {
+                            host: this.camera.hostname,
+                            port: this.camera.port,
+                            path: this.camera.stillImagePath,
+                            headers: {
+                                'Authorization': 'Basic ' + new Buffer(this.camera.user + ':' + this.camera.password).toString('base64')
+                            }
+                        };
+                        http.get(options1, (response) => {
                             response.pipe(photo);
                             photosPaths.push(photoPath);
                         });
