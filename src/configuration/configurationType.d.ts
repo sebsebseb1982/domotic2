@@ -1,4 +1,5 @@
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
+import {AbstractConfigurationCamera} from "./camera";
 
 export interface IConfigurationHueBridge {
     username: string;
@@ -42,14 +43,6 @@ export interface IConfigurationGoogleHome {
     language: string;
 }
 
-export interface IConfigurationCamera {
-    label:string;
-    hostname:string;
-    port:number;
-    user:string;
-    password:string;
-}
-
 export interface IGeneralConfiguration {
     tempDir:string;
 }
@@ -64,6 +57,6 @@ export interface IConfiguration {
     adminMailAddress: string;
     smtp: SMTPTransport.Options;
     googleHome: IConfigurationGoogleHome;
-    cameras: IConfigurationCamera[];
+    cameras: AbstractConfigurationCamera[];
     general: IGeneralConfiguration;
 }
