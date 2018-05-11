@@ -39,8 +39,6 @@ export class Timelapse {
             for (let photoIndex = 0; photoIndex < this.occurence; photoIndex++) {
                 setTimeout(
                     () => {
-                        let photoPath = `${this.configuration.general.tempDir}/snapshot-${photoIndex}-${process.pid}.jpg`;
-                        let photo = fs.createWriteStream(photoPath);
                         let options1: RequestOptions = {
                             host: this.camera.hostname,
                             port: this.camera.port,
@@ -50,8 +48,13 @@ export class Timelapse {
                             }
                         };
                         http.get(options1, (response) => {
-                            response.pipe(photo);
-                            photosPaths.push(photoPath);
+                            if (response.statusCode === 200) {
+                                let photoPath = `${this.configuration.general.tempDir}/snapshot-${photoIndex}-${process.pid}.jpg`;
+                                console.log(`Saving ${photoPath} ...`);
+                                let photo = fs.createWriteStream(photoPath);
+                                response.pipe(photo);
+                                photosPaths.push(photoPath);
+                            }
                         });
                     },
                     photoIndex * this.period
@@ -93,7 +96,8 @@ export class Timelapse {
             gif.writeHeader();
 
             let addToGif = (images, counter = 0) => {
-                getPixels(images[counter], function (err, pixels) {
+                console.log(`Adding ${images[counter]} to GIF ...`);
+                getPixels(images[counter], (err, pixels) => {
                     gif.addFrame(pixels.data);
                     gif.read();
                     if (counter === images.length - 1) {
