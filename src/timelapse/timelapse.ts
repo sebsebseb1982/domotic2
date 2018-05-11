@@ -27,7 +27,7 @@ export class Timelapse {
         return new Promise<string[]>((resolve, reject) => {
             let photosPathes: string[] = [];
 
-            for(let photoIndex = 0; photoIndex < 100; photoIndex ++) {
+            for(let photoIndex = 0; photoIndex < this.occurence; photoIndex ++) {
                 setTimeout(
                     () => {
                         let photoPath = `${this.configuration.general.tempDir}/snapshot-${photoIndex}-${process.pid}.jpg`;
@@ -37,7 +37,7 @@ export class Timelapse {
                             photosPathes.push(photoPath);
                         });
                     },
-                    photoIndex * 100
+                    photoIndex * this.period
                 );
             }
 
@@ -54,10 +54,12 @@ export class Timelapse {
     private clean(photos: string[]) {
         _.forEach(photos, (aPhotoPath) => {
             fs.unlink(aPhotoPath, (err) => {
-                this.notifier.notify({
-                    title: 'Impossible de supprimer une photo',
-                    description: err.message
-                });
+                if(err) {
+                    this.notifier.notify({
+                        title: 'Impossible de supprimer une photo',
+                        description: err.message
+                    });
+                }
             });
         });
     }
