@@ -49,7 +49,7 @@ export class Timelapse {
                         };
                         http.get(options1, (response) => {
                             if (response.statusCode === 200) {
-                                let photoPath = `${this.configuration.general.tempDir}/snapshot-${photoIndex}-${process.pid}.jpg`;
+                                let photoPath = `${this.configuration.general.tempDir}/snapshot-${_.padStart(photoIndex.toString(), (this.occurence - 1).toString().length, '0')}-${process.pid}.jpg`;
                                 console.log(`Saving ${photoPath} ...`);
                                 let photo = fs.createWriteStream(photoPath);
                                 response.pipe(photo);
@@ -63,9 +63,9 @@ export class Timelapse {
 
             setTimeout(
                 () => {
-                    resolve(photosPaths);
+                    resolve(photosPaths.sort());
                 },
-                this.occurence * this.period + 1000
+                this.occurence * this.period + 5000
             );
 
         });
