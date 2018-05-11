@@ -9,15 +9,15 @@ export abstract class AbstractConfigurationCamera {
 
     abstract get stillImageUrl();
 
-    constructor(
-        private label: string,
-        private hostname: string,
-        private port: number,
-        private user: string,
-        private password: string,
-        private resolutionX: number,
-        private resolutionY: number
-    ) {}
+    constructor(label: string, hostname: string, port: number, user: string, password: string, resolutionX: number, resolutionY: number) {
+        this.label = label;
+        this.hostname = hostname;
+        this.port = port;
+        this.user = user;
+        this.password = password;
+        this.resolutionX = resolutionX;
+        this.resolutionY = resolutionY;
+    }
 }
 
 export class AxisCamera extends AbstractConfigurationCamera {
