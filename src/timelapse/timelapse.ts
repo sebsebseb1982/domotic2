@@ -75,7 +75,7 @@ export class Timelapse {
             videoBitrate: 1024,
             videoCodec: 'libass',
             size: '640x?',
-            format: 'mkv',
+            format: 'mp4',
             pixelFormat: 'yuv420p'
         };
 
