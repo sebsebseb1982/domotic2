@@ -17,15 +17,15 @@ export class Timelapse {
     occurence: number;
     notifier: INotifier;
     processStartDate: Date;
+    camera:AbstractConfigurationCamera;
 
-    constructor(private camera: AbstractConfigurationCamera) {
+    constructor() {
         this.configuration = new Configuration();
         this.notifier = new NotifyMyAndroidNotifierService('Timelapse');
-        let foscamR2Etage = this.configuration.cameras[0];
-        this.stillImageUrl = camera.stillImageUrl;
         this.occurence = 100;
         this.period = 100;
         this.processStartDate = new Date();
+        this.camera = this.configuration.cameras[1];
 
         console.log(`This timelapse will lasts less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
     }
