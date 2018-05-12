@@ -23,10 +23,11 @@ export class Timelapse {
     constructor() {
         this.configuration = new Configuration();
         this.notifier = new NotifyMyAndroidNotifierService('Timelapse');
-        this.occurence = 100;
-        this.period = 100;
         this.processStartDate = new Date();
-        this.camera = this.configuration.cameras[0];
+
+        this.occurence = process.argv[1] ? parseInt(process.argv[1]) : 100;
+        this.period = process.argv[2] ? parseInt(process.argv[2]) : 100;
+        this.camera = this.configuration.cameras[(process.argv[3] ? parseInt(process.argv[3]) : 0)];
 
         console.log(`This timelapse will lasts less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
     }
@@ -64,7 +65,7 @@ export class Timelapse {
                 () => {
                     resolve(photosPaths.sort());
                 },
-                this.occurence * this.period + 5000
+                this.occurence * this.period + 10000
             );
 
         });
@@ -86,7 +87,7 @@ export class Timelapse {
     private transformToGIF(photos: string[]): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             let gif = new GifEncoder(this.camera.resolutionX, this.camera.resolutionY);
-            let gifFilePath = `${this.configuration.general.tempDir}/${moment(this.processStartDate).format('DD-MM-YYYY')}.gif`;
+            let gifFilePath = `${this.configuration.general.tempDir}/${moment(this.processStartDate).format('DD-MM-YYYY')}-${this.camera.label}.gif`;
             let file = require('fs').createWriteStream(gifFilePath);
 
             gif.pipe(file);
