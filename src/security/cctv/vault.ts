@@ -51,9 +51,9 @@ export class Vault {
     }
 
     archiveYesterdaySnaphots() {
-        console.log(this.configuration.cctv.snapshotsDir);
         let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
-        _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
+        console.log(yesterdaySnapshots.length);
+        /*_.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
             let newYesterdaySnapshotPath = aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`);
             mkdirp(
                 newYesterdaySnapshotPath.substring(0, newYesterdaySnapshotPath.lastIndexOf("/")),
@@ -62,6 +62,6 @@ export class Vault {
                     console.log(`Moving ${aYesterdaySnapshot} to ${newYesterdaySnapshotPath} ...`)
                 }
             );
-        });
+        });*/
     }
 }
