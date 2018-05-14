@@ -45,14 +45,15 @@ export class Vault {
             return filelist;
         };
 
-         return walkSync(path, foundFiles);
+        return walkSync(path, foundFiles);
     }
 
     archiveYesterdaySnaphots() {
         let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
         _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
-           fs.renameSync(aYesterdaySnapshot, aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`));
+            let newYesterdaySnapshotPath = aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`);
+            fs.renameSync(aYesterdaySnapshot, newYesterdaySnapshotPath);
+            console.log(`Moving ${aYesterdaySnapshot} to ${newYesterdaySnapshotPath} ...`)
         });
-        console.log(yesterdaySnapshots)
     }
 }
