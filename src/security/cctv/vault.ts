@@ -33,6 +33,7 @@ export class Vault {
             let files = fs.readdirSync(dir);
             filelist = filelist || [];
             files.forEach((file) => {
+                console.log(file);
                 let fileFullPath = dir + file;
                 let fileStats = fs.statSync(fileFullPath);
                 if (fileStats.isDirectory()) {
@@ -50,6 +51,7 @@ export class Vault {
     }
 
     archiveYesterdaySnaphots() {
+        console.log(this.configuration.cctv.snapshotsDir);
         let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
         console.log('coucou0');
         console.log(yesterdaySnapshots);
