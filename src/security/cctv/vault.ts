@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import {PathLike} from "fs";
 import * as _ from "lodash";
 import * as moment from 'moment';
-import * as mkdirp from 'mkdirp';
+/*import * as mkdirp from 'mkdirp';*/
 
 export class Vault {
     configuration: Configuration;
