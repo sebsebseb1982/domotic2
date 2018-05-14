@@ -15,6 +15,19 @@ export class Vault {
 
         let foundFiles;
 
+        let yesterday00h00 = moment()
+            .add(-1, 'days')
+            .setMilliseconds(0)
+            .setSeconds(0)
+            .setMinutes(0)
+            .setHours(0);
+        let yesterday23h59 = moment()
+            .add(-1, 'days')
+            .setMilliseconds(999)
+            .setSeconds(59)
+            .setMinutes(59)
+            .setHours(23);
+
         let walkSync = (dir, filelist) => {
             let files = fs.readdirSync(dir);
             filelist = filelist || [];
@@ -24,10 +37,7 @@ export class Vault {
                 if (fileStats.isDirectory()) {
                     filelist = walkSync(fileFullPath + '/', filelist);
                 } else {
-                    let maintenant = moment();
-                    var quatreHeuresAuparavant = moment().add(-1, 'hours');
-
-                    if (moment(fileStats.birthtime).isBetween(quatreHeuresAuparavant, maintenant, null, '[]')) {
+                    if (moment(fileStats.birthtime).isBetween(yesterday00h00, yesterday23h59, null, '[]')) {
                         filelist.push(fileFullPath);
                     }
                 }
@@ -39,6 +49,7 @@ export class Vault {
     }
 
     archiveYesterdayPhotos() {
-        console.log(this.findYesterdayFiles(this.configuration.cctv.snapshotsDir))
+        let yesterdayFiles = this.findYesterdayFiles(this.configuration.cctv.snapshotsDir);
+        console.log(yesterdayFiles)
     }
 }
