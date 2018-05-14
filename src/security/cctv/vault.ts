@@ -1,6 +1,8 @@
 import {Configuration} from "../../configuration/configuration";
 import * as fs from 'fs';
 import {PathLike} from "fs";
+import * as _ from "lodash";
+import * as moment from 'moment';
 
 export class Vault {
     configuration: Configuration;
@@ -9,7 +11,7 @@ export class Vault {
         this.configuration = new Configuration();
     }
 
-    private findFiles(path: PathLike): string[] {
+    private findYesterdayFiles(path: PathLike): string[] {
 
         let foundFiles;
 
@@ -17,11 +19,17 @@ export class Vault {
             let files = fs.readdirSync(dir);
             filelist = filelist || [];
             files.forEach((file) => {
-                if (fs.statSync(dir + file).isDirectory()) {
-                    filelist = walkSync(dir + file + '/', filelist);
-                }
-                else {
-                    filelist.push(dir + file);
+                let fileFullPath = dir + file;
+                let fileStats = fs.statSync(fileFullPath);
+                if (fileStats.isDirectory()) {
+                    filelist = walkSync(fileFullPath + '/', filelist);
+                } else {
+                    let maintenant = moment();
+                    var quatreHeuresAuparavant = moment().add(-4, 'hours');
+
+                    if (moment(fileStats.birthtime).isBetween(quatreHeuresAuparavant, maintenant, null, '[]')) {
+                        filelist.push(fileFullPath);
+                    }
                 }
             });
             return filelist;
@@ -31,6 +39,6 @@ export class Vault {
     }
 
     archiveYesterdayPhotos() {
-        console.log(this.findFiles(this.configuration.cctv.snapshotsDir))
+        console.log(this.findYesterdayFiles(this.configuration.cctv.snapshotsDir))
     }
 }
