@@ -53,9 +53,11 @@ export class Vault {
         let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
         _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
             let newYesterdaySnapshotPath = aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`);
+        console.log('coucouA');
             mkdirp(
                 newYesterdaySnapshotPath.substring(0, newYesterdaySnapshotPath.lastIndexOf("/")),
                 (err, made) => {
+            console.log('coucouB');
                     fs.renameSync(aYesterdaySnapshot, newYesterdaySnapshotPath);
                     console.log(`Moving ${aYesterdaySnapshot} to ${newYesterdaySnapshotPath} ...`)
                 }
