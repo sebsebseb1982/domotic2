@@ -51,6 +51,8 @@ export class Vault {
 
     archiveYesterdaySnaphots() {
         let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
+        console.log('coucou0');
+        console.log(yesterdaySnapshots);
         _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
             let newYesterdaySnapshotPath = aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`);
         console.log('coucouA');
