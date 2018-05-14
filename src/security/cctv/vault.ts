@@ -11,7 +11,7 @@ export class Vault {
         this.configuration = new Configuration();
     }
 
-    private findYesterdayFiles(path: PathLike): string[] {
+    private findYesterdaySnapshots(path: PathLike): string[] {
 
         let foundFiles;
 
@@ -48,8 +48,11 @@ export class Vault {
          return walkSync(path, foundFiles);
     }
 
-    archiveYesterdayPhotos() {
-        let yesterdayFiles = this.findYesterdayFiles(this.configuration.cctv.snapshotsDir);
-        console.log(yesterdayFiles)
+    archiveYesterdaySnaphots() {
+        let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
+        _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
+           fs.renameSync(aYesterdaySnapshot, aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`));
+        });
+        console.log(yesterdaySnapshots)
     }
 }
