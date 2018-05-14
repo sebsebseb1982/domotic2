@@ -25,7 +25,7 @@ export class Vault {
                     filelist = walkSync(fileFullPath + '/', filelist);
                 } else {
                     let maintenant = moment();
-                    var quatreHeuresAuparavant = moment().add(-4, 'hours');
+                    var quatreHeuresAuparavant = moment().add(-1, 'hours');
 
                     if (moment(fileStats.birthtime).isBetween(quatreHeuresAuparavant, maintenant, null, '[]')) {
                         filelist.push(fileFullPath);
