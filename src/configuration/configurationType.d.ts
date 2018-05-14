@@ -47,6 +47,10 @@ export interface IGeneralConfiguration {
     tempDir:string;
 }
 
+export interface ICCTVConfiguration {
+    snapshotsDir:string;
+}
+
 export interface IConfiguration {
     nma: IConfigurationNotifiyMyAndroid;
     hue: IConfigurationHueBridge;
@@ -59,4 +63,5 @@ export interface IConfiguration {
     googleHome: IConfigurationGoogleHome;
     cameras: AbstractConfigurationCamera[];
     general: IGeneralConfiguration;
+    cctv: ICCTVConfiguration;
 }
