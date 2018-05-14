@@ -38,7 +38,7 @@ export class Vault {
                 if (fileStats.isDirectory()) {
                     filelist = walkSync(fileFullPath + '/', filelist);
                 } else {
-                    console.log(`${fileStats.birthtime}, ${yesterday00h00}, ${yesterday23h59}`);
+                    console.log(`${fileFullPath} [${fileStats.birthtime}], ${yesterday00h00}, ${yesterday23h59}`);
                     if (moment(fileStats.birthtime).isBetween(yesterday00h00, yesterday23h59, null, '[]')) {
                         filelist.push(fileFullPath);
                     }
