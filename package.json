@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "A packaged foo fooer for fooing foos",
   "dependencies": {
+    "@types/mkdirp": "^0.5.2",
     "cheerio": "^1.0.0-rc.2",
     "get-pixels": "^3.3.0",
     "gif-encoder": "^0.6.1",
