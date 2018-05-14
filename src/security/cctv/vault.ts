@@ -33,12 +33,12 @@ export class Vault {
             let files = fs.readdirSync(dir);
             filelist = filelist || [];
             files.forEach((file) => {
-                console.log(file);
                 let fileFullPath = dir + file;
                 let fileStats = fs.statSync(fileFullPath);
                 if (fileStats.isDirectory()) {
                     filelist = walkSync(fileFullPath + '/', filelist);
                 } else {
+                    console.log(`${fileStats.birthtime}, ${yesterday00h00}, ${yesterday23h59}`);
                     if (moment(fileStats.birthtime).isBetween(yesterday00h00, yesterday23h59, null, '[]')) {
                         filelist.push(fileFullPath);
                     }
@@ -53,15 +53,11 @@ export class Vault {
     archiveYesterdaySnaphots() {
         console.log(this.configuration.cctv.snapshotsDir);
         let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
-        console.log('coucou0');
-        console.log(yesterdaySnapshots);
         _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
             let newYesterdaySnapshotPath = aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`);
-        console.log('coucouA');
             mkdirp(
                 newYesterdaySnapshotPath.substring(0, newYesterdaySnapshotPath.lastIndexOf("/")),
                 (err, made) => {
-            console.log('coucouB');
                     fs.renameSync(aYesterdaySnapshot, newYesterdaySnapshotPath);
                     console.log(`Moving ${aYesterdaySnapshot} to ${newYesterdaySnapshotPath} ...`)
                 }
