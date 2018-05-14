@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import {PathLike} from "fs";
 import * as _ from "lodash";
 import * as moment from 'moment';
+import * as mkdirp from 'mkdirp';
 
 export class Vault {
     configuration: Configuration;
@@ -52,8 +53,13 @@ export class Vault {
         let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
         _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
             let newYesterdaySnapshotPath = aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`);
-            fs.renameSync(aYesterdaySnapshot, newYesterdaySnapshotPath);
-            console.log(`Moving ${aYesterdaySnapshot} to ${newYesterdaySnapshotPath} ...`)
+            mkdirp(
+                newYesterdaySnapshotPath.substring(0, newYesterdaySnapshotPath.lastIndexOf("/")),
+                (err, made) => {
+                    fs.renameSync(aYesterdaySnapshot, newYesterdaySnapshotPath);
+                    console.log(`Moving ${aYesterdaySnapshot} to ${newYesterdaySnapshotPath} ...`)
+                }
+            );
         });
     }
 }

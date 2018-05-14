@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "description": "A packaged foo fooer for fooing foos",
   "dependencies": {
-    "@types/mkdirp": "^0.5.2",
     "cheerio": "^1.0.0-rc.2",
     "get-pixels": "^3.3.0",
     "gif-encoder": "^0.6.1",
@@ -21,6 +20,7 @@
   "devDependencies": {
     "@types/cheerio": "^0.22.7",
     "@types/lodash": "^4.14.108",
+    "@types/mkdirp": "^0.5.2",
     "@types/moment": "^2.13.0",
     "@types/mongodb": "^3.0.18",
     "@types/node": "^9.6.2",
