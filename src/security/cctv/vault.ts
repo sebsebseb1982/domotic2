@@ -35,7 +35,9 @@ export class Vault {
             files.forEach((file) => {
                 let fileFullPath = dir + file;
                 let fileStats = fs.statSync(fileFullPath);
-                console.log(fileStats);
+                fs.stat(fileFullPath, (err, stats) => {
+                    console.log(stats);
+                });
                 if (fileStats.isDirectory()) {
                     filelist = walkSync(fileFullPath + '/', filelist);
                 } else {
