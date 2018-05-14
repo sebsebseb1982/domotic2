@@ -17,16 +17,16 @@ export class Vault {
 
         let yesterday00h00 = moment()
             .add(-1, 'days')
-            .setMilliseconds(0)
-            .setSeconds(0)
-            .setMinutes(0)
-            .setHours(0);
+            .milliseconds(0)
+            .seconds(0)
+            .minutes(0)
+            .hours(0);
         let yesterday23h59 = moment()
             .add(-1, 'days')
-            .setMilliseconds(999)
-            .setSeconds(59)
-            .setMinutes(59)
-            .setHours(23);
+            .milliseconds(999)
+            .seconds(59)
+            .minutes(59)
+            .hours(23);
 
         let walkSync = (dir, filelist) => {
             let files = fs.readdirSync(dir);
