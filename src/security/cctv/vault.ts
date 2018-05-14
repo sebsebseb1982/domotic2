@@ -16,12 +16,12 @@ export class Vault {
         let walkSync = (dir, filelist) => {
             let files = fs.readdirSync(dir);
             filelist = filelist || [];
-            files.forEach(function (file) {
+            files.forEach((file) => {
                 if (fs.statSync(dir + file).isDirectory()) {
                     filelist = walkSync(dir + file + '/', filelist);
                 }
                 else {
-                    filelist.push(file);
+                    filelist.push(dir + file);
                 }
             });
             return filelist;
