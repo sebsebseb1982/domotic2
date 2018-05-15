@@ -93,7 +93,7 @@ export class Vault {
 
         archive.pipe(output);
 
-        archive.directory(`${this.configuration.general.tempDir}cctv/`);
+        archive.directory(`${this.configuration.general.tempDir}cctv/`, false);
 
         archive.finalize();
     }
