@@ -4,24 +4,26 @@ import {PathLike} from "fs";
 import * as _ from "lodash";
 import * as moment from 'moment';
 import * as mkdirp from 'mkdirp';
+import * as archiver from 'archiver';
 
 export class Vault {
     configuration: Configuration;
+    yesterday23h59:  moment.Moment;
 
     constructor() {
         this.configuration = new Configuration();
+        this.yesterday23h59 = moment()
+            .add(-1, 'days')
+            .milliseconds(999)
+            .seconds(59)
+            .minutes(59)
+            .hours(23);
     }
 
     private findYesterdaySnapshots(path: PathLike): string[] {
 
         let foundFiles;
 
-        let yesterday00h00 = moment()
-            .add(-1, 'days')
-            .milliseconds(0)
-            .seconds(0)
-            .minutes(0)
-            .hours(0);
         let yesterday23h59 = moment()
             .add(-1, 'days')
             .milliseconds(999)
@@ -38,7 +40,7 @@ export class Vault {
                 if (fileStats.isDirectory()) {
                     filelist = walkSync(fileFullPath + '/', filelist);
                 } else {
-                    if (moment(fileStats.birthtime).isBetween(yesterday00h00, yesterday23h59, null, '[]')) {
+                    if (moment(fileStats.birthtime).isBefore(yesterday23h59)) {
                         filelist.push(fileFullPath);
                     }
                 }
@@ -49,9 +51,7 @@ export class Vault {
         return walkSync(path, foundFiles);
     }
 
-    archiveYesterdaySnaphots() {
-        let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
-        console.log(yesterdaySnapshots.length);
+    private moveYesterdaySnapshotsToTmpFolder(yesterdaySnapshots: string[]) {
         _.forEach(yesterdaySnapshots, (aYesterdaySnapshot) => {
             let newYesterdaySnapshotPath = aYesterdaySnapshot.replace(this.configuration.cctv.snapshotsDir, `${this.configuration.general.tempDir}cctv/`);
             mkdirp(
@@ -62,5 +62,45 @@ export class Vault {
                 }
             );
         });
+    }
+
+    private zipYesterdaySnaphots() {
+        let output = fs.createWriteStream(`${this.configuration.cctv.snapshotsDir}${this.yesterday23h59.format('dd-mm-yyyy')}.zip`);
+        let archive = archiver('zip', {
+            zlib: { level: 9 } // Sets the compression level.
+        });
+        output.on('close', function() {
+            console.log(archive.pointer() + ' total bytes');
+            console.log('archiver has been finalized and the output file descriptor has closed.');
+        });
+
+        output.on('end', function() {
+            console.log('Data has been drained');
+        });
+
+        archive.on('warning', function(err) {
+            if (err.code === 'ENOENT') {
+                // log warning
+            } else {
+                // throw error
+                throw err;
+            }
+        });
+
+        archive.on('error', function(err) {
+            throw err;
+        });
+
+        archive.pipe(output);
+
+        archive.directory(`${this.configuration.general.tempDir}cctv/`);
+
+        archive.finalize();
+    }
+
+    archiveYesterdaySnaphots() {
+        let yesterdaySnapshots = this.findYesterdaySnapshots(this.configuration.cctv.snapshotsDir);
+        this.moveYesterdaySnapshotsToTmpFolder(yesterdaySnapshots);
+        this.zipYesterdaySnaphots();
     }
 }
