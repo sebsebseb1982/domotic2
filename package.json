@@ -37,6 +37,7 @@
     "notify-me-if-alarm-is-disarmed": "node -e 'let Alarm = require(\"/home/pi/domotic2/src/security/alarm.js\").Alarm; new Alarm().notifyIfDisarmed()'",
     "backup-cron": "node -e 'let Backup = require(\"/home/pi/domotic2/src/system/backup.js\").Backup; new Backup().backupCron()'",
     "ventilate-house": "node -e 'let VentilateHouse = require(\"/home/pi/domotic2/src/thermospi/ventilate-house.js\").VentilateHouse; new VentilateHouse().check()'",
-    "timelapse": "node -e 'let Timelapse = require(\"/home/pi/domotic2/src/timelapse/timelapse.js\").Timelapse; new Timelapse().generate()'"
+    "timelapse": "node -e 'let Timelapse = require(\"/home/pi/domotic2/src/timelapse/timelapse.js\").Timelapse; new Timelapse().generate()'",
+    "notify-delete-cctv-archive": "node -e 'let NotifyDeleteCCTVArchive = require(\"/home/pi/domotic2/src/security/cctv/notify-delete-cctv-archive.ts\").NotifyDeleteCCTVArchive; new NotifyDeleteCCTVArchive().notify()'"
   }
 }
