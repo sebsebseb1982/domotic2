@@ -28,7 +28,7 @@ export class TorrentDB {
         });
     }
 
-    getLastTorrents(): Promise<ITorrent> {
+    getLastTorrents(): Promise<ITorrent[]> {
         let limit = 20;
         return new Promise((resolve, reject) => {
             this.db.then((db: Db) => {

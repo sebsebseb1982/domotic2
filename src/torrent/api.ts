@@ -21,7 +21,7 @@ class App {
         let router = express.Router();
         router
             .get('/torrents', (req, res, next) => {
-                this.torrentDB.getLastTorrents().then((torrents) => {
+                this.torrentDB.getLastTorrents().then((torrents:ITorrent[]) => {
                     res.json(torrents);
                 });
             })
