@@ -2,7 +2,8 @@ import * as express from 'express';
 import {TorrentDB} from "./db";
 import {ITorrent} from "./models/torrent";
 
-class App {
+//class App {
+export class App {
 
     public express: express.Application;
     torrentDB:TorrentDB;
@@ -37,4 +38,4 @@ class App {
 
 }
 
-export default new App().express;
+// export default new App().express;
