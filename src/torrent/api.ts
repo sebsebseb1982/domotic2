@@ -1,6 +1,7 @@
 import * as express from 'express';
 import {TorrentDB} from "./db";
 import {ITorrent} from "./models/torrent";
+import {InsertOneWriteOpResult} from "mongodb";
 
 //class App {
 export class App {
@@ -32,7 +33,9 @@ export class App {
                     source: 'source',
                     date: new Date()
                 };
-                this.torrentDB.addTorrent(torrent);
+                this.torrentDB.addTorrent(torrent).then((result:InsertOneWriteOpResult) => {
+                    res.json(result);
+                });
             });
 
         this.express.use('/', router);

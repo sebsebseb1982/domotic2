@@ -1,6 +1,6 @@
 import {Configuration} from "../configuration/configuration";
 import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
-import {Db} from "mongodb";
+import {Db, InsertOneWriteOpResult} from "mongodb";
 import {ITorrent} from "./models/torrent";
 
 let MongoClient = require('mongodb').MongoClient;
@@ -38,6 +38,7 @@ export class TorrentDB {
                         limit: limit
                     }
                 ).toArray((err, results: ITorrent[]) => {
+                    console.log(results);
                     if (err) {
                         this.notifier.notifyError(`Erreur lors de la lecture de la récupération des ${limit} derniers torrents`, err.message);
                         reject(err);
@@ -50,17 +51,22 @@ export class TorrentDB {
         });
     }
 
-    addTorrent(torrent:ITorrent) {
-        this.db.then((db: Db) => {
-            db.collection('torrents').insertOne(
-                torrent,
-                (err, result) => {
-                    if (err) {
-                        this.notifier.notifyError(`Erreur lors de l'insertion d'un torrent (${torrent.url})`, err.message);
+    addTorrent(torrent: ITorrent): Promise<InsertOneWriteOpResult> {
+        return new Promise((resolve, reject) => {
+            this.db.then((db: Db) => {
+                db.collection('torrents').insertOne(
+                    torrent,
+                    (err, result: InsertOneWriteOpResult) => {
+                        if (err) {
+                            this.notifier.notifyError(`Erreur lors de l'insertion d'un torrent (${torrent.url})`, err.message);
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        (db as any).close();
                     }
-                    (db as any).close();
-                }
-            );
+                );
+            });
         });
     }
 }
