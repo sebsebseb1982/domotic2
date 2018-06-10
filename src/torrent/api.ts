@@ -26,7 +26,7 @@ class App {
                 });
             })
             .post('/torrents', (req, res, next) => {
-                let torrent = new ITorrent();
+                let torrent:ITorrent;
                 torrent.url = 'url';
                 torrent.source = 'source';
                 this.torrentDB.addTorrent(torrent);
