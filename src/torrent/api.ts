@@ -6,7 +6,7 @@ import {ITorrent} from "./models/torrent";
 export class App {
 
     public express: express.Application;
-    torrentDB:TorrentDB;
+    torrentDB: TorrentDB;
 
     constructor() {
         this.express = express();
@@ -22,14 +22,15 @@ export class App {
         let router = express.Router();
         router
             .get('/torrents', (req, res, next) => {
-                this.torrentDB.getLastTorrents().then((torrents:ITorrent[]) => {
+                this.torrentDB.getLastTorrents().then((torrents: ITorrent[]) => {
                     res.json(torrents);
                 });
             })
             .post('/torrents', (req, res, next) => {
-                let torrent:ITorrent;
-                torrent.url = 'url';
-                torrent.source = 'source';
+                let torrent: ITorrent = {
+                    url: 'url',
+                    source: 'source'
+                };
                 this.torrentDB.addTorrent(torrent);
             });
 
