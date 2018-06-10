@@ -33,6 +33,7 @@ export class TorrentDB {
         return new Promise((resolve, reject) => {
             this.db.then((db: Db) => {
                 db.collection('torrents').find(
+                    {},
                     {
                         sort: [['date', 'desc']],
                         limit: limit
