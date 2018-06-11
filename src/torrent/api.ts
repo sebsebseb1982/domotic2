@@ -2,6 +2,7 @@ import * as express from 'express';
 import {TorrentDB} from "./db";
 import {ITorrent} from "./models/torrent";
 import {InsertOneWriteOpResult} from "mongodb";
+import {Torrents2RSS} from "./rss";
 
 //class App {
 export class App {
@@ -24,7 +25,9 @@ export class App {
         router
             .get('/torrents', (req, res, next) => {
                 this.torrentDB.getLastTorrents().then((torrents: ITorrent[]) => {
-                    res.json(torrents);
+                    res.set('Content-Type', 'text/xml');
+                    let torrents2RSS = new Torrents2RSS();
+                    res.send(torrents2RSS.getRSSFeedFromTorrents(torrents));
                 });
             })
             .post('/torrents', (req, res, next) => {
