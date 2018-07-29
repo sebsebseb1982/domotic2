@@ -88,7 +88,7 @@ export class TocToc {
         });
     }
 
-    private getCurrentPresence(): Promise<boolean> {
+    getCurrentPresence(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
                 if (err) {

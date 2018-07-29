@@ -21,4 +21,16 @@ export class Alarm {
             this.nma.notify(notification);
         });
     }
+
+    arm() {
+
+    }
+
+    disarm() {
+        
+    }
+
+    getStatus(): Promise<boolean> {
+        return this.toctoc.getCurrentPresence();
+    }
 }

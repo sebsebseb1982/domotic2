@@ -1,5 +1,5 @@
 import * as SMTPTransport from "nodemailer/lib/smtp-transport";
-import {AbstractConfigurationCamera} from "./camera";
+import {Camera} from "./../security/cctv/camera";
 
 export interface IConfigurationHueBridge {
     username: string;
@@ -61,7 +61,7 @@ export interface IConfiguration {
     adminMailAddress: string;
     smtp: SMTPTransport.Options;
     googleHome: IConfigurationGoogleHome;
-    cameras: AbstractConfigurationCamera[];
+    cameras: Camera[];
     general: IGeneralConfiguration;
     cctv: ICCTVConfiguration;
 }

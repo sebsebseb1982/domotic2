@@ -5,7 +5,7 @@ import * as _ from "lodash";
 import {INotifier} from "../notifications/notifier";
 import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import * as moment from 'moment';
-import {AbstractConfigurationCamera} from "../configuration/camera";
+import {Camera} from "../security/cctv/camera";
 import {RequestOptions} from "http";
 
 let getPixels = require('get-pixels');
@@ -18,7 +18,7 @@ export class Timelapse {
     occurence: number;
     notifier: INotifier;
     processStartDate: Date;
-    camera:AbstractConfigurationCamera;
+    camera: Camera;
 
     constructor() {
         this.configuration = new Configuration();
