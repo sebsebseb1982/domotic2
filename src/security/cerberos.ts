@@ -21,7 +21,7 @@ export class Cerberos {
     }
 
     watch() {
-        let snapshots = this.presenceDetector.getSnapshotForNLastMinutes(9999999);
+        let snapshots = this.presenceDetector.getSnapshotForNLastMinutes(5);
         let snapshotsFromCamerasWhichCanTriggerLight = _.filter(snapshots, (snapshot) => snapshot.camera.canTriggerLight);
         let snapshotsFromCamerasWhichCanTriggerVoice = _.filter(snapshots, (snapshot) => snapshot.camera.canTriggerVoice);
         let snapshotsFromCamerasWhichCanTriggerNotification = _.filter(snapshots, (snapshot) => snapshot.camera.canTriggerNotification);
@@ -73,13 +73,14 @@ export class Cerberos {
 
     notify(snapshots: Snapshot[]) {
         this.notifier.send({
-            title: 'Détection présence',
-            description: `<p>Présence détectée sur les caméras suivantes :</p>${this.writeHTMLCameraList(this.getCameraNamesFromSnapshots(snapshots))}`
+            title: `${snapshots.length} détection(s) de présence`,
+            description: `<p>Présence détectée sur les caméras suivantes :</p>${this.writeHTMLCameraList(this.getCameraNamesFromSnapshots(snapshots))}`,
+            attachments: _.map(snapshots, 'path')
         });
     }
 
     private writeHTMLCameraList(cameras: string[]): string {
-        let lis;
+        let lis = '';
         cameras.forEach((aCamera) => {
             lis += `<li>${aCamera}</li>`;
         })
