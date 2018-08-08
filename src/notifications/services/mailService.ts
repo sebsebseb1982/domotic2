@@ -8,9 +8,11 @@ let nodemailer = require('nodemailer');
 export class MailService {
     configuration: Configuration;
     mailTransport: Mail;
+    service: string;
 
-    constructor() {
+    constructor(service: string) {
         this.configuration = new Configuration();
+        this.service = service;
         this.mailTransport = nodemailer.createTransport(this.configuration.smtp);
     }
 
@@ -18,7 +20,7 @@ export class MailService {
         let mailOptions:SendmailTransport.Options = {
             from: 'Maison <noreply@maison.fr>',
             to: mailAddressesToNotify ? mailAddressesToNotify : this.configuration.adminMailAddress,
-            subject: notification.title,
+            subject: `[${this.service}] ${notification.title}`,
             html: `<p>${notification.description}</p>`,
             sendmail: true
         };

@@ -6,7 +6,7 @@ export class Backup {
     mail: MailService;
 
     constructor() {
-        this.mail = new MailService();
+        this.mail = new MailService('System');
     }
 
     backupCron() {

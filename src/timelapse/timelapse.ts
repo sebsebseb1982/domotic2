@@ -3,10 +3,10 @@ import * as fs from 'fs';
 import * as http from 'http';
 import * as _ from "lodash";
 import {INotifier} from "../notifications/notifier";
-import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import * as moment from 'moment';
 import {Camera} from "../security/cctv/camera";
 import {RequestOptions} from "http";
+import {MailService} from "../notifications/services/mailService";
 
 let getPixels = require('get-pixels');
 let GifEncoder = require('gif-encoder');
@@ -16,13 +16,13 @@ export class Timelapse {
     stillImageUrl: string;
     period: number;
     occurence: number;
-    notifier: INotifier;
+    notifier: MailService;
     processStartDate: Date;
     camera: Camera;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier = new NotifyMyAndroidNotifierService('Timelapse');
+        this.notifier = new MailService('Timelapse');
         this.processStartDate = new Date();
 
         this.occurence = process.argv[1] ? parseInt(process.argv[1]) : 100;
@@ -75,7 +75,7 @@ export class Timelapse {
         _.forEach(photos, (aPhotoPath) => {
             fs.unlink(aPhotoPath, (err) => {
                 if (err) {
-                    this.notifier.notify({
+                    this.notifier.send({
                         title: 'Impossible de supprimer une photo',
                         description: err.message
                     });

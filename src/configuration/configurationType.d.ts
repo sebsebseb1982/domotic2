@@ -10,12 +10,6 @@ export interface IConfigurationAVR {
     hostname: string;
 }
 
-export interface IConfigurationNotifiyMyAndroid {
-    hostname: string;
-    port: number;
-    apiKey: string;
-}
-
 export interface IConfigurationSynology {
     hostname: string;
     port: number;
@@ -52,7 +46,6 @@ export interface ICCTVConfiguration {
 }
 
 export interface IConfiguration {
-    nma: IConfigurationNotifiyMyAndroid;
     hue: IConfigurationHueBridge;
     avr: IConfigurationAVR;
     synology: IConfigurationSynology;

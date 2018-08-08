@@ -1,27 +1,28 @@
 import {ITemperature} from "./models/temperature";
 import {Configuration} from "../configuration/configuration";
-import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import * as _ from "lodash";
 import {Db} from "mongodb";
 import {IVentilationStatus} from "./models/ventilation-status";
+import {MailService} from "../notifications/services/mailService";
+import {MyNotification} from "../notifications/myNotification";
 
 let MongoClient = require('mongodb').MongoClient;
 
 export class ThermospiDB {
     configuration: Configuration;
-    notifier: NotifyMyAndroidNotifierService;
+    notifier: MailService;
 
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier =  new NotifyMyAndroidNotifierService('DB Thermospi');
+        this.notifier =  new MailService('Thermospi');
     }
 
     private get db(): Promise<Db> {
         return new Promise((resolve, reject) => {
             MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
                 if (err) {
-                    this.notifier.notifyError('Erreur lors de la récupération d\'une connexion à la base Thermospi', err);
+                    this.notifier.send(this.createErrorNotification('Erreur lors de la récupération d\'une connexion à la DB Thermospi', err));
                     reject(err);
                 } else {
                     resolve(db);
@@ -44,7 +45,7 @@ export class ThermospiDB {
                     }
                 ).toArray((err, results:ITemperature[]) => {
                     if (err) {
-                        this.notifier.notifyError('Erreur lors de la lecture de la température intérieure de la maison', err.message);
+                        this.notifier.send(this.createErrorNotification('Erreur lors de la lecture de la température intérieure de la maison', err.message));
                         reject(err);
                     } else {
                         resolve(_.mean(_.map(results, 'temperature')));
@@ -69,7 +70,7 @@ export class ThermospiDB {
                     }
                 ).toArray((err, results:ITemperature[]) => {
                     if (err) {
-                        this.notifier.notifyError('Erreur lors de la lecture de la température extérieure de la maison', err.message);
+                        this.notifier.send(this.createErrorNotification('Erreur lors de la lecture de la température extérieure de la maison', err.message));
                         reject(err);
                     } else {
                         resolve(_.mean(_.map(results, 'temperature')));
@@ -88,7 +89,7 @@ export class ThermospiDB {
                     {},
                     (err, result:IVentilationStatus) => {
                         if (err) {
-                            this.notifier.notifyError('Erreur lors de la lecture de l\'état de ventilation de la maison', err.message);
+                            this.notifier.send(this.createErrorNotification('Erreur lors de la lecture de l\'état de ventilation de la maison', err.message));
                             reject(err);
                         } else {
                             resolve(result.isWindowOpened);
@@ -112,11 +113,15 @@ export class ThermospiDB {
                 {},
                 (err, result) => {
                     if(err) {
-                        this.notifier.notifyError('Erreur lors de la mise à jour de l\'état de ventilation de la maison', err.message);
+                        this.notifier.send(this.createErrorNotification('Erreur lors de la mise à jour de l\'état de ventilation de la maison', err.message));
                     }
                     (db as any).close();
                 }
             );
         });
+    }
+
+    private createErrorNotification(message:string, trace:string): MyNotification {
+        return new MyNotification(message, trace);
     }
 }

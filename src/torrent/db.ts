@@ -1,25 +1,28 @@
 import {Configuration} from "../configuration/configuration";
-import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import {Db, InsertOneWriteOpResult} from "mongodb";
 import {ITorrent} from "./models/torrent";
+import {MailService} from "../notifications/services/mailService";
 
 let MongoClient = require('mongodb').MongoClient;
 
 export class TorrentDB {
     configuration: Configuration;
-    notifier: NotifyMyAndroidNotifierService;
+    notifier: MailService;
 
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier = new NotifyMyAndroidNotifierService('Torrent API');
+        this.notifier = new MailService('Torrent API');
     }
 
     private get db(): Promise<Db> {
         return new Promise((resolve, reject) => {
             MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
                 if (err) {
-                    this.notifier.notifyError('Erreur lors de la récupération d\'une connexion à la base Torrent', err);
+                    this.notifier.send({
+                        title: 'Erreur lors de la récupération d\'une connexion à la base Torrent',
+                        description: err
+                    });
                     reject(err);
                 } else {
                     resolve(db);
@@ -41,7 +44,10 @@ export class TorrentDB {
                 ).toArray((err, results: ITorrent[]) => {
                     console.log(results);
                     if (err) {
-                        this.notifier.notifyError(`Erreur lors de la lecture de la récupération des ${limit} derniers torrents`, err.message);
+                        this.notifier.send({
+                            title: `Erreur lors de la lecture de la récupération des ${limit} derniers torrents`,
+                            description: err.message
+                        });
                         reject(err);
                     } else {
                         resolve(results);
@@ -59,7 +65,10 @@ export class TorrentDB {
                     torrent,
                     (err, result: InsertOneWriteOpResult) => {
                         if (err) {
-                            this.notifier.notifyError(`Erreur lors de l'insertion d'un torrent (${torrent.url})`, err.message);
+                            this.notifier.send({
+                                title: `Erreur lors de l'insertion d'un torrent (${torrent.url})`,
+                                description: err.message
+                            });
                             reject(err);
                         } else {
                             resolve(result);

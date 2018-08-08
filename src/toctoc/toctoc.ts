@@ -1,21 +1,20 @@
 import {Configuration} from "../configuration/configuration";
-import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
-import {INotifier} from "../notifications/notifier";
 import {SurveillanceStation} from "../synology/surveillanceStation";
 import {ThermospiDB} from "../thermospi/db";
+import {MailService} from "../notifications/services/mailService";
 
 let exec = require('child_process').exec;
 let MongoClient = require('mongodb').MongoClient;
 
 export class TocToc {
     configuration: Configuration;
-    notifier: NotifyMyAndroidNotifierService;
+    notifier: MailService;
     surveillanceStation: SurveillanceStation;
-    thermospiDB:ThermospiDB;
+    thermospiDB: ThermospiDB;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier =  new NotifyMyAndroidNotifierService('Toc Toc');
+        this.notifier = new MailService('Toc Toc');
         this.surveillanceStation = new SurveillanceStation();
         this.thermospiDB = new ThermospiDB();
     }
@@ -62,22 +61,28 @@ export class TocToc {
 
     private saveNewPresenceStatus(presenceStatus: boolean) {
         this.surveillanceStation.setHomeMode(!presenceStatus);
-        if(!presenceStatus) {
+        if (!presenceStatus) {
             this.thermospiDB.setWindowsOpened(false);
         }
 
         MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
             if (err) {
-                this.notifier.notifyError('Erreur lors de la vérification de présence, on considère que la maison est fermée : ', err);
+                this.notifier.send({
+                    title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                    description: err
+                });
             } else {
                 db.collection('presences').insertOne(
                     {
                         status: presenceStatus,
                         date: new Date()
                     },
-                    (err2, result) => {
-                        if (err2) {
-                            this.notifier.notifyError('Erreur lors de la vérification de présence, on considère que la maison est fermée : ', err2);
+                    (err, result) => {
+                        if (err) {
+                            this.notifier.send({
+                                title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                                description: err
+                            });
                         } else {
                             console.log('Presence (status=' + presenceStatus + ') inserted.');
                             db.close();
@@ -92,7 +97,10 @@ export class TocToc {
         return new Promise((resolve, reject) => {
             MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
                 if (err) {
-                    this.notifier.notifyError('Erreur lors de la vérification de présence, on considère que la maison est fermée : ', err);
+                    this.notifier.send({
+                        title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                        description: err
+                    });
                     resolve(false);
                 } else {
                     db.collection('presences').findOne(
@@ -100,9 +108,12 @@ export class TocToc {
                         {
                             sort: [['date', 'desc']]
                         },
-                        (err2, result) => {
-                            if (err2) {
-                                this.notifier.notifyError('Erreur lors de la vérification de présence, on considère que la maison est fermée : ', err2);
+                        (err, result) => {
+                            if (err) {
+                                this.notifier.send({
+                                    title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                                    description: err
+                                });
                                 resolve(false);
                             } else {
                                 console.log('Maison', result.status ? 'ouverte' : 'fermée');

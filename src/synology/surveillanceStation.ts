@@ -1,16 +1,16 @@
 import {Configuration} from "../configuration/configuration";
-import {NotifyMyAndroidNotifierService} from "../notifications/services/notifyMyAndroidService";
 import {INotifier} from "../notifications/notifier";
+import {MailService} from "../notifications/services/mailService";
 
 let http = require('http');
 
 export class SurveillanceStation {
     configuration: Configuration;
-    notifier: INotifier;
+    notifier: MailService;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier =  new NotifyMyAndroidNotifierService('Surveillance Station');
+        this.notifier =  new MailService('Surveillance Station');
     }
 
     setHomeMode(state) {
