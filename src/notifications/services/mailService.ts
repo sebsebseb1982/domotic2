@@ -21,7 +21,7 @@ export class MailService {
             from: 'Maison <noreply@maison.fr>',
             to: mailAddressesToNotify ? mailAddressesToNotify : this.configuration.adminMailAddress,
             subject: `[${this.service}] ${notification.title}`,
-            html: `<p>${notification.description}</p>`,
+            html: `<span>${notification.description}</span>`,
             sendmail: true
         };
 

@@ -74,11 +74,20 @@ export class Cerberos {
     notify(snapshots: Snapshot[]) {
         this.notifier.send({
             title: 'Détection présence',
-            description: `Présence détectée sur les caméras suivantes :\n - ${_.join(this.getCameraNamesFromSnapshots(snapshots), '\n - ')}`
+            description: `<p>Présence détectée sur les caméras suivantes :</p>${this.writeHTMLCameraList(this.getCameraNamesFromSnapshots(snapshots))}`
         });
     }
 
-    private getCameraNamesFromSnapshots(snapshots: Snapshot[]): String[] {
+    private writeHTMLCameraList(cameras: string[]): string {
+        let lis;
+        cameras.forEach((aCamera) => {
+            lis += `<li>${aCamera}</li>`;
+        })
+
+        return `<ul>${lis}</ul>`;
+    }
+
+    private getCameraNamesFromSnapshots(snapshots: Snapshot[]): string[] {
         return _.uniq(_.map(snapshots, 'camera.label'));
     }
 }
