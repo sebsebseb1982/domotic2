@@ -4,16 +4,19 @@ import * as _ from "lodash";
 import {HueLampManager} from "../hue/hueLampManager";
 import {lamps} from "../hue/hue-lamps";
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
+import {MailService} from "../notifications/services/mailService";
 
 export class Cerberos {
     presenceDetector: PresenceDetector;
     hue: HueLampManager;
     googleHome: GoogleHomeService;
+    notifier: MailService;
 
     constructor() {
         this.presenceDetector = new PresenceDetector();
         this.hue = new HueLampManager();
         this.googleHome = new GoogleHomeService();
+        this.notifier = new MailService('CCTV');
         this.watch();
     }
 
@@ -69,7 +72,10 @@ export class Cerberos {
     }
 
     notify(snapshots: Snapshot[]) {
-
+        this.notifier.send({
+            title: 'Détection présence',
+            description: `Présence détectée sur les caméras suivantes ${this.getCameraNamesFromSnapshots(snapshots)}`
+        });
     }
 
     private getCameraNamesFromSnapshots(snapshots: Snapshot[]): String[] {
