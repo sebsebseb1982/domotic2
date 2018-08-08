@@ -74,7 +74,7 @@ export class Cerberos {
     notify(snapshots: Snapshot[]) {
         this.notifier.send({
             title: 'Détection présence',
-            description: `Présence détectée sur les caméras suivantes ${this.getCameraNamesFromSnapshots(snapshots)}`
+            description: `Présence détectée sur les caméras suivantes :\n - ${_.join(this.getCameraNamesFromSnapshots(snapshots), '\n - ')}`
         });
     }
 
