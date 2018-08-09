@@ -10,7 +10,7 @@ export class Radio {
 
     constructor() {
         this.configuration = new Configuration();
-        this.avr = new DenonAVR(this.configuration.avr.hostname);
+        this.avr = new DenonAVR(this.configuration.avr);
         this.toctoc = new TocToc();
     }
 
