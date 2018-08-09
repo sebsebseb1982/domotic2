@@ -5,6 +5,7 @@ import {HueLampManager} from "../hue/hueLampManager";
 import {lamps} from "../hue/hue-lamps";
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
 import {MailService} from "../notifications/services/mailService";
+import {HTML} from "../common/html";
 
 export class Cerberos {
     presenceDetector: PresenceDetector;
@@ -74,20 +75,10 @@ export class Cerberos {
     notify(snapshots: Snapshot[]) {
         this.notifier.send({
             title: `${snapshots.length} détection(s) de présence`,
-            description: `<p>Présence détectée sur les caméras suivantes :</p>${this.writeHTMLCameraList(this.getCameraNamesFromSnapshots(snapshots))}`,
+            description: `<p>Présence détectée sur les caméras suivantes :</p>${new HTML().formatList(this.getCameraNamesFromSnapshots(snapshots))}`,
             attachments: _.map(snapshots, 'path')
         });
     }
-
-    private writeHTMLCameraList(cameras: string[]): string {
-        let lis = '';
-        cameras.forEach((aCamera) => {
-            lis += `<li>${aCamera}</li>`;
-        })
-
-        return `<ul>${lis}</ul>`;
-    }
-
     private getCameraNamesFromSnapshots(snapshots: Snapshot[]): string[] {
         return _.uniq(_.map(snapshots, 'camera.label'));
     }

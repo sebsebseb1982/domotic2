@@ -30,7 +30,7 @@ export class TocToc {
             });
             child.on('close', (code) => {
                 let currentPresenceStatus = code == 1;
-                console.log('Current presence status :', currentPresenceStatus);
+                console.log('Current presence getStatus :', currentPresenceStatus);
 
                 if (lastPresenceStatus != currentPresenceStatus) {
                     this.saveNewPresenceStatus(currentPresenceStatus);
@@ -84,7 +84,7 @@ export class TocToc {
                                 description: err
                             });
                         } else {
-                            console.log('Presence (status=' + presenceStatus + ') inserted.');
+                            console.log('Presence (getStatus=' + presenceStatus + ') inserted.');
                             db.close();
                         }
                     }
