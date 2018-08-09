@@ -4,7 +4,6 @@ let googleHome = require('google-home-notifier');
 
 export class GoogleHomeService {
     configuration: Configuration;
-    device: any;
 
     constructor() {
         this.configuration = new Configuration();

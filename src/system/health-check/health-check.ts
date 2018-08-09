@@ -7,7 +7,8 @@ import {IApplianceStatus} from "./IApplianceStatus";
 import {Camera} from "../../security/cctv/camera";
 import {HealthCheckAVR} from "./health-check-avr";
 import {DenonAVR} from "../../avr/denonAVR";
-import {IAppliance} from "../../common/appliance";
+import {GenericAppliance, IAppliance} from "../../common/appliance";
+import {HealthCheckPing} from "./health-check-ping";
 
 export class HealthCheck {
     mail: MailService;
@@ -20,22 +21,20 @@ export class HealthCheck {
     }
 
     private start() {
-
-        // Raspberry Pi Cabanon
-        // Bridge Hue
-        // NAS
-        // Alarme
-        // Google Home
-
-
         Promise
             .all([
                     this.getUnhealthyCameras(),
-                    this.getUnhealthyAVR()
+                    this.getUnhealthyAVR(),
+                    this.getUnhealthyPingableAppliance('Google Home', this.configuration.googleHome.hostname),
+                    this.getUnhealthyPingableAppliance('Raspberry Pi Cabanon', '192.168.1.50'),
+                    //this.getUnhealthyPingableAppliance('Bridge Hue', this.configuration.hue.),
+                    this.getUnhealthyPingableAppliance('Synology DS416play', this.configuration.synology.hostname),
+                    this.getUnhealthyPingableAppliance('Alarme', '192.168.1.6')
                 ]
             )
             .then((promisesResults) => {
-                let unhealthyAppliances = _.flatten(promisesResults)
+                let unhealthyAppliances = _.flatten(promisesResults);
+                console.log(unhealthyAppliances);
                 if(!_.isEmpty(unhealthyAppliances)) {
                     this.mail.send({
                         title: `${unhealthyAppliances.length} appareil(s) défectueux`,
@@ -71,6 +70,18 @@ export class HealthCheck {
                     resolve([status.appliance]);
                 }
             });
+        });
+    }
+
+    private getUnhealthyPingableAppliance(label:string, hostname:string): Promise<IAppliance[]> {
+        return new Promise<IAppliance[]>((resolve, reject) => {
+            new HealthCheckPing(label, hostname).getStatus().then((status: IApplianceStatus<GenericAppliance>) => {
+                if (status.status) {
+                    resolve([]);
+                } else {
+                    resolve([status.appliance]);
+                }
+            })
         });
     }
 }
