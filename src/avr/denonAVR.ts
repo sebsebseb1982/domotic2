@@ -1,3 +1,6 @@
+import {IAppliance} from "../common/appliance";
+import {IConfigurationAVR} from "../configuration/configurationType";
+
 let Client = require('node-rest-client').Client;
 
 interface IValue {
@@ -13,10 +16,12 @@ export interface IAVRStatus {
     item: IItem;
 }
 
-export class DenonAVR {
+export class DenonAVR implements IAppliance{
     client;
+    label: string;
 
-    constructor(private avrIPAddress: string) {
+    constructor(private avrConfiguration: IConfigurationAVR) {
+        this.label = avrConfiguration.label;
         this.client = new Client();
     }
 
@@ -24,7 +29,7 @@ export class DenonAVR {
         console.log(`Send command ${command} to AVR`);
 
         this.client.post(
-            `http://${this.avrIPAddress}/MainZone/index.put.asp`,
+            `http://${this.avrConfiguration.hostname}/MainZone/index.put.asp`,
             {
                 data: `cmd0=${encodeURI(command)}&cmd1=aspMainZone_WebUpdateStatus%2F`
             },
@@ -69,12 +74,16 @@ export class DenonAVR {
     getStatus(): Promise<IAVRStatus> {
         return new Promise((resolve, reject) => {
             this.client.get(
-                `http://${this.avrIPAddress}/goform/formMainZone_MainZoneXml.xml`,
+                `http://${this.avrConfiguration.hostname}/goform/formMainZone_MainZoneXml.xml`,
                 (avrStatus, response) => {
                     resolve(avrStatus);
                 }
-            );
+            ).on('error', (e) => {
+                reject(e);
+            });
         });
     }
+
+
 }
 

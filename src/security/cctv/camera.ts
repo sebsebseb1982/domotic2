@@ -1,4 +1,6 @@
-export abstract class Camera {
+import {IAppliance} from "../../common/appliance";
+
+export abstract class Camera implements IAppliance{
     label: string;
     hostname: string;
     port: number;

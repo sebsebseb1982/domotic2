@@ -7,6 +7,7 @@ export interface IConfigurationHueBridge {
 }
 
 export interface IConfigurationAVR {
+    label: string;
     hostname: string;
 }
 
