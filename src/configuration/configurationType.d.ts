@@ -46,7 +46,19 @@ export interface ICCTVConfiguration {
     snapshotsDir:string;
 }
 
+export interface IConfigurationAPI {
+    root: string;
+    port: number;
+    users: IUserConfiguration[];
+}
+
+export interface IUserConfiguration {
+    name: string;
+    token: string;
+}
+
 export interface IConfiguration {
+    api: IConfigurationAPI;
     hue: IConfigurationHueBridge;
     avr: IConfigurationAVR;
     synology: IConfigurationSynology;

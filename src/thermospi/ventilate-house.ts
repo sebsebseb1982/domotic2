@@ -1,6 +1,7 @@
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
 import {TocToc} from "../toctoc/toctoc";
 import {ThermospiDB} from "./db";
+import {Logger} from "../common/logger/logger";
 
 const maxInsideTemperature = 22;
 
@@ -8,11 +9,13 @@ export class VentilateHouse {
     googleHome: GoogleHomeService;
     toctoc: TocToc;
     db: ThermospiDB;
+    logger: Logger;
 
     constructor() {
         this.googleHome = new GoogleHomeService();
         this.toctoc = new TocToc();
         this.db = new ThermospiDB();
+        this.logger = new Logger('Ventilate house');
     }
 
     check(): void {
@@ -26,22 +29,18 @@ export class VentilateHouse {
                 let currentOutsideTemperature = temperatures[1];
                 let windowsOpened = temperatures[2];
 
-                console.log('Températures intérieures : ', currentInsideTemperature);
-                console.log('Températures extérieures : ', currentOutsideTemperature);
-                console.log('Fenêtres ouvertes : ', windowsOpened);
+                this.logger.info(`Températures intérieures : ${currentInsideTemperature}`);
+                this.logger.info(`Températures extérieures : ${currentOutsideTemperature}`);
+                this.logger.info(`Fenêtres ouvertes : ${windowsOpened}`);
 
                 if(currentInsideTemperature > maxInsideTemperature && currentInsideTemperature > currentOutsideTemperature) {
                     if(!windowsOpened) {
-                        let somethingToSay = 'Vous pouvez ouvrir les fenêtres pour aérer !';
-                        console.log(somethingToSay);
-                        this.googleHome.say(somethingToSay);
+                        this.googleHome.say('Vous pouvez ouvrir les fenêtres pour aérer !');
                         this.db.setWindowsOpened(true);
                     }
                 } else {
                     if(windowsOpened) {
-                        let somethingToSay = 'Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !';
-                        console.log(somethingToSay);
-                        this.googleHome.say(somethingToSay);
+                        this.googleHome.say('Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !');
                         this.db.setWindowsOpened(false);
                     }
                 }
