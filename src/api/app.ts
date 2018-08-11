@@ -16,14 +16,16 @@ class App {
         this.config();
 
         // Filters
-        let router = express.Router();
-        new Auth().filter(router);
+        let authentifiedRouter = express.Router();
+        new Auth().filter(authentifiedRouter);
 
         // Routes
-        new OutletsRoutes().routes(router);
-        new RandomTuneRoutes().routes(router);
+        new OutletsRoutes().routes(authentifiedRouter);
+        let unauthentifiedRouter = express.Router();
+        new RandomTuneRoutes().routes(unauthentifiedRouter);
 
-        this.app.use(this.configuration.api.root, router);
+        this.app.use(this.configuration.api.root, authentifiedRouter);
+        this.app.use(this.configuration.api.root, unauthentifiedRouter);
 
         RFXcom.initialize();
     }
