@@ -11,7 +11,7 @@ export class DoorBell {
 
     listen() {
         this.rfxcom.on("chime1", (evt) => {
-            this.googleHome.play(`${this.configuration.api.users[1].name}:${this.configuration.api.users[1].token}@192.168.1.52:${this.configuration.api.port}/home/random-tune`);
+            this.googleHome.play(`192.168.1.52:1000/test/random-tune`);
         });
     }
 }
