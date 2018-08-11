@@ -1,36 +1,36 @@
 import {Configuration} from "../configuration/configuration";
 import {SurveillanceStation} from "../synology/surveillanceStation";
 import {ThermospiDB} from "../thermospi/db";
-import {MailService} from "../notifications/services/mailService";
+import {Logger} from "../common/logger/logger";
 
 let exec = require('child_process').exec;
 let MongoClient = require('mongodb').MongoClient;
 
 export class TocToc {
     configuration: Configuration;
-    notifier: MailService;
     surveillanceStation: SurveillanceStation;
     thermospiDB: ThermospiDB;
+    logger: Logger;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier = new MailService('Toc Toc');
         this.surveillanceStation = new SurveillanceStation();
         this.thermospiDB = new ThermospiDB();
+        this.logger = new Logger('Toc Toc');
     }
 
     updatePresence() {
         this.getCurrentPresence().then((lastPresenceStatus: boolean) => {
             let child = exec(`${this.configuration.toctoc.scriptPath}toctoc.sh ${this.configuration.toctoc.mailAccount.address} ${this.configuration.toctoc.mailAccount.password}`);
             child.stdout.on('data', (data) => {
-                console.log('stdout: ' + data);
+                this.logger.debug('stdout: ' + data);
             });
             child.stderr.on('data', (data) => {
-                console.log('stdout: ' + data);
+                this.logger.debug('stdout: ' + data);
             });
             child.on('close', (code) => {
                 let currentPresenceStatus = code == 1;
-                console.log('Current presence getStatus :', currentPresenceStatus);
+                this.logger.debug(`Current presence getStatus : ${currentPresenceStatus}`);
 
                 if (lastPresenceStatus != currentPresenceStatus) {
                     this.saveNewPresenceStatus(currentPresenceStatus);
@@ -54,7 +54,7 @@ export class TocToc {
             } else if (elseCallback !== undefined) {
                 elseCallback();
             } else {
-                console.log('Can\'t execute anything !')
+                this.logger.debug('Can\'t execute anything !')
             }
         });
     }
@@ -67,10 +67,9 @@ export class TocToc {
 
         MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
             if (err) {
-                this.notifier.send({
-                    title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
-                    description: err
-                });
+                this.logger.error('Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                    err
+                );
             } else {
                 db.collection('presences').insertOne(
                     {
@@ -79,12 +78,12 @@ export class TocToc {
                     },
                     (err, result) => {
                         if (err) {
-                            this.notifier.send({
-                                title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
-                                description: err
-                            });
+                            this.logger.error(
+                                'Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                                err
+                            );
                         } else {
-                            console.log('Presence (getStatus=' + presenceStatus + ') inserted.');
+                            this.logger.debug('Presence (getStatus=' + presenceStatus + ') inserted.');
                             db.close();
                         }
                     }
@@ -97,10 +96,10 @@ export class TocToc {
         return new Promise((resolve, reject) => {
             MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
                 if (err) {
-                    this.notifier.send({
-                        title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
-                        description: err
-                    });
+                    this.logger.error(
+                        'Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                        err
+                    );
                     resolve(false);
                 } else {
                     db.collection('presences').findOne(
@@ -110,13 +109,13 @@ export class TocToc {
                         },
                         (err, result) => {
                             if (err) {
-                                this.notifier.send({
-                                    title: 'Erreur lors de la vérification de présence, on considère que la maison est fermée',
-                                    description: err
-                                });
+                                this.logger.error(
+                                    'Erreur lors de la vérification de présence, on considère que la maison est fermée',
+                                    err
+                                );
                                 resolve(false);
                             } else {
-                                console.log('Maison', result.status ? 'ouverte' : 'fermée');
+                                this.logger.debug(`Maison ${result.status ? 'ouverte' : 'fermée'}`);
                                 resolve(result.status);
                             }
                             db.close();

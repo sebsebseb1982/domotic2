@@ -1,4 +1,3 @@
-import {MailService} from "../../notifications/services/mailService";
 import * as _ from "lodash";
 import {Configuration} from "../../configuration/configuration";
 import {HealthCheckCamera} from "./health-check-camera";
@@ -9,13 +8,14 @@ import {HealthCheckAVR} from "./health-check-avr";
 import {DenonAVR} from "../../avr/denonAVR";
 import {GenericAppliance, IAppliance} from "../../common/appliance";
 import {HealthCheckPing} from "./health-check-ping";
+import {Logger} from "../../common/logger/logger";
 
 export class HealthCheck {
-    mail: MailService;
     configuration: Configuration;
+    logger: Logger;
 
     constructor() {
-        this.mail = new MailService('Health Check');
+        this.logger = new Logger('Health Check');
         this.configuration = new Configuration();
         this.start();
     }
@@ -34,12 +34,12 @@ export class HealthCheck {
             )
             .then((promisesResults) => {
                 let unhealthyAppliances = _.flatten(promisesResults);
-                console.log(unhealthyAppliances);
+                this.logger.debug(`${unhealthyAppliances.length} appareil(s) défectueux`);
                 if(!_.isEmpty(unhealthyAppliances)) {
-                    this.mail.send({
-                        title: `${unhealthyAppliances.length} appareil(s) défectueux`,
-                        description: `<p>Le(s) appareil(s) suivants sont défectueux :</p>${new HTML().formatList(_.map(unhealthyAppliances, 'label'))}`
-                    })
+                    this.logger.warn(
+                        `${unhealthyAppliances.length} appareil(s) défectueux`,
+                        `<p>Le(s) appareil(s) suivants sont défectueux :</p>${new HTML().formatList(_.map(unhealthyAppliances, 'label'))}`
+                    )
                 }
             });
     }

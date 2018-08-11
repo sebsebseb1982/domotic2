@@ -2,10 +2,14 @@ import {Camera} from "../../security/cctv/camera";
 import * as http from 'http';
 import {RequestOptions} from "http";
 import {IApplianceStatus} from "./IApplianceStatus";
+import {Logger} from "../../common/logger/logger";
 
 export class HealthCheckCamera {
 
+    logger: Logger;
+
     constructor(private camera: Camera) {
+        this.logger = new Logger('Health Check');
     }
 
     getStatus(): Promise<IApplianceStatus<Camera>> {
@@ -18,6 +22,7 @@ export class HealthCheckCamera {
                     'Authorization': 'Basic ' + new Buffer(this.camera.user + ':' + this.camera.password).toString('base64')
                 }
             };
+            this.logger.debug(`Test de la caméra ${this.camera.label} sur l'url http://${this.camera.hostname}:${this.camera.port}${this.camera.stillImagePath}`);
             http.get(options, (response) => {
                 if (response.statusCode === 200) {
                     resolve({

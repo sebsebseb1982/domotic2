@@ -1,16 +1,15 @@
 import {Configuration} from "../configuration/configuration";
-import {INotifier} from "../notifications/notifier";
-import {MailService} from "../notifications/services/mailService";
+import {Logger} from "../common/logger/logger";
 
 let http = require('http');
 
 export class SurveillanceStation {
     configuration: Configuration;
-    notifier: MailService;
+    logger: Logger;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier =  new MailService('Surveillance Station');
+        this.logger = new Logger('Surveillance Station');
     }
 
     setHomeMode(state) {
@@ -44,7 +43,7 @@ export class SurveillanceStation {
                 });
             });
             req.on('error', function(err) {
-                this.notifier.notifyError('Erreur lors de la récupération du SID pour Surveillance Station', err);
+                this.logger.error('Erreur lors de la récupération du SID pour Surveillance Station', err);
                 reject(err);
             });
             req.end();
