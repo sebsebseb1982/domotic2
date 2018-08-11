@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser";
 import {OutletsRoutes} from "./routes/outlets";
 import {Auth} from "./filters/auth";
 import {Configuration} from "../configuration/configuration";
+import {RFXcom} from "../rfxcom/RFXcom";
 
 class App {
     public app: express.Application;
@@ -21,6 +22,8 @@ class App {
         new OutletsRoutes().routes(router);
 
         this.app.use(this.configuration.api.root, router);
+
+        RFXcom.initialize();
     }
 
     private config(): void{
