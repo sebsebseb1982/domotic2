@@ -12,7 +12,7 @@ export class RFXcom {
         if(!RFXcom.instance) {
             RFXcom.instance = new rfxcom.RfxCom("/dev/ttyUSB0", {debug: true});
             RFXcom.instance.initialise(() => {
-                new Logger('RFXcom').debug('RFXcom initialisé')
+                new Logger('RFXcom').debug('RFXcom initialisé');
             });
 
             new DoorBell(RFXcom.instance).listen();

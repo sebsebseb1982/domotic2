@@ -1,4 +1,4 @@
-import {Application, Request, Response} from "express";
+import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
 import {RFXcom} from "../../rfxcom/RFXcom";
 

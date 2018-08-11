@@ -57,6 +57,10 @@ export interface IUserConfiguration {
     token: string;
 }
 
+export interface IConfigurationDoorBell {
+    tunePath: string;
+}
+
 export interface IConfiguration {
     api: IConfigurationAPI;
     hue: IConfigurationHueBridge;
@@ -67,6 +71,7 @@ export interface IConfiguration {
     adminMailAddress: string;
     smtp: SMTPTransport.Options;
     googleHome: IConfigurationGoogleHome;
+    doorBell: IConfigurationDoorBell;
     cameras: Camera[];
     general: IGeneralConfiguration;
     cctv: ICCTVConfiguration;

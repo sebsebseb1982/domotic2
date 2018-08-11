@@ -1,4 +1,3 @@
-import {GoogleHomeService} from "../../notifications/services/googleHomeService";
 import {Logger} from "../../common/logger/logger";
 
 export class TemperatureSensor {
@@ -8,8 +7,8 @@ export class TemperatureSensor {
     }
 
     listen() {
-        this.rfxcom.on("temp2", (evt) => {
-            this.logger.debug(`Sonde de température ${evt.id} (${evt.temperature}°C, batterie = ${evt.batteryLevel})`);
+        this.rfxcom.on("temperature1", (event) => {
+            this.logger.debug(`Sonde de température ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
         });
     }
 }
