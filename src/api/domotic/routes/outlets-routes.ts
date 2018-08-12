@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
-import {RFXcom} from "../../rfxcom/RFXcom";
+import {RFXcom} from "../../../rfxcom/RFXcom";
 
 let rfxcom = require('rfxcom');
 
