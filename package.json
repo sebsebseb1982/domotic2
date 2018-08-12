@@ -21,7 +21,7 @@
     "nodemailer": "^4.6.4",
     "ping": "^0.2.2",
     "request": "^2.85.0",
-    "rfxcom": "1.2.0",
+    "rfxcom": "^1.4.0",
     "videoshow": "^0.1.11"
   },
   "devDependencies": {

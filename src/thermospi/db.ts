@@ -6,8 +6,7 @@ import {IVentilationStatus} from "./models/ventilation-status";
 import {MailService} from "../notifications/services/mailService";
 import {MyNotification} from "../notifications/myNotification";
 import {Logger} from "../common/logger/logger";
-
-let MongoClient = require('mongodb').MongoClient;
+import {MongoDB} from "../common/mongo-db";
 
 export class ThermospiDB {
     configuration: Configuration;
@@ -18,25 +17,10 @@ export class ThermospiDB {
         this.logger = new Logger('Thermospi');
     }
 
-    private get db(): Promise<Db> {
-        return new Promise((resolve, reject) => {
-            MongoClient.connect(
-                this.configuration.thermospi.mongoURL,
-                (err, db) => {
-                    if (err) {
-                        this.logger.error('Erreur lors de la récupération d\'une connexion à la DB Thermospi', err);
-                        reject(err);
-                    } else {
-                        resolve(db);
-                    }
-                });
-        });
-    }
-
     getCurrentInsideTemperature(): Promise<number> {
         let probes = [2, 3];
         return new Promise((resolve, reject) => {
-            this.db.then((db: Db) => {
+            MongoDB.db.then((db: Db) => {
                 db.collection('temperatures').find(
                     {
                         probe: {$in: probes}
@@ -61,7 +45,7 @@ export class ThermospiDB {
     getCurrentOutsideTemperature(): Promise<number> {
         let probes = [1];
         return new Promise((resolve, reject) => {
-            this.db.then((db: Db) => {
+            MongoDB.db.then((db: Db) => {
                 db.collection('temperatures').find(
                     {
                         probe: {$in: probes}
@@ -85,7 +69,7 @@ export class ThermospiDB {
 
     isWindowsOpened(): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this.db.then(
+            MongoDB.db.then(
                 (db: Db) => {
                     db.collection('ventilationStatus').findOne(
                         {},
@@ -109,7 +93,7 @@ export class ThermospiDB {
     }
 
     setWindowsOpened(status: boolean): void {
-        this.db.then((db: Db) => {
+        MongoDB.db.then((db: Db) => {
             db.collection('ventilationStatus').update(
                 {},
                 {

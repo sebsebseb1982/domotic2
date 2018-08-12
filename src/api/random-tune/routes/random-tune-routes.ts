@@ -14,6 +14,7 @@ export class RandomTuneRoutes {
     constructor() {
         this.configuration = new Configuration();
         this.tunes = fs.readdirSync(this.configuration.doorBell.randomTune.tunePath);
+        this.randomTunePath = this.getRandomTunePath();
         this.logger = new Logger('RandomTune');
     }
 
@@ -24,7 +25,7 @@ export class RandomTuneRoutes {
                 (req: Request, res: Response) => {
                     let randomizeTuneDebounced = _.debounce(
                         () => {
-                            this.randomTunePath = `${this.configuration.doorBell.randomTune.tunePath}/${this.tunes[Math.floor(Math.random() * this.tunes.length)]}`;
+                            this.randomTunePath = this.getRandomTunePath();
                         },
                         500
                     );
@@ -34,5 +35,9 @@ export class RandomTuneRoutes {
                     res.sendFile(this.randomTunePath);
                 }
             );
+    }
+
+    private getRandomTunePath() {
+        return `${this.configuration.doorBell.randomTune.tunePath}/${this.tunes[Math.floor(Math.random() * this.tunes.length)]}`;
     }
 }
