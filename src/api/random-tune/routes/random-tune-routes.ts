@@ -13,7 +13,7 @@ export class RandomTuneRoutes {
 
     constructor() {
         this.configuration = new Configuration();
-        this.tunes = fs.readdirSync(this.configuration.doorBell.tunePath);
+        this.tunes = fs.readdirSync(this.configuration.doorBell.randomTune.tunePath);
         this.logger = new Logger('RandomTune');
     }
 
