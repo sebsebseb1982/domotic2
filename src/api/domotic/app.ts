@@ -1,21 +1,29 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import {RandomTuneRoutes} from "../routes/random-tune-routes";
+import {Auth} from "./filters/auth";
+import {Configuration} from "../../configuration/configuration";
+import {RFXcom} from "../../rfxcom/RFXcom";
+import {OutletsRoutes} from "./routes/outlets-routes";
 
 class App {
     public app: express.Application;
+    configuration: Configuration;
 
     constructor() {
+        this.configuration = new Configuration();
         this.app = express();
         this.config();
 
         // Filters
         let router = express.Router();
+        new Auth().filter(router);
 
         // Routes
-        new RandomTuneRoutes().routes(router);
+        new OutletsRoutes().routes(router);
 
-        this.app.use('/test', router);
+        this.app.use(this.configuration.api.root, router);
+
+        RFXcom.initialize();
     }
 
     private config(): void{

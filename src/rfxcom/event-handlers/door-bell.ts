@@ -4,6 +4,7 @@ import {Configuration} from "../../configuration/configuration";
 export class DoorBell {
     googleHome: GoogleHomeService;
     configuration: Configuration;
+
     constructor(private rfxcom: any){
         this.configuration = new Configuration();
         this.googleHome = new GoogleHomeService();
@@ -11,7 +12,7 @@ export class DoorBell {
 
     listen() {
         this.rfxcom.on("chime1", (evt) => {
-            this.googleHome.play(`192.168.1.52:1000/test/random-tune`);
+            this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}/${this.configuration.doorBell.randomTune.root}/random-tune`);
         });
     }
 }

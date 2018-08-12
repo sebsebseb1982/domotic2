@@ -2,8 +2,8 @@ import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
 import * as fs from 'fs';
 import * as _ from "lodash";
-import {Configuration} from "../../configuration/configuration";
-import {Logger} from "../../common/logger/logger";
+import {Configuration} from "../../../configuration/configuration";
+import {Logger} from "../../../common/logger/logger";
 
 export class RandomTuneRoutes {
     private configuration: Configuration;
@@ -24,7 +24,7 @@ export class RandomTuneRoutes {
                 (req: Request, res: Response) => {
                     let randomizeTuneDebounced = _.debounce(
                         () => {
-                            this.randomTunePath = `${this.configuration.doorBell.tunePath}/${this.tunes[Math.floor(Math.random() * this.tunes.length)]}`;
+                            this.randomTunePath = `${this.configuration.doorBell.randomTune.tunePath}/${this.tunes[Math.floor(Math.random() * this.tunes.length)]}`;
                         },
                         500
                     );

@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import {Logger} from "../../common/logger/logger";
+import {Logger} from "../../../common/logger/logger";
 import * as core from "express-serve-static-core";
-import {Configuration} from "../../configuration/configuration";
+import {Configuration} from "../../../configuration/configuration";
 import * as _ from "lodash";
 import auth = require("basic-auth");
 

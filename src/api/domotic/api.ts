@@ -1,6 +1,6 @@
 import app from "./app";
-import {Logger} from "../common/logger/logger";
-import {Configuration} from "../configuration/configuration";
+import {Logger} from "../../common/logger/logger";
+import {Configuration} from "../../configuration/configuration";
 
 let configuration = new Configuration();
 app.listen(configuration.api.port, () => {

@@ -57,8 +57,15 @@ export interface IUserConfiguration {
     token: string;
 }
 
-export interface IConfigurationDoorBell {
+export interface IConfigurationRandomTuneEndPoint {
     tunePath: string;
+    root: string;
+    publicHostname: string;
+    port: number;
+}
+
+export interface IConfigurationDoorBell {
+    randomTune: IConfigurationRandomTuneEndPoint;
 }
 
 export interface IConfiguration {
