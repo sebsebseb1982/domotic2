@@ -26,6 +26,7 @@ export class OutletsRoutes implements IRoutable {
                     let code = req.params.code;
 
                     this.logger.debug(`/outlet/${code} state=${state}`);
+                    console.log(req.body);
 
                     this.db.getByCode(code).then((powerOutlet) => {
                        powerOutlet.setState(state);
