@@ -47,7 +47,7 @@
     "timelapse": "node -e 'let Timelapse = require(\"/home/pi/domotic2/src/timelapse/timelapse.js\").Timelapse; new Timelapse().generate()'",
     "notify-delete-cctv-archive": "node -e 'let NotifyDeleteCCTVArchive = require(\"/home/pi/domotic2/src/security/cctv/notify-delete-cctv-archive.js\").NotifyDeleteCCTVArchive; new NotifyDeleteCCTVArchive().notify()'",
     "health-check": "node -e 'let HealthCheck = require(\"/home/pi/domotic2/src/system/health-check/health-check.js\").HealthCheck; new HealthCheck()'",
-    "initialize-relay-board": "node -e 'require(\"/home/pi/domotic2/src/relay/relay-board.js\").initialize()'",
+    "initialize-relay-board": "node -e 'require(\"/home/pi/domotic2/src/relay/relay-board.js\").RelayBoard.initialize()'",
 
     "api-domotic": "node -e 'require(\"/home/pi/domotic2/src/api/domotic/api.js\")'",
     "api-random-tune": "node -e 'require(\"/home/pi/domotic2/src/api/random-tune/api.js\")'"
