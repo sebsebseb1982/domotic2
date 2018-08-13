@@ -20,15 +20,16 @@ export class OutletsRoutes implements IRoutable {
     public routes(router: core.Router): void {
         router
             .post(
-                '/outlet/:id',
+                '/outlet/:code',
                 (req: Request, res: Response) => {
                     let state = Boolean(req.body.state);
-                    let id = req.params.id;
+                    let code = req.params.code;
 
-                    this.logger.debug(`/outlet/${id} state=${state}`);
+                    this.logger.debug(`/outlet/${code} state=${state}`);
 
-                    this.db.getByCode(id).then((powerOutlet) => {
+                    this.db.getByCode(code).then((powerOutlet) => {
                        powerOutlet.setState(state);
+                       res.sendStatus(200);
                     });
                 }
             );
