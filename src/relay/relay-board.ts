@@ -21,7 +21,9 @@ export class RelayBoard {
     static executeScript(script: string) {
         exec(script, (error, stdout, stderr) => {
             this.logger.debug(stdout);
-            this.logger.error(error.message, stderr);
+            if(error) {
+                this.logger.error(error.message, stderr);
+            }
         });
     };
 }
