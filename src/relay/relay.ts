@@ -19,11 +19,15 @@ export class Relay implements IRelay {
     }
 
     on() {
-        this.executeScript(`sudo gpio write ${this.gpio} 1`);
+        let commande = `sudo gpio write ${this.gpio} 1`;
+        this.logger.debug(`Exécution de la commande "${commande}"`)
+        this.executeScript(commande);
     }
 
     off() {
-        this.executeScript(`sudo gpio write ${this.gpio} 0`);
+        let commande = `sudo gpio write ${this.gpio} 0`;
+        this.logger.debug(`Exécution de la commande "${commande}"`)
+        this.executeScript(commande);
     }
 
     impulse(durationInMs: number) {
