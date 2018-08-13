@@ -1,8 +1,9 @@
 import {DB} from "./db";
 import {Relay} from "./relay";
-import {exec} from "child_process";
 import * as _ from "lodash";
 import {Logger} from "../common/logger/logger";
+
+let exec = require('child_process').execSync;
 
 export class RelayBoard {
     private static logger: Logger = new Logger('Carte relais');
