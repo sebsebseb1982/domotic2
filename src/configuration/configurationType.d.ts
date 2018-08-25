@@ -68,6 +68,11 @@ export interface IConfigurationDoorBell {
     randomTune: IConfigurationRandomTuneEndPoint;
 }
 
+export interface IConfigurationTimelapse {
+    output: string;
+}
+
+
 export interface IConfiguration {
     api: IConfigurationAPI;
     hue: IConfigurationHueBridge;
@@ -82,4 +87,5 @@ export interface IConfiguration {
     cameras: Camera[];
     general: IGeneralConfiguration;
     cctv: ICCTVConfiguration;
+    timelapse: IConfigurationTimelapse;
 }

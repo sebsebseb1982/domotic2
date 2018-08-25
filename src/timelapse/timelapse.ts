@@ -1,45 +1,43 @@
 import {Configuration} from "../configuration/configuration";
 import * as fs from 'fs';
 import * as http from 'http';
+import {RequestOptions} from 'http';
 import * as _ from "lodash";
-import {INotifier} from "../notifications/notifier";
-import * as moment from 'moment';
 import {Camera} from "../security/cctv/camera";
-import {RequestOptions} from "http";
-import {MailService} from "../notifications/services/mailService";
+import * as moment from 'moment';
+import * as makedir from 'make-dir';
+import {Logger} from "../common/logger/logger";
+import * as yargs from  'yargs';
 
-let getPixels = require('get-pixels');
-let GifEncoder = require('gif-encoder');
-
-export class Timelapse {
+class Timelapse {
     configuration: Configuration;
-    stillImageUrl: string;
-    period: number;
-    occurence: number;
-    notifier: MailService;
+    periodInMs: number;
+    occurences: number;
     processStartDate: Date;
     camera: Camera;
+    logger: Logger;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier = new MailService('Timelapse');
         this.processStartDate = new Date();
+        this.logger = new Logger('Timelapse');
 
-        this.occurence = process.argv[1] ? parseInt(process.argv[1]) : 100;
-        this.period = process.argv[2] ? parseInt(process.argv[2]) : 100;
-        this.camera = this.configuration.cameras[(process.argv[3] ? parseInt(process.argv[3]) : 0)];
+        this.occurences = yargs.argv.occurences ? yargs.argv.occurences : 100;
+        this.periodInMs = yargs.argv.periodInMs ? yargs.argv.periodInMs : 1000;
+        this.camera = this.configuration.cameras[yargs.argv.camera ? yargs.argv.camera : 0];
 
-        console.log(`This timelapse will lasts less than ${Math.ceil((this.occurence * this.period) / (1000 * 60))} minutes and take ${this.occurence} photos`);
+        this.logger.info(`This timelapse will lasts less than ${Math.ceil((this.occurences * this.periodInMs) / (1000 * 60))} minutes and take ${this.occurences} photos`);
+        this.start();
     }
 
-    private takePhotos(): Promise<string[]> {
+    private start(): Promise<string[]> {
         return new Promise<string[]>((resolve, reject) => {
             let photosPaths: string[] = [];
 
-            for (let photoIndex = 0; photoIndex < this.occurence; photoIndex++) {
+            for (let photoIndex = 0; photoIndex < this.occurences; photoIndex++) {
                 setTimeout(
                     () => {
-                        let options1: RequestOptions = {
+                        let options: RequestOptions = {
                             host: this.camera.hostname,
                             port: this.camera.port,
                             path: this.camera.stillImagePath,
@@ -47,17 +45,22 @@ export class Timelapse {
                                 'Authorization': 'Basic ' + new Buffer(this.camera.user + ':' + this.camera.password).toString('base64')
                             }
                         };
-                        http.get(options1, (response) => {
+                        http.get(options, (response) => {
                             if (response.statusCode === 200) {
-                                let photoPath = `${this.configuration.general.tempDir}/snapshot-${_.padStart(photoIndex.toString(), (this.occurence - 1).toString().length, '0')}-${process.pid}.jpg`;
-                                console.log(`Saving ${photoPath} ...`);
-                                let photo = fs.createWriteStream(photoPath);
-                                response.pipe(photo);
-                                photosPaths.push(photoPath);
+                                let snapshotId = _.padStart(photoIndex.toString(), (this.occurences - 1).toString().length, '0');
+                                let timestamp = moment().format("YYYY-MM-DD");
+                                let snaphotOutputDir = `${this.configuration.timelapse.output}/${timestamp}`;
+                                let snaphotCompletePath = `${snaphotOutputDir}/snapshot-${snapshotId}-${process.pid}.jpg`;
+                                makedir(snaphotOutputDir).then(() => {
+                                    this.logger.debug(`Saving ${snaphotCompletePath} ...`);
+                                    let photo = fs.createWriteStream(snaphotCompletePath);
+                                    response.pipe(photo);
+                                    photosPaths.push(snaphotCompletePath);
+                                });
                             }
                         });
                     },
-                    photoIndex * this.period
+                    photoIndex * this.periodInMs
                 );
             }
 
@@ -65,61 +68,11 @@ export class Timelapse {
                 () => {
                     resolve(photosPaths.sort());
                 },
-                this.occurence * this.period + 10000
+                this.occurences * this.periodInMs + 10000
             );
 
         });
     }
-
-    private clean(photos: string[]) {
-        _.forEach(photos, (aPhotoPath) => {
-            fs.unlink(aPhotoPath, (err) => {
-                if (err) {
-                    this.notifier.send({
-                        title: 'Impossible de supprimer une photo',
-                        description: err.message
-                    });
-                }
-            });
-        });
-    }
-
-    private transformToGIF(photos: string[]): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
-            let gif = new GifEncoder(this.camera.resolutionX, this.camera.resolutionY);
-            let gifFilePath = `${this.configuration.general.tempDir}/${moment(this.processStartDate).format('DD-MM-YYYY')}-${this.camera.label}.gif`;
-            let file = require('fs').createWriteStream(gifFilePath);
-
-            gif.pipe(file);
-            gif.setQuality(10);
-            gif.setDelay(33);
-            gif.writeHeader();
-
-            let addToGif = (images, counter = 0) => {
-                console.log(`Adding ${images[counter]} to GIF ...`);
-                getPixels(images[counter], (err, pixels) => {
-                    gif.addFrame(pixels.data);
-                    gif.read();
-                    if (counter === images.length - 1) {
-                        gif.finish();
-                        resolve(gifFilePath);
-                    } else {
-                        addToGif(images, ++counter);
-                    }
-                });
-            };
-            addToGif(photos);
-        });
-    }
-
-    generate(): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
-            this.takePhotos().then((photos: string[]) => {
-                this.transformToGIF(photos).then((gifFilePath) => {
-                    this.clean(photos);
-                    resolve(gifFilePath);
-                });
-            });
-        });
-    }
 }
+
+new Timelapse();
