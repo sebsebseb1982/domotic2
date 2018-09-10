@@ -1,9 +1,3 @@
-import {DB} from "../power-outlet/db";
+import {URLMonitor} from "../notify-me/internet/url-monitor";
 
-let db = new DB();
-
-db.getByCode('A1').then((outlet) => {
-    setTimeout(() => {
-        outlet.impulse(5 * 1000);
-    }, 10 * 1000);
-});
+URLMonitor.lookForChange();

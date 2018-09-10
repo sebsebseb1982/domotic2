@@ -11,7 +11,7 @@ export class GoogleHomeService {
         googleHome.device('', this.configuration.googleHome.language);
     }
 
-    say(somethingToSay: string) {
+    say(somethingToSay: string, onlyDay: boolean = false) {
         console.log('Google Home va énoncer le message suivant : ', somethingToSay);
         googleHome.notify(somethingToSay.substring(0,199), () => {});
     }
