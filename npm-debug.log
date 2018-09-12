@@ -1,0 +1,23 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   '--prefix',
+1 verbose cli   '/home/pi/domotic2',
+1 verbose cli   'run',
+1 verbose cli   'api-domotic' ]
+2 info using npm@3.5.2
+3 info using node@v8.10.0
+4 verbose stack Error: EACCES: permission denied, mkdir '/home/pi'
+5 verbose cwd /home/sebastien/git/domotic2
+6 error Linux 4.15.0-33-generic
+7 error argv "/usr/bin/node" "/usr/bin/npm" "--prefix" "/home/pi/domotic2" "run" "api-domotic"
+8 error node v8.10.0
+9 error npm  v3.5.2
+10 error path /home/pi
+11 error code EACCES
+12 error errno -13
+13 error syscall mkdir
+14 error Error: EACCES: permission denied, mkdir '/home/pi'
+14 error  { Error: EACCES: permission denied, mkdir '/home/pi' errno: -13, code: 'EACCES', syscall: 'mkdir', path: '/home/pi' }
+15 error Please try running this command again as root/Administrator.
+16 verbose exit [ -13, true ]

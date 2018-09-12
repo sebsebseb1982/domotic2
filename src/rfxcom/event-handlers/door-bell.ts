@@ -15,12 +15,12 @@ export class DoorBell {
 
     listen() {
         this.rfxcom.on("chime1", (evt) => {
-            this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
+            //this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
 
             let message = 'Quelqu\'un vient de sonner';
             this.mailService.send({
                title: message,
-               description:  `message ${evt}`
+               description:  `message ${JSON.stringify(evt)}`
             });
         });
     }
