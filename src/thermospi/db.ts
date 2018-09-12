@@ -17,6 +17,28 @@ export class ThermospiDB {
         this.logger = new Logger('Thermospi');
     }
 
+    saveTemperature(temperatures:ITemperature[]) {
+        MongoDB.db.then((db: Db)=> {
+            let batch = db.collection('temperatures').initializeUnorderedBulkOp()
+
+            _.forEach(
+                temperatures,
+                (aTemperature) => {
+                    batch.insert(aTemperature);
+                }
+            );
+
+            batch.execute(function(err, result) {
+                if (err) {
+                    this.logger.error(`Erreur lors de l'enregistrement de températures`, err.message);
+                } else {
+                    this.logger.info(temperatures.length + ' temperature(s) enregistrées.');
+                    (db as any).close();
+                }
+            });
+        });
+    };
+
     getCurrentInsideTemperature(): Promise<number> {
         let probes = [2, 3];
         return new Promise((resolve, reject) => {
