@@ -17,9 +17,9 @@ export class ThermospiDB {
         this.logger = new Logger('Thermospi');
     }
 
-    saveTemperature(temperatures:ITemperature[]) {
-        MongoDB.db.then((db: Db)=> {
-            let batch = db.collection('temperatures').initializeUnorderedBulkOp()
+    saveTemperature(temperatures: ITemperature[]) {
+        MongoDB.db.then((db: Db) => {
+            let batch = db.collection('temperatures').initializeUnorderedBulkOp();
 
             _.forEach(
                 temperatures,
@@ -28,7 +28,7 @@ export class ThermospiDB {
                 }
             );
 
-            batch.execute(function(err, result) {
+            batch.execute((err, result) => {
                 if (err) {
                     this.logger.error(`Erreur lors de l'enregistrement de températures`, err.message);
                 } else {
