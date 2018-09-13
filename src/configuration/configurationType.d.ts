@@ -66,6 +66,7 @@ export interface IConfigurationRandomTuneEndPoint {
 
 export interface IConfigurationDoorBell {
     randomTune: IConfigurationRandomTuneEndPoint;
+    buttonID: string;
 }
 
 export interface IConfigurationTimelapse {
