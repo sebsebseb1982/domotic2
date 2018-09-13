@@ -17,7 +17,7 @@ export class ThermospiDB {
         this.logger = new Logger('Thermospi');
     }
 
-    saveTemperature(temperatures: ITemperature[]) {
+    saveTemperatures(temperatures: ITemperature[]) {
         MongoDB.db.then((db: Db) => {
             let batch = db.collection('temperatures').initializeUnorderedBulkOp();
 
