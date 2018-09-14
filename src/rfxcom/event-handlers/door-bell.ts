@@ -21,8 +21,9 @@ export class DoorBell {
     constructor(private rfxcom: any) {
         this.configuration = new Configuration();
         this.googleHome = new GoogleHomeService();
-        this.mailService = new MailService('Sonnette');
-        this.logger = new Logger('Bouton sonnette 433 MHz');
+        let service = 'Sonnette';
+        this.mailService = new MailService(service);
+        this.logger = new Logger(service);
     }
 
     listen() {
@@ -33,7 +34,7 @@ export class DoorBell {
                 let message = 'Quelqu\'un vient de sonner';
                 this.mailService.send({
                     title: message,
-                    description: `message ${JSON.stringify(evt)}`
+                    description: message
                 });
             }
         });
