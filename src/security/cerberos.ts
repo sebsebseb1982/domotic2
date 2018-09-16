@@ -36,7 +36,7 @@ export class Cerberos {
         let snapshotsFromCamerasWhichCanTriggerVoice = _.filter(snapshots, (snapshot) => snapshot.camera.canTriggerVoice);
         let snapshotsFromCamerasWhichCanTriggerNotification = _.filter(snapshots, (snapshot) => snapshot.camera.canTriggerNotification);
 
-        this.toctoc.ifPresent(() => {
+        this.toctoc.ifAbsent(() => {
             if (snapshotsFromCamerasWhichCanTriggerLight.length > 0) {
                 this.logger.info(`La lumière va être allumée par les caméras suivantes: ${this.getCameraNamesFromSnapshots(snapshotsFromCamerasWhichCanTriggerLight)}`);
                 this.turnLightOn();
