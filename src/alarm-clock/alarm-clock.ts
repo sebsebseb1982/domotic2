@@ -5,6 +5,7 @@ import {lamps} from "../hue/hue-lamps";
 const greenDelay = 30;
 const blueDelay = 100;
 
+//TODO: passage de paramètres
 export class AlarmClock {
 
     progressiveWakeUpDuration: number;

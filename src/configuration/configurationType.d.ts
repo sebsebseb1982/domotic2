@@ -74,6 +74,12 @@ export interface IConfigurationTimelapse {
 }
 
 
+export interface IconfigurationAlarm {
+    user: string;
+    password: string;
+    hostname: string;
+}
+
 export interface IConfiguration {
     api: IConfigurationAPI;
     hue: IConfigurationHueBridge;
@@ -89,4 +95,5 @@ export interface IConfiguration {
     general: IGeneralConfiguration;
     cctv: ICCTVConfiguration;
     timelapse: IConfigurationTimelapse;
+    alarm: IconfigurationAlarm;
 }
