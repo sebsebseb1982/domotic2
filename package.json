@@ -55,6 +55,6 @@
     "api-domotic": "node -e 'require(\"/home/pi/domotic2/src/api/domotic/api.js\")'",
     "api-random-tune": "node -e 'require(\"/home/pi/domotic2/src/api/random-tune/api.js\")'",
 
-    "cerberos": "node -e 'require(\"/home/pi/domotic2/src/security/cerberos.js\")' --"
+    "cerberos": "node -e 'require(\"/home/pi/domotic2/src/security/cerberos.js\")'"
   }
 }

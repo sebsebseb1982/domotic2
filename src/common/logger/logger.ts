@@ -27,7 +27,13 @@ export class Logger {
         let mail = new MailService('ERROR');
         mail.send({
             title: `[${this.service}] ${message}`,
-            description: `${err}`
+            description: `${err}<br/><br/>${this.getStackTrace().replace(/(?:\r\n|\r|\n)/g, '<br>')}`
         });
     }
+
+    private getStackTrace() {
+        let obj = {};
+        Error.captureStackTrace(obj, this.getStackTrace);
+        return (obj as any).stack;
+    };
 }
