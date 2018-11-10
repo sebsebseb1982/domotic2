@@ -18,7 +18,7 @@ export class ThermospiDB {
     }
 
     saveTemperatures(temperatures: ITemperature[]) {
-        MongoDB.db.then((db: Db) => {
+        MongoDB.domoticDB.then((db: Db) => {
             let batch = db.collection('temperatures').initializeUnorderedBulkOp();
 
             _.forEach(
@@ -42,7 +42,7 @@ export class ThermospiDB {
     getCurrentInsideTemperature(): Promise<number> {
         let probes = [2, 3];
         return new Promise((resolve, reject) => {
-            MongoDB.db.then((db: Db) => {
+            MongoDB.domoticDB.then((db: Db) => {
                 db.collection('temperatures').find(
                     {
                         probe: {$in: probes}
@@ -67,7 +67,7 @@ export class ThermospiDB {
     getCurrentOutsideTemperature(): Promise<number> {
         let probes = [1];
         return new Promise((resolve, reject) => {
-            MongoDB.db.then((db: Db) => {
+            MongoDB.domoticDB.then((db: Db) => {
                 db.collection('temperatures').find(
                     {
                         probe: {$in: probes}
@@ -91,7 +91,7 @@ export class ThermospiDB {
 
     isWindowsOpened(): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            MongoDB.db.then(
+            MongoDB.domoticDB.then(
                 (db: Db) => {
                     db.collection('ventilationStatus').findOne(
                         {},
@@ -115,7 +115,7 @@ export class ThermospiDB {
     }
 
     setWindowsOpened(status: boolean): void {
-        MongoDB.db.then((db: Db) => {
+        MongoDB.domoticDB.then((db: Db) => {
             db.collection('ventilationStatus').update(
                 {},
                 {

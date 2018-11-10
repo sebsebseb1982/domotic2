@@ -31,7 +31,25 @@ export class Alarm {
     }
 
     isArmed(): Promise<boolean> {
-        return this.toctoc.getCurrentPresence();
+        return this.executeCallback((): Promise<boolean> => {
+            return new Promise<boolean>((resolve, reject) => {
+                let uri = `http://${this.configuration.alarm.hostname}:80/statuslive.html`;
+                this.logger.debug(`Ouverture de ${uri}`);
+                request.get(
+                    {
+                        uri: uri
+                    },
+                    (error, response: request.Response, html) => {
+                        if (error) {
+                            this.logger.error(`Erreur lors de la lecture du statut de l'alarme (${uri})`, error);
+                            resolve(true);
+                        } else {
+                            resolve(_.includes(html, 'new Array(2,0);'))
+                        }
+                    }
+                );
+            });
+        });
     }
 
     arm(): Promise<void> {
@@ -133,14 +151,14 @@ export class Alarm {
         });
     }
 
-    private executeCallback(callback: () => Promise<void>): Promise<void> {
+    private executeCallback(callback: () => Promise<any>): Promise<any> {
         return new Promise<void>((resolve, reject) => {
             this.logout().then(() => {
                 this.login().then(() => {
                     this.waitForWEBUI().then(() => {
-                        callback().then(() => {
+                        callback().then((valueReturned) => {
                             this.logout().then(() => {
-                                resolve();
+                                resolve(valueReturned);
                             });
                         });
                     });

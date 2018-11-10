@@ -13,7 +13,7 @@ export class DB {
 
     getByCode(code: string): Promise<PowerOutlet> {
         return new Promise<PowerOutlet>((resolve, reject) => {
-            MongoDB.db.then((db: Db) => {
+            MongoDB.domoticDB.then((db: Db) => {
                 db.collection('outlets').findOne(
                     {"code": code},
                     {},

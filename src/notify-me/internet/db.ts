@@ -12,7 +12,7 @@ export class DB {
 
     getAlerts(): Promise<Alert[]> {
         return new Promise((resolve, reject) => {
-            MongoDB.db.then((db: Db) => {
+            MongoDB.domoticDB.then((db: Db) => {
                 db.collection('alerts').find(
                     {},
                     {}
@@ -30,7 +30,7 @@ export class DB {
     }
 
     updateAlert(alert: Alert) {
-        MongoDB.db.then((db: Db) => {
+        MongoDB.domoticDB.then((db: Db) => {
             db.collection('alerts').replaceOne(
                 {_id: alert._id},
                 alert,

@@ -28,6 +28,11 @@ export interface IConfigurationThermospi {
     mongoURL: string;
 }
 
+export interface IConfigurationLBC {
+    mailAccount: IMailAccount;
+    mongoURL: string;
+}
+
 export interface IConfigurationTocToc {
     mailAccount: IMailAccount;
     scriptPath: string;
@@ -87,6 +92,7 @@ export interface IConfiguration {
     synology: IConfigurationSynology;
     toctoc: IConfigurationTocToc;
     thermospi: IConfigurationThermospi;
+    lbc: IConfigurationLBC;
     adminMailAddress: string;
     smtp: SMTPTransport.Options;
     googleHome: IConfigurationGoogleHome;

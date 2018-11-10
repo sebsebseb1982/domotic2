@@ -14,7 +14,7 @@ export class DB {
 
     getByCode(code: string): Promise<Relay> {
         return new Promise<Relay>((resolve, reject) => {
-            MongoDB.db.then((db: Db) => {
+            MongoDB.domoticDB.then((db: Db) => {
                 db.collection('relays').findOne(
                     {"code": code},
                     {},
