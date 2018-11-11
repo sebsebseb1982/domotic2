@@ -22,15 +22,11 @@ export class Heater {
     }
 
     on() {
-        this.logger.info('Allumage du chauffage');
         this.setHeaterState(true);
-        this.rampUpLight();
     }
 
     off() {
-        this.logger.info('Extinction du chauffage');
         this.setHeaterState(false);
-        this.rampDownLight();
     }
 
     private setHeaterState(newHeaterState: boolean) {
@@ -40,6 +36,13 @@ export class Heater {
         this.realHeaterStateDB.getCurrentHeaterRealStatus().then((lastHeaterState: IHeaterState) => {
             if (newHeaterState != lastHeaterState.value) {
                 this.realHeaterStateDB.add(newHeaterState);
+                if(newHeaterState) {
+                    this.logger.info('Allumage du chauffage');
+                    this.rampUpLight();
+                } else {
+                    this.logger.info('Extinction du chauffage');
+                    this.rampDownLight();
+                }
             }
         });
     }
