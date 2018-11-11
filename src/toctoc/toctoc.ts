@@ -1,7 +1,7 @@
 import {Configuration} from "../configuration/configuration";
 import {SurveillanceStation} from "../synology/surveillanceStation";
-import {ThermospiDB} from "../thermospi/db";
 import {Logger} from "../common/logger/logger";
+import {VentilationStatusDB} from "../thermospi/db/VentilationStatusDB";
 
 let exec = require('child_process').exec;
 let MongoClient = require('mongodb').MongoClient;
@@ -9,13 +9,13 @@ let MongoClient = require('mongodb').MongoClient;
 export class TocToc {
     configuration: Configuration;
     surveillanceStation: SurveillanceStation;
-    thermospiDB: ThermospiDB;
+    ventilationStatusDB: VentilationStatusDB;
     logger: Logger;
 
     constructor() {
         this.configuration = new Configuration();
         this.surveillanceStation = new SurveillanceStation();
-        this.thermospiDB = new ThermospiDB();
+        this.ventilationStatusDB = new VentilationStatusDB();
         this.logger = new Logger('Toc Toc');
     }
 
@@ -62,7 +62,7 @@ export class TocToc {
     private saveNewPresenceStatus(presenceStatus: boolean) {
         this.surveillanceStation.setHomeMode(!presenceStatus);
         if (!presenceStatus) {
-            this.thermospiDB.setWindowsOpened(false);
+            this.ventilationStatusDB.setWindowsOpened(false);
         }
 
         MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {

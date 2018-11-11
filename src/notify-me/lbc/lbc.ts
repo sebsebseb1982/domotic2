@@ -2,7 +2,7 @@
 
 "use strict"
 
-let _ = require('lodash');
+/*let _ = require('lodash');
 let db = require('./db.ts');
 let crawl = require('./crawl.ts');
 
@@ -21,5 +21,5 @@ db.listerRecherches((recherches) => {
 			);
 		}
 	);
-});
+});*/
 

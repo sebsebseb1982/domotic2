@@ -2,6 +2,7 @@
 
 "use strict"
 
+/*
 let _ = require('lodash');
 let db = require('./db.ts');
 let notifyMyAndroid = require('../nma/nma.js');
@@ -88,4 +89,4 @@ fs.readFile('/home/pi/node/notificationsLBC/template.mail', 'utf-8', function re
 			db.marquerNotifie(item);
 		});
 	});
-});
+});*/

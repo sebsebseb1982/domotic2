@@ -1,5 +1,5 @@
 import {Logger} from "../../common/logger/logger";
-import {ThermospiDB} from "../../thermospi/db";
+import {ThermospiDB} from "../../thermospi/db/SetPointDB";
 
 export class TemperatureSensor {
     logger: Logger;

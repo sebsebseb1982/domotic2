@@ -1,5 +1,7 @@
-import {URLMonitor} from "../notify-me/internet/url-monitor";
-import {Logger} from "../common/logger/logger";
+import {SetPointDB} from "../thermospi/db/SetPointDB";
+import {Thermostat} from "../thermospi/thermostat";
 
-let logger = new Logger('coucou');
-logger.error('mon erreur', 'err');
+new SetPointDB().increment(-6).then(() => {
+    new Thermostat().update();
+});
+
