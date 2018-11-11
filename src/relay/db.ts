@@ -3,6 +3,8 @@ import {MongoDB} from "../common/mongo-db";
 import {Db} from "mongodb";
 import {Logger} from "../common/logger/logger";
 import {Relay} from "./relay";
+import {ITemperature} from "../thermospi/models/temperature";
+import * as _ from "lodash";
 
 export class DB {
 
@@ -35,7 +37,20 @@ export class DB {
 
     getAll(): Promise<Relay[]> {
         return new Promise<Relay[]>((resolve, reject) => {
-
+            MongoDB.domoticDB.then((db: Db) => {
+                db.collection('relays').find(
+                    {},
+                    {}
+                ).toArray((err, results: IRelay[]) => {
+                    if (err) {
+                        this.logger.error('Erreur lors de la récupération des relais', err.message);
+                        reject(err);
+                    } else {
+                        resolve(_.map(results, (aResult) => new Relay(aResult)));
+                    }
+                    (db as any).close();
+                });
+            });
         });
     }
 }
