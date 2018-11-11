@@ -13,14 +13,15 @@ export class RelayBoard {
         let db = new DB();
         db.getAll().then((relays: Relay[]) => {
             _.forEach(relays, (relay) => {
-                this.executeScript(`sudo gpio mode ${relay.gpio} out`);
-                this.executeScript(`sudo gpio write ${relay.gpio} 0`);
+                this.executeCommand(`sudo gpio mode ${relay.gpio} out`);
+                this.executeCommand(`sudo gpio write ${relay.gpio} 0`);
             });
         });
     }
 
-    static executeScript(script: string) {
-        exec(script, (error, stdout, stderr) => {
+    static executeCommand(command: string) {
+        this.logger.debug(command);
+        exec(command, (error, stdout, stderr) => {
             this.logger.debug(stdout);
             if(error) {
                 this.logger.error(error.message, stderr);
