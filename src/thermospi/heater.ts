@@ -4,6 +4,7 @@ import {lamps} from "../hue/hue-lamps";
 import {HueLampManager} from "../hue/hueLampManager";
 import {RealHeaterStateDB} from "./db/RealHeaterStateDB";
 import {IHeaterState} from "./models/heater-status";
+import {GoogleHomeService} from "../notifications/services/googleHomeService";
 
 export class Heater {
 
@@ -11,6 +12,8 @@ export class Heater {
     relayDB: DB;
     realHeaterStateDB: RealHeaterStateDB;
     hue: HueLampManager;
+    googleHomeService: GoogleHomeService;
+
     animationDuration: number = 4 * 1000 /* ms */;
     heaterRelayCode: string = 'k4';
 
@@ -19,6 +22,7 @@ export class Heater {
         this.relayDB = new DB();
         this.realHeaterStateDB = new RealHeaterStateDB();
         this.hue = new HueLampManager();
+        this.googleHomeService = new GoogleHomeService();
     }
 
     on() {
@@ -36,13 +40,16 @@ export class Heater {
         this.realHeaterStateDB.getCurrentHeaterRealStatus().then((lastHeaterState: IHeaterState) => {
             if (newHeaterState != lastHeaterState.value) {
                 this.realHeaterStateDB.add(newHeaterState);
+                let message;
                 if(newHeaterState) {
-                    this.logger.info('Allumage du chauffage');
+                    message = 'Allumage du chauffage';
                     this.rampUpLight();
                 } else {
-                    this.logger.info('Extinction du chauffage');
+                    message = 'Extinction du chauffage';
                     this.rampDownLight();
                 }
+                this.logger.info(message);
+                this.googleHomeService.say(message);
             }
         });
     }

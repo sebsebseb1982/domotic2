@@ -6,9 +6,10 @@ import {Heater} from "./heater";
 import {TemperatureDB} from "./db/TemperatureDB";
 import {SetPointDB} from "./db/SetPointDB";
 import {RealSetPointDB} from "./db/RealSetPointDB";
+import {GoogleHomeService} from "../notifications/services/googleHomeService";
 
 export class Thermostat {
-    //googleHome: GoogleHomeService;
+    googleHome: GoogleHomeService;
     toctoc: TocToc;
     temperatureDB: TemperatureDB;
     setPointDB: SetPointDB;
@@ -18,7 +19,7 @@ export class Thermostat {
     hysteresis: number = 1;
 
     constructor() {
-        //this.googleHome = new GoogleHomeService();
+        this.googleHome = new GoogleHomeService();
         this.toctoc = new TocToc();
         this.temperatureDB = new TemperatureDB();
         this.setPointDB = new SetPointDB();
