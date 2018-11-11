@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/*
 "use strict"
 
 let _ = require('lodash');
@@ -39,8 +40,8 @@ let calculerHashItem = (item) => {
 	let md5sum = crypto.createHash('md5');
 	md5sum
 		.update(item.name)
-		/*.update(item.category)*/
-		/*.update(item.place)*/
+		/!*.update(item.category)*!/
+		/!*.update(item.place)*!/
 		.update(item.price);
 		
 	_.forEach(item.recherche.recipients, (aRecipient) => {
@@ -71,7 +72,7 @@ let createItemFromDOMElement = (domElement, $, recherche) => {
 	let price = crawledPrice === null ? "Prix non précisé" : crawledPrice[0];
 		
 	let item = {
-		/*"professional" : $(domElement).find('span[]').length > 0,*/
+		/!*"professional" : $(domElement).find('span[]').length > 0,*!/
 		"name" : _.trim($(domElement).find('span[itemprop=name]').text()),
 		"url" : 'https://www.leboncoin.fr' + $(domElement).attr('href'),
 		"imgUrl" : imgUrl,
@@ -88,3 +89,4 @@ let createItemFromDOMElement = (domElement, $, recherche) => {
 	return item;
 };
 
+*/

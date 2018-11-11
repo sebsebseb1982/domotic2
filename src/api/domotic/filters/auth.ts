@@ -3,7 +3,7 @@ import {Logger} from "../../../common/logger/logger";
 import * as core from "express-serve-static-core";
 import {Configuration} from "../../../configuration/configuration";
 import * as _ from "lodash";
-import auth = require("basic-auth");
+import * as auth from "basic-auth";
 
 export class Auth {
     configuration: Configuration;

@@ -3,15 +3,12 @@
   "version": "2.0.0",
   "description": "A packaged foo fooer for fooing foos",
   "dependencies": {
-    "@types/basic-auth": "^1.1.2",
-    "@types/express": "^4.16.0",
     "archiver": "^2.1.1",
-    "basic-auth": "^2.0.0",
+    "basic-auth": "^2.0.1",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.3",
     "get-pixels": "^3.3.0",
     "gif-encoder": "^0.6.1",
-    "google-home-notifier": "^1.2.0",
     "lodash": "^4.17.10",
     "make-dir": "^1.3.0",
     "mkdirp": "^0.5.1",
@@ -27,6 +24,7 @@
     "yargs": "^12.0.1"
   },
   "devDependencies": {
+    "@types/basic-auth": "^1.1.2",
     "@types/archiver": "^2.1.1",
     "@types/cheerio": "^0.22.7",
     "@types/express": "^4.16.0",
@@ -51,10 +49,8 @@
     "notify-delete-cctv-archive": "node -e 'let NotifyDeleteCCTVArchive = require(\"/home/pi/domotic2/src/security/cctv/notify-delete-cctv-archive.js\").NotifyDeleteCCTVArchive; new NotifyDeleteCCTVArchive().notify()'",
     "health-check": "node -e 'let HealthCheck = require(\"/home/pi/domotic2/src/system/health-check/health-check.js\").HealthCheck; new HealthCheck()'",
     "initialize-relay-board": "node -e 'require(\"/home/pi/domotic2/src/relay/relay-board.js\").RelayBoard.initialize()'",
-
     "api-domotic": "node -e 'require(\"/home/pi/domotic2/src/api/domotic/api.js\")'",
     "api-random-tune": "node -e 'require(\"/home/pi/domotic2/src/api/random-tune/api.js\")'",
-
     "cerberos": "node -e 'require(\"/home/pi/domotic2/src/security/cerberos.js\")'"
   }
 }
