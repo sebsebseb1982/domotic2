@@ -1,13 +1,13 @@
 import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
-import {DB} from "../../../relay/db";
 import {IRoutable} from "./routes";
+import {RelayDB} from "../../../relay/relay-db";
 
 export class GateRoutes implements IRoutable {
-    relayDB: DB;
+    relayDB: RelayDB;
 
     constructor() {
-        this.relayDB = new DB();
+        this.relayDB = new RelayDB();
     }
 
     public routes(router: core.Router): void {

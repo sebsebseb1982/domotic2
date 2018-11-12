@@ -3,10 +3,9 @@ import {MongoDB} from "../common/mongo-db";
 import {Db} from "mongodb";
 import {Logger} from "../common/logger/logger";
 import {Relay} from "./relay";
-import {ITemperature} from "../thermospi/models/temperature";
 import * as _ from "lodash";
 
-export class DB {
+export class RelayDB {
 
     logger: Logger;
 

@@ -2,18 +2,18 @@ import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
 import {RFXcom} from "../../../rfxcom/RFXcom";
 import {IRoutable} from "./routes";
-import {DB} from "../../../power-outlet/db";
 import {Logger} from "../../../common/logger/logger";
+import {PowerOutletDB} from "../../../power-outlet/power-outlet-db";
 
 let rfxcom = require('rfxcom');
 
 export class OutletsRoutes implements IRoutable {
 
-    db: DB;
+    db: PowerOutletDB;
     logger: Logger;
 
     constructor() {
-        this.db = new DB();
+        this.db = new PowerOutletDB();
         this.logger = new Logger('Endpoint prises connectées');
     }
 

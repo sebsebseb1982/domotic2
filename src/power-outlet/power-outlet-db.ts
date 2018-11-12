@@ -3,7 +3,7 @@ import {Db} from "mongodb";
 import {Logger} from "../common/logger/logger";
 import {IPowerOutlet, PowerOutlet} from "./power-outlet";
 
-export class DB {
+export class PowerOutletDB {
 
     logger: Logger;
 

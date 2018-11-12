@@ -1,15 +1,15 @@
 import {Logger} from "../common/logger/logger";
-import {DB} from "../relay/db";
 import {lamps} from "../hue/hue-lamps";
 import {HueLampManager} from "../hue/hueLampManager";
 import {RealHeaterStateDB} from "./db/RealHeaterStateDB";
 import {IHeaterState} from "./models/heater-status";
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
+import {RelayDB} from "../relay/relay-db";
 
 export class Heater {
 
     logger: Logger;
-    relayDB: DB;
+    relayDB: RelayDB;
     realHeaterStateDB: RealHeaterStateDB;
     hue: HueLampManager;
     googleHomeService: GoogleHomeService;
@@ -19,7 +19,7 @@ export class Heater {
 
     constructor() {
         this.logger = new Logger('Commande chauffage');
-        this.relayDB = new DB();
+        this.relayDB = new RelayDB();
         this.realHeaterStateDB = new RealHeaterStateDB();
         this.hue = new HueLampManager();
         this.googleHomeService = new GoogleHomeService();
