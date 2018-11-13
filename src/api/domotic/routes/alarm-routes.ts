@@ -33,8 +33,13 @@ export class AlarmRoutes implements IRoutable {
                 (req: Request, res: Response) => {
                     this.alarm.arm().then(() => {
                         this.avr.off();
-                        this.openGate();
                         this.floorLampOff();
+                        setTimeout(
+                            () => {
+                                this.openGate();
+                            },
+                            10 * 1000
+                        );
                     });
                 }
             );

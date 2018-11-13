@@ -12,8 +12,8 @@ export class HueLampEffects {
     rampUpDown(durationInMs: number) {
         this.hueLampManager.setState(this.lamp, {
             on: true,
-            bri: 255,
-            rgb: [0, 0, 255],
+            bri: 120,
+            rgb: [255, 255, 255],
             transition: durationInMs / 2
         });
 

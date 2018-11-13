@@ -1,18 +1,17 @@
 import {Configuration} from "../configuration/configuration";
-import {MyNotification} from "../notifications/myNotification";
 import {IHueBridge, IHueLamp, IHueLampState} from "./hue";
-import {MailService} from "../notifications/services/mailService";
+import {Logger} from "../common/logger/logger";
 
 let hue = require("node-hue-api");
 let HueApi = require("node-hue-api").HueApi;
 
 export class HueLampManager {
     configuration: Configuration;
-    notifier: MailService;
+    logger: Logger;
 
     constructor() {
         this.configuration = new Configuration();
-        this.notifier =  new MailService('Hue bridge');
+        this.logger = new Logger('Hue Manager');
     }
 
     setState(lamp:IHueLamp, state:IHueLampState) {
@@ -34,7 +33,7 @@ export class HueLampManager {
 
                 api.lightStatusWithRGB(lamp.id, (err, status) => {
                     if (err) {
-                        this.handleError(`Erreur lors de la lecture de l'état de la lampe ${lamp.id}`, err);
+                        this.logger.error(`Erreur lors de la lecture de l'état de la lampe ${lamp.id}`, err);
                         reject(err);
                     }
 
@@ -58,10 +57,6 @@ export class HueLampManager {
     }
 
     private displayError(message:string) {
-        this.handleError('Impossible de modifier l\état d\'une lampe', message);
-    }
-
-    private handleError(error, message) {
-        this.notifier.send(new MyNotification(error, message));
+        this.logger.error('Impossible de modifier l\état d\'une lampe', message);
     }
 }
