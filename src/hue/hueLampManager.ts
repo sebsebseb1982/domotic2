@@ -5,13 +5,13 @@ import {Logger} from "../common/logger/logger";
 let hue = require("node-hue-api");
 let HueApi = require("node-hue-api").HueApi;
 
+// TODO à éclater dans un objet lampe
 export class HueLampManager {
     configuration: Configuration;
-    logger: Logger;
+    static logger: Logger = new Logger('Hue Manager');
 
     constructor() {
         this.configuration = new Configuration();
-        this.logger = new Logger('Hue Manager');
     }
 
     setState(lamp:IHueLamp, state:IHueLampState) {
@@ -33,7 +33,7 @@ export class HueLampManager {
 
                 api.lightStatusWithRGB(lamp.id, (err, status) => {
                     if (err) {
-                        this.logger.error(`Erreur lors de la lecture de l'état de la lampe ${lamp.id}`, err);
+                        HueLampManager.logger.error(`Erreur lors de la lecture de l'état de la lampe ${lamp.id}`, err);
                         reject(err);
                     }
 
@@ -57,6 +57,6 @@ export class HueLampManager {
     }
 
     private displayError(message:string) {
-        this.logger.error('Impossible de modifier l\état d\'une lampe', message);
+        HueLampManager.logger.error('Impossible de modifier l\état d\'une lampe', message);
     }
 }
