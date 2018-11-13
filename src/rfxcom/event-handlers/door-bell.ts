@@ -3,8 +3,8 @@ import {Configuration} from "../../configuration/configuration";
 import {MailService} from "../../notifications/services/mailService";
 import {Logger} from "../../common/logger/logger";
 import {TocToc} from "../../toctoc/toctoc";
-import {HueLampManager} from "../../hue/hueLampManager";
 import {lamps} from "../../hue/hue-lamps";
+import {HueLamp} from "../../hue/hue-lamp";
 
 interface DoorBellEvent {
     "subtype": number,
@@ -21,7 +21,7 @@ export class DoorBell {
     mailService: MailService;
     logger: Logger;
     toctoc: TocToc;
-    hue: HueLampManager;
+    lampSalon: HueLamp;
 
     constructor(private rfxcom: any) {
         this.configuration = new Configuration();
@@ -30,7 +30,7 @@ export class DoorBell {
         this.mailService = new MailService(service);
         this.logger = new Logger(service);
         this.toctoc = new TocToc();
-        this.hue = new HueLampManager();
+        this.lampSalon = new HueLamp('salon');
     }
 
     listen() {
@@ -53,16 +53,14 @@ export class DoorBell {
     private simulatePresence() {
         setTimeout(
             () => {
-                this.hue.setState(lamps.salon, {
+                this.lampSalon.setState({
                     on: true,
                     bri: 255,
                     rgb: [255, 255, 255]
                 });
                 setTimeout(
                     () => {
-                        this.hue.setState(lamps.salon, {
-                            on: false
-                        });
+                        this.lampSalon.off();
                     },
                     this.getRandomNumberBetween(15, 30) * 1000
                 );

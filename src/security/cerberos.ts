@@ -1,33 +1,32 @@
 import {PresenceDetector} from "./cctv/presence-detector";
 import {Snapshot} from "./cctv/snapshot";
 import * as _ from "lodash";
-import {HueLampManager} from "../hue/hueLampManager";
-import {lamps} from "../hue/hue-lamps";
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
 import {MailService} from "../notifications/services/mailService";
 import {HTML} from "../common/html";
-import * as yargs from  'yargs';
+import * as yargs from 'yargs';
 import {Logger} from "../common/logger/logger";
 import {TocToc} from "../toctoc/toctoc";
+import {HueLamp} from "../hue/hue-lamp";
 
 export class Cerberos {
     presenceDetector: PresenceDetector;
-    hue: HueLampManager;
     googleHome: GoogleHomeService;
     notifier: MailService;
     nLastMinutes: number;
     logger: Logger;
     toctoc: TocToc;
+    lampSalon: HueLamp;
 
     constructor() {
         this.nLastMinutes = yargs.argv.nLastMinutes ? yargs.argv.nLastMinutes : 2;
         this.presenceDetector = new PresenceDetector();
-        this.hue = new HueLampManager();
         this.googleHome = new GoogleHomeService();
         let service = 'Cerberos';
         this.notifier = new MailService(service);
         this.logger = new Logger(service);
         this.toctoc = new TocToc();
+        this.lampSalon = new HueLamp('salon');
     }
 
     watch() {
@@ -64,16 +63,14 @@ export class Cerberos {
     }
 
     private turnHueLightOn() {
-        this.hue.setState(lamps.salon, {
+        this.lampSalon.setState({
             on: true,
             bri: 255,
             rgb: [255, 255, 255]
         });
         setTimeout(
             () => {
-                this.hue.setState(lamps.salon, {
-                    on: false
-                });
+                this.lampSalon.off();
             },
             2 * 60 * 1000
         );

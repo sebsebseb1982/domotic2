@@ -1,28 +1,27 @@
 import {TocToc} from "../toctoc/toctoc";
-import {HueLampManager} from "../hue/hueLampManager";
-import {lamps} from "../hue/hue-lamps";
+import {HueLamp} from "../hue/hue-lamp";
+import * as yargs from  'yargs';
+import {Logger} from "../common/logger/logger";
 
 const greenDelay = 30;
 const blueDelay = 100;
 
-//TODO: passage de paramètres
 export class AlarmClock {
 
     progressiveWakeUpDuration: number;
     wakeUpDuration: number;
-    startTime: number;
-
+    lampCode: string;
+    lamp: HueLamp;
     toctoc: TocToc;
-    hueLampManager: HueLampManager;
+    logger: Logger;
 
     constructor() {
-        this.progressiveWakeUpDuration = (process.argv[1] ? parseInt(process.argv[1]) : 45) * 60 * 1000;
-        this.wakeUpDuration = (process.argv[2] ? parseInt(process.argv[2]) : 10) * 60 * 1000;
-        this.startTime = 0;
-
+        this.progressiveWakeUpDuration = (yargs.argv.progressiveWakeUpDuration ? yargs.argv.progressiveWakeUpDuration : 45)* 60 * 1000;
+        this.wakeUpDuration = (yargs.argv.wakeUpDuration ? yargs.argv.wakeUpDuration : 5)* 60 * 1000;
+        this.lampCode = yargs.argv.lampCode ? yargs.argv.lampCode : 'bureau';
+        this.lamp = new HueLamp(this.lampCode);
         this.toctoc = new TocToc();
-
-        this.hueLampManager = new HueLampManager();
+        this.logger = new Logger(`Simulateur d'aube`);
     }
 
     private red(index) {
@@ -39,11 +38,13 @@ export class AlarmClock {
 
     wakeMeUp() {
         this.toctoc.ifAbsent(() => {
-            console.log('Nobody to wake up !');
+            this.logger.info(`Il n'y a personne à réveiller dans la maison.`);
         }, () => {
+            this.logger.info(`Lever du soleil pendant ${yargs.argv.progressiveWakeUpDuration} minute(s) sur la lampe "${this.lamp.label}"`);
+            let startTime = 0;
             for (let i = 0; i < 256 + blueDelay; i++) {
                 setTimeout(() => {
-                    this.hueLampManager.setState(lamps.chevetSebastien, {
+                    this.lamp.setState({
                         on: true,
                         bri: Math.round(Math.max(0, Math.min(255, i * (256 / (256 + blueDelay))))),
                         rgb: [
@@ -52,16 +53,16 @@ export class AlarmClock {
                             this.blue(i)
                         ]
                     });
-                }, this.startTime);
+                }, startTime);
 
-                this.startTime = i * Math.round(this.progressiveWakeUpDuration / (256 + blueDelay));
+                startTime = i * Math.round(this.progressiveWakeUpDuration / (256 + blueDelay));
             }
 
             setTimeout(() => {
-                this.hueLampManager.setState(lamps.chevetSebastien, {
-                    on: false
-                });
+                this.lamp.off();
             }, this.progressiveWakeUpDuration + this.wakeUpDuration);
         });
     }
 }
+
+new AlarmClock().wakeMeUp();

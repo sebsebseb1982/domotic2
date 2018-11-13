@@ -8,6 +8,7 @@ import * as request from 'request';
 import * as _ from "lodash";
 import {HueLampEffects} from "../../hue/hue-lamp-effects";
 import {lamps} from "../../hue/hue-lamps";
+import {HueLamp} from "../../hue/hue-lamp";
 
 export class Alarm {
     toctoc: TocToc;
@@ -189,7 +190,7 @@ export class Alarm {
     private waitForWEBUI(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             let interval = setInterval(() => {
-                let lamp = new HueLampEffects(lamps.salon);
+                let lamp = new HueLampEffects(new HueLamp('salon'));
                 lamp.rampUpDown(1500);
                 let uri = `http://${this.configuration.alarm.hostname}:80/waitlive.html`;
                 this.logger.debug(`Authentification en cours ...`);

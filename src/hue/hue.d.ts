@@ -3,10 +3,6 @@ export interface IHueLamp {
     label: string;
 }
 
-export interface IHueBridge {
-    ipaddress: string;
-}
-
 export interface IHueLampState {
 
 }

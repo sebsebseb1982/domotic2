@@ -1,16 +1,12 @@
-import {IHueLamp} from "./hue";
-import {HueLampManager} from "./hueLampManager";
+import {HueLamp} from "./hue-lamp";
 
 export class HueLampEffects {
 
-    hueLampManager: HueLampManager;
-
-    constructor(private lamp: IHueLamp) {
-        this.hueLampManager = new HueLampManager();
+    constructor(private lamp: HueLamp) {
     }
 
     rampUpDown(durationInMs: number) {
-        this.hueLampManager.setState(this.lamp, {
+        this.lamp.setState({
             on: true,
             bri: 120,
             rgb: [255, 255, 255],
@@ -19,7 +15,7 @@ export class HueLampEffects {
 
         setTimeout(
             () => {
-                this.hueLampManager.setState(this.lamp, {
+                this.lamp.setState({
                     on: false,
                     bri: 0,
                     transition: durationInMs / 2

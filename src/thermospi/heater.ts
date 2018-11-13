@@ -1,18 +1,17 @@
 import {Logger} from "../common/logger/logger";
-import {lamps} from "../hue/hue-lamps";
-import {HueLampManager} from "../hue/hueLampManager";
 import {RealHeaterStateDB} from "./db/RealHeaterStateDB";
 import {IHeaterState} from "./models/heater-status";
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
 import {RelayDB} from "../relay/relay-db";
+import {HueLamp} from "../hue/hue-lamp";
 
 export class Heater {
 
     logger: Logger;
     relayDB: RelayDB;
     realHeaterStateDB: RealHeaterStateDB;
-    hue: HueLampManager;
     googleHomeService: GoogleHomeService;
+    lampSalon: HueLamp;
 
     animationDuration: number = 4 * 1000 /* ms */;
     heaterRelayCode: string = 'k4';
@@ -21,8 +20,8 @@ export class Heater {
         this.logger = new Logger('Commande chauffage');
         this.relayDB = new RelayDB();
         this.realHeaterStateDB = new RealHeaterStateDB();
-        this.hue = new HueLampManager();
         this.googleHomeService = new GoogleHomeService();
+        this.lampSalon = new HueLamp('salon');
     }
 
     on() {
@@ -55,7 +54,7 @@ export class Heater {
     }
 
     private rampUpLight() {
-        this.hue.setState(lamps.salon, {
+        this.lampSalon.setState({
             "on": true,
             bri: 255,
             rgb: [255, 0, 0],
@@ -63,15 +62,12 @@ export class Heater {
         });
 
         setTimeout(() => {
-            this.hue.setState(lamps.salon, {
-                "on": false,
-                transition: 0
-            });
+            this.lampSalon.off();
         }, this.animationDuration + 1000);
     }
 
     private rampDownLight() {
-        this.hue.setState(lamps.salon, {
+        this.lampSalon.setState({
             "on": true,
             bri: 255,
             rgb: [255, 0, 0],
@@ -79,7 +75,7 @@ export class Heater {
         });
 
         setTimeout(() => {
-            this.hue.setState(lamps.salon, {
+            this.lampSalon.setState({
                 "on": false,
                 transition: this.animationDuration
             });
