@@ -6,6 +6,8 @@ import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
 import * as request from 'request';
 import * as _ from "lodash";
+import {HueLampEffects} from "../../hue/hue-lamp-effects";
+import {lamps} from "../../hue/hue-lamps";
 
 export class Alarm {
     toctoc: TocToc;
@@ -62,41 +64,6 @@ export class Alarm {
         return this.execute('d');
     }
 
-    test() {
-        this.logout().then(() => {
-            this.login().then(() => {
-                let interval = setInterval(() => {
-                    let uri = `http://${this.configuration.alarm.hostname}:80/waitlive.html`;
-                    this.logger.debug(`Ouverture de ${uri}`);
-                    request.get(
-                        {
-                            uri: uri
-                        },
-                        (error, response: request.Response, html) => {
-                            this.logger.debug(_.includes(html, 'prg=4').toString());
-                            if (_.includes(html, 'prg=4')) {
-                                clearInterval(interval);
-                                let uri = `http://${this.configuration.alarm.hostname}:80/statuslive.html?area=00&value=${'d'}`;
-                                this.logger.debug(`Ouverture de ${uri}`);
-                                request.get(
-                                    {
-                                        uri: uri
-                                    },
-                                    (error, response: request.Response, html) => {
-                                        if (error) {
-                                            this.logger.error(`Erreur lors de l'éxécutuion d'une commande (${uri})`, error);
-                                        } else {
-                                        }
-                                    }
-                                );
-                            }
-                        }
-                    );
-                }, 1500);
-            });
-        });
-    }
-
     private execute(command: string): Promise<void> {
         return this.executeCallback(() => {
             return new Promise<void>((resolve, reject) => {
@@ -108,7 +75,7 @@ export class Alarm {
                             uri: uri
                         },
                         (error, response: request.Response, html) => {
-                            if (error) {
+                            if (error || response.statusCode != 200) {
                                 reject(response.statusCode);
                                 this.logger.error(`Erreur lors de l'éxécutuion d'une commande (${uri})`, error);
                             } else {
@@ -116,7 +83,7 @@ export class Alarm {
                             }
                         }
                     );
-                }, 15 * 1000);
+                }, 2000);
             })
         });
     }
@@ -222,6 +189,8 @@ export class Alarm {
     private waitForWEBUI(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             let interval = setInterval(() => {
+                let lamp = new HueLampEffects(lamps.salon);
+                lamp.rampUpDown(1500);
                 let uri = `http://${this.configuration.alarm.hostname}:80/waitlive.html`;
                 this.logger.debug(`Authentification en cours ...`);
                 request.get(
@@ -235,7 +204,7 @@ export class Alarm {
                         }
                     }
                 );
-            }, 1500);
+            }, 3000);
         });
     }
 }
