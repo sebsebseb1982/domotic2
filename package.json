@@ -50,6 +50,7 @@
     "health-check": "node -e 'let HealthCheck = require(\"/home/pi/git/domotic2/src/system/health-check/health-check.js\").HealthCheck; new HealthCheck()'",
     "initialize-relay-board": "node -e 'require(\"/home/pi/git/domotic2/src/relay/relay-board.js\").RelayBoard.initialize()'",
     "update-thermostat": "node -e 'let Thermostat = require(\"/home/pi/git/domotic2/src/thermospi/thermostat.js\").Thermostat; new Thermostat().update()'",
+    "record-temperatures": "node -e 'let Recorder = require(\"/home/pi/git/domotic2/src/thermospi/probes/recorder.js\").Recorder; new Recorder().record()'",
     "api-domotic": "node -e 'require(\"/home/pi/git/domotic2/src/api/domotic/api.js\")'",
     "api-random-tune": "node -e 'require(\"/home/pi/git/domotic2/src/api/random-tune/api.js\")'",
     "cerberos": "node -e 'require(\"/home/pi/git/domotic2/src/security/cerberos.js\")'"

@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import {Logger} from "../../common/logger/logger";
+import * as _ from "lodash";
 
 interface IProbeRawValue {
     crcOK: boolean;
@@ -34,7 +35,7 @@ export class Probe implements IProbe {
             probeRawValue = this.read();
         } while (!probeRawValue.crcOK || probeRawValue.temperature > 75);
 
-        this.logger.info(`La sonde "${this.label}" lit une température de ${probeRawValue.temperature}°C `)
+        this.logger.info(`La sonde "${this.label}" lit une température de ${_.round(probeRawValue.temperature, 1)}°C `)
         return probeRawValue.temperature;
     }
 
