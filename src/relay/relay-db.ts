@@ -12,7 +12,7 @@ export class RelayDB {
     relays: Promise<Relay[]>;
 
     private constructor() {
-        this.logger = new Logger('DB Relay');
+        this.logger = new Logger('BDD relais');
     }
 
     static get instance(): RelayDB {

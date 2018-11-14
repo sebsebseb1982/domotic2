@@ -65,7 +65,7 @@ export class Thermostat {
             });
     }
 
-    updateRealSetPoint(newSetPoint: number) {
+    private updateRealSetPoint(newSetPoint: number) {
         this.realSetPointDB.getCurrentRealSetPoint().then((lastRealSetPoint: ISetPoint) => {
             if (lastRealSetPoint.value !== newSetPoint) {
                 this.logger.debug(`Ajout d'une consigne de chauffage réelle à ${newSetPoint}°C`);
