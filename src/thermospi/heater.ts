@@ -8,7 +8,6 @@ import {HueLamp} from "../hue/hue-lamp";
 export class Heater {
 
     logger: Logger;
-    relayDB: RelayDB;
     realHeaterStateDB: RealHeaterStateDB;
     googleHomeService: GoogleHomeService;
     lampSalon: HueLamp;
@@ -18,7 +17,6 @@ export class Heater {
 
     constructor() {
         this.logger = new Logger('Commande chauffage');
-        this.relayDB = new RelayDB();
         this.realHeaterStateDB = new RealHeaterStateDB();
         this.googleHomeService = new GoogleHomeService();
         this.lampSalon = new HueLamp('salon');
@@ -33,7 +31,7 @@ export class Heater {
     }
 
     private setHeaterState(newHeaterState: boolean) {
-        this.relayDB.getByCode(this.heaterRelayCode).then((relay) => {
+        RelayDB.instance.getByCode(this.heaterRelayCode).then((relay) => {
             relay.setState(newHeaterState);
         });
         this.realHeaterStateDB.getCurrentHeaterRealStatus().then((lastHeaterState: IHeaterState) => {

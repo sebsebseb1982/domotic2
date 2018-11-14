@@ -12,7 +12,6 @@ export class AlarmRoutes implements IRoutable {
     alarm: Alarm;
     avr: DenonAVR;
     configuration: Configuration;
-    relayDB: RelayDB;
     powerOutletDB: PowerOutletDB;
 
     gateRelayCode: string = 'k3';
@@ -22,7 +21,6 @@ export class AlarmRoutes implements IRoutable {
         this.alarm = new Alarm();
         this.configuration = new Configuration();
         this.avr = new DenonAVR(this.configuration.avr);
-        this.relayDB = new RelayDB();
         this.powerOutletDB = new PowerOutletDB();
     }
 
@@ -46,7 +44,7 @@ export class AlarmRoutes implements IRoutable {
     }
 
     private openGate() {
-        this.relayDB.getByCode(this.gateRelayCode).then((relay) => {
+        RelayDB.instance.getByCode(this.gateRelayCode).then((relay) => {
             relay.impulse(100);
         });
     }

@@ -10,8 +10,7 @@ export class RelayBoard {
 
     static initialize() {
         this.logger.info('Initialisation de la carte relais');
-        let db = new RelayDB();
-        db.getAll().then((relays: Relay[]) => {
+        RelayDB.instance.getAll().then((relays: Relay[]) => {
             _.forEach(relays, (relay) => {
                 this.executeCommand(`sudo gpio mode ${relay.gpio} out`);
                 this.executeCommand(`sudo gpio write ${relay.gpio} 0`);
