@@ -29,6 +29,7 @@ class App {
 
         this.app.use(this.configuration.api.root, router);
 
+        // TODO: Est-ce bien son rôle ?
         RFXcom.initialize();
     }
 

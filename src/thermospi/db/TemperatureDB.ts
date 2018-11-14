@@ -21,6 +21,7 @@ export class TemperatureDB {
             _.forEach(
                 temperatures,
                 (aTemperature) => {
+                    this.logger.debug(`Enregistrement de la température ${aTemperature.value} lue sur la sonde ${aTemperature.probe}`)
                     batch.insert(aTemperature);
                 }
             );
@@ -49,11 +50,12 @@ export class TemperatureDB {
                         limit: probes.length
                     }
                 ).toArray((err, results: ITemperature[]) => {
+                    console.log(results);
                     if (err) {
                         this.logger.error('Erreur lors de la lecture de la température intérieure de la maison', err.message);
                         reject(err);
                     } else {
-                        resolve(_.mean(_.map(results, 'temperature')));
+                        resolve(_.mean(_.map(results, 'value')));
                     }
                     (db as any).close();
                 });
