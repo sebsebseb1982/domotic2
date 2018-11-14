@@ -13,6 +13,14 @@ export class Logger {
         console.log('\x1b[32m%s\x1b[0m', `[DEBUG]: ${message}`);
     }
 
+    notify(message: string) {
+        let mail = new MailService('Notify');
+        mail.send({
+            title: `[${this.service}] ${message}`,
+            description: `${message}`
+        });
+    }
+
     warn(message: string, warn: string) {
         console.log('\x1b[33m%s\x1b[0m', `[WARN] : ${message}`);
         let mail = new MailService('WARN');
