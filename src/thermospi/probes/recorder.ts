@@ -12,7 +12,7 @@ export class Recorder {
 
     record() {
         ProbeDB.instance.getProbesBySite(this.thermostatProbesSite).then((probes) => {
-            let temperaturesToRecord: ITemperature[];
+            let temperaturesToRecord: ITemperature[] = [];
             probes.forEach((probe) => {
                 temperaturesToRecord.push({
                     probe: probe.id,
