@@ -65,6 +65,12 @@ export class Thermostat {
             });
     }
 
+    addSetPoint(value: number) {
+        this.setPointDB.addSetPoint(value).then(() => {
+           this.update();
+        });
+    }
+
     private updateRealSetPoint(newSetPoint: number) {
         this.realSetPointDB.getCurrentRealSetPoint().then((lastRealSetPoint: ISetPoint) => {
             if (lastRealSetPoint.value !== newSetPoint) {
