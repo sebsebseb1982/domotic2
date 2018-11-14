@@ -25,16 +25,16 @@ export class Probe implements IProbe {
         this.label = probe.label;
         this.path = probe.path;
         this.site = probe.site;
-        this.logger = new Logger(`Sonde de température ${this.label}`);
+        this.logger = new Logger(`Sonde de température "${this.label}"`);
     }
 
     get temperature(): number {
-        let probeRawValue:IProbeRawValue;
+        let probeRawValue: IProbeRawValue;
         do {
             probeRawValue = this.read();
         } while (!probeRawValue.crcOK || probeRawValue.temperature > 75);
 
-        this.logger.info(`La sonde ${this.label} lit une température de ${probeRawValue.temperature}°C `)
+        this.logger.info(`La sonde "${this.label}" lit une température de ${probeRawValue.temperature}°C `)
         return probeRawValue.temperature;
     }
 
@@ -49,7 +49,13 @@ export class Probe implements IProbe {
     }
 
     private read(): IProbeRawValue {
-        let lines = fs.readFileSync(this.path).toString().split('\n');
+        let lines;
+        try {
+            lines = fs.readFileSync(this.path).toString().split('\n');
+        } catch (e) {
+            this.logger.error(`Impossible de lire les informations de la sonde "${this.label}"`, e);
+        }
+
         return {
             crcOK: this.extractCRCStatus(lines[0]),
             temperature: this.extractTemperature(lines[1])
