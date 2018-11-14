@@ -24,6 +24,7 @@ export class TvSimulator {
 
     start() {
         this.sunApi.phases.then((sunPhases) => {
+            this.logger.notify(`lever=${sunPhases.sunrise}, coucher=${sunPhases.sunset}`);
             for (let index = 0; index < this.minutesInADay; index++) {
                 setTimeout(
                     () => {
