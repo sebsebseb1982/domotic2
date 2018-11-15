@@ -1,4 +1,5 @@
-import {GoogleHomeService} from "../notifications/services/googleHomeService";
+import {ClientAPIDomotic} from "../api/domotic/client-api-domotic";
 
-let toto = new GoogleHomeService();
-toto.say('Coucou');
+let client = new ClientAPIDomotic();
+
+client.setPowerOutletState('A4', false);
