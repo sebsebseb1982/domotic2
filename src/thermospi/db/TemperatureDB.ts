@@ -50,7 +50,6 @@ export class TemperatureDB {
                         limit: probes.length
                     }
                 ).toArray((err, results: ITemperature[]) => {
-                    console.log(results);
                     if (err) {
                         this.logger.error('Erreur lors de la lecture de la température intérieure de la maison', err.message);
                         reject(err);

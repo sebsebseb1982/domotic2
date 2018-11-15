@@ -46,7 +46,7 @@ export class Heater {
                     this.rampDownLight();
                 }
                 this.logger.info(message);
-                this.googleHomeService.say(message);
+                //this.googleHomeService.say(message, true);
             }
         });
     }
