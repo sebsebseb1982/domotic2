@@ -36,7 +36,7 @@ export class AlarmRoutes implements IRoutable {
                             () => {
                                 this.openGate();
                             },
-                            10 * 1000
+                            30 * 1000
                         );
                     });
                 }
