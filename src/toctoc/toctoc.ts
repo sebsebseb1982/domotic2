@@ -2,6 +2,7 @@ import {Configuration} from "../configuration/configuration";
 import {SurveillanceStation} from "../synology/surveillanceStation";
 import {Logger} from "../common/logger/logger";
 import {VentilationStatusDB} from "../thermospi/db/VentilationStatusDB";
+import {Alarm} from "../security/alarm/alarm";
 
 let exec = require('child_process').exec;
 let MongoClient = require('mongodb').MongoClient;
@@ -10,12 +11,14 @@ export class TocToc {
     configuration: Configuration;
     surveillanceStation: SurveillanceStation;
     ventilationStatusDB: VentilationStatusDB;
+    alarm: Alarm;
     logger: Logger;
 
     constructor() {
         this.configuration = new Configuration();
         this.surveillanceStation = new SurveillanceStation();
         this.ventilationStatusDB = new VentilationStatusDB();
+        this.alarm = new Alarm();
         this.logger = new Logger('Toc Toc');
     }
 
@@ -92,15 +95,25 @@ export class TocToc {
         });
     }
 
+    private getCurrentPresenceWithAlarmFallback(initialError): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            this.alarm.isArmed().then((isArmed: boolean) => {
+                this.logger.error(
+                    `Erreur lors de la vérification de présence en base, présence récupérée auprès de l'alarme : Maison ${isArmed ? 'fermée' : 'ouverte'}`,
+                    initialError
+                );
+                resolve(!isArmed);
+            })
+        });
+    }
+
     getCurrentPresence(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             MongoClient.connect(this.configuration.thermospi.mongoURL, (err, db) => {
                 if (err) {
-                    this.logger.error(
-                        'Erreur lors de la vérification de présence, on considère que la maison est fermée',
-                        err
-                    );
-                    resolve(false);
+                    this.getCurrentPresenceWithAlarmFallback(err).then((isPresent) => {
+                        resolve(isPresent);
+                    });
                 } else {
                     db.collection('presences').findOne(
                         {},
@@ -109,11 +122,9 @@ export class TocToc {
                         },
                         (err, result) => {
                             if (err) {
-                                this.logger.error(
-                                    'Erreur lors de la vérification de présence, on considère que la maison est fermée',
-                                    err
-                                );
-                                resolve(false);
+                                this.getCurrentPresenceWithAlarmFallback(err).then((isPresent) => {
+                                    resolve(isPresent);
+                                });
                             } else {
                                 this.logger.debug(`Maison ${result.status ? 'ouverte' : 'fermée'}`);
                                 resolve(result.status);
