@@ -75,11 +75,12 @@ export class TemperatureDB {
                         limit: probes.length
                     }
                 ).toArray((err, results: ITemperature[]) => {
+                    //this.logger.debug(JSON.stringify(results));
                     if (err) {
                         this.logger.error('Erreur lors de la lecture de la température extérieure de la maison', err.message);
                         reject(err);
                     } else {
-                        resolve(_.mean(_.map(results, 'temperature')));
+                        resolve(_.mean(_.map(results, 'value')));
                     }
                     (db as any).close();
                 });

@@ -1,5 +1,7 @@
-import {ClientAPIDomotic} from "../api/domotic/client-api-domotic";
+import {TemperatureDB} from "../thermospi/db/TemperatureDB";
 
-let client = new ClientAPIDomotic();
+let temperatureDB = new TemperatureDB();
 
-client.setPowerOutletState('A4', false);
+temperatureDB.getCurrentOutsideTemperature().then((out) => {
+    console.log(out);
+});

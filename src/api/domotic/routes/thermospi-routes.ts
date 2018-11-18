@@ -51,7 +51,7 @@ export class ThermospiRoutes implements IRoutable {
                         res.send({
                             inside: currentInsideTemperature,
                             outside: currentOutsideTemperature,
-                            setPoint: currentSetPoint
+                            setPoint: currentSetPoint.value
                         });
                     });
                 }
