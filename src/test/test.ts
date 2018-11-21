@@ -10,7 +10,5 @@ clientHueLamp.getState('chevetSebastien').then((state) => {
 */
 
 clientHueLamp.setState('chevetSebastien', {
-    on: true,
-    red: 255,
-    bri: 255
+    on: false
 });
