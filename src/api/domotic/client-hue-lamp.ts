@@ -19,12 +19,13 @@ export class ClientHueLamp extends AbstractClientAPI {
         let options: RequestOptions = {
             ...{
                 path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`,
-                method: 'POST'
+                method: 'PUT'
             },
             ...this.defaultRequestOptions
         };
         let errorMessage = `Impossible de passer la lampe (code=${hueLampCode}) à l'état ${state}.`;
         let request = http.request(options, (response) => {
+            console.log(response);
             if (response.statusCode !== 200) {
                 this.logger.error(errorMessage, errorMessage);
             }
@@ -32,7 +33,7 @@ export class ClientHueLamp extends AbstractClientAPI {
         request.on('error', (e) => {
             this.logger.error(e.name, `${e.message}\n${e.stack}`);
         });
-        request.write(`{"state":${state}}`);
+        request.write(`{"state":${JSON.stringify(state)}}`);
         request.end();
     }
 

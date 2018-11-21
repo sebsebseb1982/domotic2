@@ -31,6 +31,8 @@ export class HueRoutes implements IRoutable {
                             .fail(this.logSetStateError)
                             .done();
                     });
+
+                    res.sendStatus(200);
                 }
             )
             .get(
