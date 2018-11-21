@@ -1,2 +1,0 @@
-
-//executeCommand('ls /home/sebastien');

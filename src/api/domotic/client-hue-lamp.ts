@@ -1,13 +1,9 @@
 import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
-import {RequestOptions} from "http";
 import * as http from "http";
+import {RequestOptions} from "http";
 import {IHueLampState} from "../../hue/hue";
 import {AbstractClientAPI} from "./routes/abstract-client-api";
-import * as _ from "lodash";
-import * as moment from "moment";
-import * as makedir from "make-dir";
-import * as fs from "fs";
 
 export class ClientHueLamp extends AbstractClientAPI {
     configuration: Configuration;
@@ -40,19 +36,23 @@ export class ClientHueLamp extends AbstractClientAPI {
         request.end();
     }
 
-    getState(hueLampCode: string): IHueLampState {
-        let options: RequestOptions = {
-            ...{
-                path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`
-            },
-            ...this.defaultRequestOptions
-        };
-        http.get(options, (response) => {
-            if (response.statusCode === 200) {
-                console.log(response);
-            }
+    getState(hueLampCode: string): Promise<IHueLampState> {
+        return new Promise<IHueLampState>((resolve, reject) => {
+            let options: RequestOptions = {
+                ...{
+                    path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`
+                },
+                ...this.defaultRequestOptions
+            };
+            http.get(options, (response) => {
+                let body = '';
+                response.on('data', function(chunk) {
+                    body += chunk;
+                });
+                response.on('end', function() {
+                    resolve(JSON.parse(body).state);
+                });
+            });
         });
-
-        return null;
     }
 }

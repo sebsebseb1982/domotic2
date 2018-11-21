@@ -1,7 +1,7 @@
-import {TemperatureDB} from "../thermospi/db/TemperatureDB";
+import {ClientHueLamp} from "../api/domotic/client-hue-lamp";
 
-let temperatureDB = new TemperatureDB();
+let clientHueLamp = new ClientHueLamp();
 
-temperatureDB.getCurrentOutsideTemperature().then((out) => {
-    console.log(out);
-});
+clientHueLamp.getState('chevetSebastien').then((test) => {
+    console.log(test);
+})

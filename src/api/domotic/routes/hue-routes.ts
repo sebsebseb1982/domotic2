@@ -47,7 +47,7 @@ export class HueRoutes implements IRoutable {
                                 res.sendStatus(500);
                             } else {
                                 res.send({
-                                    state: status
+                                    state: status.state
                                 });
                             }
                         });
