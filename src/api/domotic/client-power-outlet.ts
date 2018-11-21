@@ -2,28 +2,25 @@ import * as http from "http";
 import {RequestOptions} from "http";
 import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
-import * as _ from "lodash";
+import {AbstractClientAPI} from "./routes/abstract-client-api";
 
-export class ClientAPIDomotic {
+export class ClientPowerOutlet extends AbstractClientAPI{
     configuration: Configuration;
     logger: Logger;
 
     constructor() {
+        super();
         this.configuration = new Configuration();
-        this.logger = new Logger('ClientAPIDomotic RFXcom');
+        this.logger = new Logger('ClientPowerOutlet RFXcom');
     }
 
-    setPowerOutletState(powerOutletCode: string, state: boolean) {
-        let systemUser = _.find(this.configuration.api.users, {name: 'System'});
+    setState(powerOutletCode: string, state: boolean) {
         let options: RequestOptions = {
-            hostname: '192.168.1.52',
-            port: this.configuration.api.port,
-            path: `${this.configuration.api.root}/outlet/${powerOutletCode}`,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${new Buffer(`${systemUser.name}:${systemUser.token}`, 'utf8').toString("base64")}`
-            }
+            ...{
+                path: `${this.configuration.api.root}/outlet/${powerOutletCode}`,
+                method: 'POST'
+            },
+            ...this.defaultRequestOptions
         };
         let errorMessage = `Impossible de passer la prise (code=${powerOutletCode}) à l'état ${state}.`;
         let request = http.request(options, (response) => {

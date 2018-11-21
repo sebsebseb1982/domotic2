@@ -7,6 +7,7 @@ import {OutletsRoutes} from "./routes/outlets-routes";
 import {GateRoutes} from "./routes/gate-routes";
 import {AlarmRoutes} from "./routes/alarm-routes";
 import {ThermospiRoutes} from "./routes/thermospi-routes";
+import {HueRoutes} from "./routes/hue-routes";
 
 class App {
     public app: express.Application;
@@ -26,6 +27,7 @@ class App {
         new GateRoutes().routes(router);
         new AlarmRoutes().routes(router);
         new ThermospiRoutes().routes(router);
+        new HueRoutes().routes(router);
 
         this.app.use(this.configuration.api.root, router);
 

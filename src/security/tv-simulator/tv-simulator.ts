@@ -3,14 +3,14 @@ import moment = require("moment");
 import {Logger} from "../../common/logger/logger";
 import {TocToc} from "../../toctoc/toctoc";
 import {PowerOutletDB} from "../../power-outlet/power-outlet-db";
-import {ClientAPIDomotic} from "../../api/domotic/client-api-domotic";
+import {ClientPowerOutlet} from "../../api/domotic/client-power-outlet";
 
 export class TvSimulator {
     sunApi: SunAPI;
     logger: Logger;
     toctoc: TocToc;
     isTVSimulatorOn: boolean = true;
-    clientAPIDomotic: ClientAPIDomotic;
+    clientAPIDomotic: ClientPowerOutlet;
 
     minutesInADay: number = 24 * 60;
     tvSimulatorPowerOutletCode: string = 'A4';
@@ -19,7 +19,7 @@ export class TvSimulator {
         this.sunApi = new SunAPI();
         this.logger = new Logger('Simulateur TV');
         this.toctoc = new TocToc();
-        this.clientAPIDomotic = new ClientAPIDomotic();
+        this.clientAPIDomotic = new ClientPowerOutlet();
         this.turnTVSimulatorOff();
     }
 
@@ -53,7 +53,7 @@ export class TvSimulator {
         if (!this.isTVSimulatorOn) {
             this.isTVSimulatorOn = true;
             this.logger.notify(`Allumage du simulateur de TV`);
-            this.clientAPIDomotic.setPowerOutletState(this.tvSimulatorPowerOutletCode, true);
+            this.clientAPIDomotic.setState(this.tvSimulatorPowerOutletCode, true);
         }
     }
 
@@ -61,7 +61,7 @@ export class TvSimulator {
         if (this.isTVSimulatorOn) {
             this.isTVSimulatorOn = false;
             this.logger.notify(`Extinction du simulateur de TV`);
-            this.clientAPIDomotic.setPowerOutletState(this.tvSimulatorPowerOutletCode, false);
+            this.clientAPIDomotic.setState(this.tvSimulatorPowerOutletCode, false);
         }
     }
 }
