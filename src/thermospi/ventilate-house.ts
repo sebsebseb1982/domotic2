@@ -22,32 +22,43 @@ export class VentilateHouse {
     }
 
     check(): void {
-        this.toctoc.ifPresent(() => {
-            Promise.all([
-                this.temperatureDB.getCurrentInsideTemperature(),
-                this.temperatureDB.getCurrentOutsideTemperature(),
-                this.ventilationStatusDB.isWindowsOpened(),
-            ]).then((temperatures) => {
-                let currentInsideTemperature = temperatures[0];
-                let currentOutsideTemperature = temperatures[1];
-                let windowsOpened = temperatures[2];
+        if (this.isSummer()) {
+            this.logger.debug("Mode été");
+            this.toctoc.ifPresent(() => {
+                Promise.all([
+                    this.temperatureDB.getCurrentInsideTemperature(),
+                    this.temperatureDB.getCurrentOutsideTemperature(),
+                    this.ventilationStatusDB.isWindowsOpened(),
+                ]).then((temperatures) => {
+                    let currentInsideTemperature = temperatures[0];
+                    let currentOutsideTemperature = temperatures[1];
+                    let windowsOpened = temperatures[2];
 
-                this.logger.info(`Températures intérieures : ${currentInsideTemperature}`);
-                this.logger.info(`Températures extérieures : ${currentOutsideTemperature}`);
-                this.logger.info(`Fenêtres ouvertes : ${windowsOpened}`);
+                    this.logger.info(`Températures intérieures : ${currentInsideTemperature}`);
+                    this.logger.info(`Températures extérieures : ${currentOutsideTemperature}`);
+                    this.logger.info(`Fenêtres ouvertes : ${windowsOpened}`);
 
-                if(currentInsideTemperature > maxInsideTemperature && currentInsideTemperature > currentOutsideTemperature) {
-                    if(!windowsOpened) {
-                        this.googleHome.say('Vous pouvez ouvrir les fenêtres pour aérer !');
-                        this.ventilationStatusDB.setWindowsOpened(true);
+                    if (currentInsideTemperature > maxInsideTemperature && currentInsideTemperature > currentOutsideTemperature) {
+                        if (!windowsOpened) {
+                            this.googleHome.say('Vous pouvez ouvrir les fenêtres pour aérer !');
+                            this.ventilationStatusDB.setWindowsOpened(true);
+                        }
+                    } else {
+                        if (windowsOpened) {
+                            this.googleHome.say('Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !');
+                            this.ventilationStatusDB.setWindowsOpened(false);
+                        }
                     }
-                } else {
-                    if(windowsOpened) {
-                        this.googleHome.say('Vous devrier fermer les fenêtres si ça n\'est pas déjà fait !');
-                        this.ventilationStatusDB.setWindowsOpened(false);
-                    }
-                }
+                });
             });
-        });
+        }else {
+            this.logger.debug("Mode hiver, on ne fait rien");
+        }
+    }
+
+    private isSummer() {
+        let now = new Date();
+
+        return now.getMonth() >= 4 || now.getMonth() <= 9;
     }
 }
