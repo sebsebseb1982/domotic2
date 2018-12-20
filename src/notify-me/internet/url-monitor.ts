@@ -26,18 +26,27 @@ export class URLMonitor {
                         value = content;
                     }
 
+                    URLMonitor.logger.debug(`Valeur lue depuis la page "${value}"`);
+
                     if (value != alert.lastValue) {
-                        let message = `L'alerte "${alert.name}" vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${value}` : ''}`;
-                        URLMonitor.logger.info(message);
-                        this.googleHome.say(message, true);
-                        alert.lastValue = value;
-                        this.db.updateAlert(alert);
+                        URLMonitor.notifyAlert(alert, value);
                     } else {
                         URLMonitor.logger.info(`L'alerte "${alert.name}" n'a pas détecté de changement${alert.announceChange ? ` (valeur=${alert.lastValue})` : ''}`);
                     }
                 });
             })
         });
+    }
+
+    private static notifyAlert(alert: Alert, newValue: string) {
+        let message = `L'alerte "${alert.name}" vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
+        URLMonitor.logger.info(message);
+        this.googleHome.say(message, true);
+
+        URLMonitor.logger.notify(message);
+
+        alert.lastValue = newValue;
+        this.db.updateAlert(alert);
     }
 
     private static readURLContent(url: string): Promise<string> {
@@ -48,11 +57,9 @@ export class URLMonitor {
                     encoding: 'binary'
                 },
                 (error, response, html) => {
-                    if(error) {
-                        URLMonitor.mail.send({
-                           title:error,
-                           description:error
-                        });
+                    if (error) {
+                        URLMonitor.logger.error(error, error);
+                        reject();
                     }
                     resolve(html);
                 }
