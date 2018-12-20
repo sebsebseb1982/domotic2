@@ -43,7 +43,7 @@
   "scripts": {
     "update-presence": "node -e 'let TocToc = require(\"/home/pi/git/domotic2/src/toctoc/toctoc.js\").TocToc; new TocToc().updatePresence()'",
     "start-radio-only-if-present": "node -e 'let Radio = require(\"/home/pi/git/domotic2/src/radio/radio.js\").Radio; new Radio().startTunerOnlyIfPresent()'",
-    "notify-me-if-alarm-is-disarmed": "node -e 'let Alarm = require(\"/home/pi/git/domotic2/src/security/alarm/alarm.js\").Alarm; new Alarm().notifyIfDisarmed()'",
+    "notify-me-if-alarm-is-disarmed": "node -e 'let TocToc = require(\"/home/pi/git/domotic2/src/toctoc/toctoc.js\").TocToc; new TocToc().notifyIfDisarmed()'",
     "backup-cron": "node -e 'let Backup = require(\"/home/pi/git/domotic2/src/system/backup.js\").Backup; new Backup().backupCron()'",
     "ventilate-house": "node -e 'let VentilateHouse = require(\"/home/pi/git/domotic2/src/thermospi/ventilate-house.js\").VentilateHouse; new VentilateHouse().check()'",
     "notify-delete-cctv-archive": "node -e 'let NotifyDeleteCCTVArchive = require(\"/home/pi/git/domotic2/src/security/cctv/notify-delete-cctv-archive.js\").NotifyDeleteCCTVArchive; new NotifyDeleteCCTVArchive().notify()'",

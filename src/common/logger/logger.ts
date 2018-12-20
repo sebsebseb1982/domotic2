@@ -13,11 +13,11 @@ export class Logger {
         console.log('\x1b[32m%s\x1b[0m', `[DEBUG]: ${message}`);
     }
 
-    notify(message: string) {
+    notify(title: string, message?: string) {
         let mail = new MailService('Notify');
         mail.send({
-            title: `[${this.service}] ${message}`,
-            description: `${message}`
+            title: `[${this.service}] ${title}`,
+            description: `${message ? message : title}`
         });
     }
 

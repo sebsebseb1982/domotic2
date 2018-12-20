@@ -11,26 +11,17 @@ import {lamps} from "../../hue/hue-lamps";
 import {HueLamp} from "../../hue/hue-lamp";
 
 export class Alarm {
-    toctoc: TocToc;
     mail: MailService;
     webUILibraries: WebUILibraries;
     configuration: Configuration;
     logger: Logger;
 
     constructor() {
-        this.toctoc = new TocToc();
         let service = "Alarme";
         this.mail = new MailService(service);
         this.webUILibraries = new WebUILibraries();
         this.configuration = new Configuration();
         this.logger = new Logger(service);
-    }
-
-    notifyIfDisarmed() {
-        this.toctoc.ifPresent(() => {
-            let notification = new MyNotification('Oubli ?', `L'alarme n'est pas enclenchée, est-ce normal ?`);
-            this.mail.send(notification);
-        });
     }
 
     isArmed(): Promise<boolean> {
