@@ -35,22 +35,29 @@ export class Cerberos {
         let snapshotsFromCamerasWhichCanTriggerVoice = _.filter(snapshots, (snapshot) => snapshot.camera.canTriggerVoice);
         let snapshotsFromCamerasWhichCanTriggerNotification = _.filter(snapshots, (snapshot) => snapshot.camera.canTriggerNotification);
 
-        this.toctoc.ifAbsent(() => {
-            if (snapshotsFromCamerasWhichCanTriggerLight.length > 0) {
-                this.logger.info(`La lumière va être allumée par les caméras suivantes: ${this.getCameraNamesFromSnapshots(snapshotsFromCamerasWhichCanTriggerLight)}`);
-                this.turnLightOn();
-            }
+        if(snapshotsFromCamerasWhichCanTriggerLight.length > 0 || snapshotsFromCamerasWhichCanTriggerVoice.length > 0 || snapshotsFromCamerasWhichCanTriggerNotification.length > 0) {
+            this.logger.debug('Il y a des photos à traiter');
+            this.toctoc.updatePresence().then(() => {
+                this.toctoc.ifAbsent(() => {
+                    if (snapshotsFromCamerasWhichCanTriggerLight.length > 0) {
+                        this.logger.info(`La lumière va être allumée par les caméras suivantes: ${this.getCameraNamesFromSnapshots(snapshotsFromCamerasWhichCanTriggerLight)}`);
+                        this.turnLightOn();
+                    }
 
-            if (snapshotsFromCamerasWhichCanTriggerVoice.length > 0) {
-                this.logger.info(`La parole va être activée par les caméras suivantes: ${this.getCameraNamesFromSnapshots(snapshotsFromCamerasWhichCanTriggerVoice)}`);
-                this.speak();
-            }
+                    if (snapshotsFromCamerasWhichCanTriggerVoice.length > 0) {
+                        this.logger.info(`La parole va être activée par les caméras suivantes: ${this.getCameraNamesFromSnapshots(snapshotsFromCamerasWhichCanTriggerVoice)}`);
+                        this.speak();
+                    }
 
-            if (snapshotsFromCamerasWhichCanTriggerNotification.length > 0) {
-                this.logger.info(`Une notification va être envoyée suite à une détection des caméras suivantes: ${this.getCameraNamesFromSnapshots(snapshotsFromCamerasWhichCanTriggerNotification)}`);
-                this.notify(snapshotsFromCamerasWhichCanTriggerNotification);
-            }
-        });
+                    if (snapshotsFromCamerasWhichCanTriggerNotification.length > 0) {
+                        this.logger.info(`Une notification va être envoyée suite à une détection des caméras suivantes: ${this.getCameraNamesFromSnapshots(snapshotsFromCamerasWhichCanTriggerNotification)}`);
+                        this.notify(snapshotsFromCamerasWhichCanTriggerNotification);
+                    }
+                });
+            });
+        } else {
+            this.logger.debug(`Il n'y a aucune photo à traiter`);
+        }
     }
 
     turnLightOn() {

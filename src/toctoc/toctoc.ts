@@ -22,22 +22,26 @@ export class TocToc {
         this.logger = new Logger('Toc Toc');
     }
 
-    updatePresence() {
-        this.getCurrentPresence().then((lastPresenceStatus: boolean) => {
-            let child = exec(`${this.configuration.toctoc.scriptPath}toctoc.sh ${this.configuration.toctoc.mailAccount.address} ${this.configuration.toctoc.mailAccount.password}`);
-            child.stdout.on('data', (data) => {
-                this.logger.debug('stdout: ' + data);
-            });
-            child.stderr.on('data', (data) => {
-                this.logger.debug('stdout: ' + data);
-            });
-            child.on('close', (code) => {
-                let currentPresenceStatus = code == 1;
-                this.logger.debug(`Current presence getStatus : ${currentPresenceStatus}`);
+    updatePresence(): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.getCurrentPresence().then((lastPresenceStatus: boolean) => {
+                let child = exec(`${this.configuration.toctoc.scriptPath}toctoc.sh ${this.configuration.toctoc.mailAccount.address} ${this.configuration.toctoc.mailAccount.password}`);
+                child.stdout.on('data', (data) => {
+                    this.logger.debug('stdout: ' + data);
+                });
+                child.stderr.on('data', (data) => {
+                    this.logger.debug('stdout: ' + data);
+                });
+                child.on('close', (code) => {
+                    let currentPresenceStatus = code == 1;
+                    this.logger.debug(`Current presence getStatus : ${currentPresenceStatus}`);
 
-                if (lastPresenceStatus != currentPresenceStatus) {
-                    this.saveNewPresenceStatus(currentPresenceStatus);
-                }
+                    if (lastPresenceStatus != currentPresenceStatus) {
+                        this.saveNewPresenceStatus(currentPresenceStatus);
+                    }
+
+                    resolve(currentPresenceStatus);
+                });
             });
         });
     }
