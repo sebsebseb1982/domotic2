@@ -17,7 +17,6 @@ export class HueLampEffects {
             () => {
                 this.lamp.setState({
                     on: false,
-                    bri: 0,
                     transition: durationInMs / 2
                 });
             },
