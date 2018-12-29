@@ -38,6 +38,14 @@ export class TemperatureDB {
     };
 
     getCurrentInsideTemperature(): Promise<number> {
+        return new Promise((resolve, reject) => {
+            this.getCurrentInsideTemperatures().then((insideTemperatures: number[]) => {
+                resolve(_.mean(insideTemperatures));
+            });
+        });
+    }
+
+    getCurrentInsideTemperatures(): Promise<number[]> {
         let probes = [2, 3];
         return new Promise((resolve, reject) => {
             MongoDB.domoticDB.then((db: Db) => {
@@ -54,7 +62,7 @@ export class TemperatureDB {
                         this.logger.error('Erreur lors de la lecture de la température intérieure de la maison', err.message);
                         reject(err);
                     } else {
-                        resolve(_.mean(_.map(results, 'value')));
+                        resolve(_.map(results, 'value'));
                     }
                     (db as any).close();
                 });

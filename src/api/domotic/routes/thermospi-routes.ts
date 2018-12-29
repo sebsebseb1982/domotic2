@@ -38,18 +38,18 @@ export class ThermospiRoutes implements IRoutable {
                 '/thermostat/temperatures',
                 (req: Request, res: Response) => {
                     Promise.all([
-                        this.temperatureDB.getCurrentInsideTemperature(),
+                        this.temperatureDB.getCurrentInsideTemperatures(),
                         this.temperatureDB.getCurrentOutsideTemperature(),
                         this.setPointDB.getCurrentSetPoint()
                     ]).then((temperatures) => {
-                        let currentInsideTemperature = temperatures[0];
+                        let currentInsideTemperatures = temperatures[0];
                         let currentOutsideTemperature = temperatures[1];
                         let currentSetPoint = temperatures[2];
 
-                        this.googleHomeService.say(`Actuellement, il fait ${_.round(currentInsideTemperature, 1)}°C à l'intérieur de la maison, ${_.round(currentOutsideTemperature, 1)}°C à l'extérieur et la consigne du chauffage est réglée à ${_.round(currentSetPoint.value, 1)}°C.`);
+                        this.googleHomeService.say(`Actuellement, il fait ${_.round(currentInsideTemperatures[0], 1)}°C au rez-de-chaussée, ${_.round(currentInsideTemperatures[1], 1)}°C à l'étage, ${_.round(currentOutsideTemperature, 1)}°C à l'extérieur et la consigne du chauffage est réglée à ${_.round(currentSetPoint.value, 1)}°C.`);
 
                         res.send({
-                            inside: currentInsideTemperature,
+                            inside: currentInsideTemperatures,
                             outside: currentOutsideTemperature,
                             setPoint: currentSetPoint.value
                         });
