@@ -79,10 +79,15 @@ export interface IConfigurationTimelapse {
 }
 
 
-export interface IconfigurationAlarm {
+export interface IConfigurationAlarm {
     user: string;
     password: string;
     hostname: string;
+}
+
+export interface IConfigurationPushover {
+    user: string;
+    token: string;
 }
 
 export interface IConfiguration {
@@ -101,5 +106,6 @@ export interface IConfiguration {
     general: IGeneralConfiguration;
     cctv: ICCTVConfiguration;
     timelapse: IConfigurationTimelapse;
-    alarm: IconfigurationAlarm;
+    alarm: IConfigurationAlarm;
+    pushover: IConfigurationPushover;
 }
