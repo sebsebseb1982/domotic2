@@ -59,6 +59,6 @@ export class VentilateHouse {
     private isSummer() {
         let now = new Date();
 
-        return now.getMonth() >= 4 || now.getMonth() <= 9;
+        return now.getMonth() >= 4 && now.getMonth() <= 9;
     }
 }
