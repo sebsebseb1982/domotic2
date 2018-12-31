@@ -10,7 +10,7 @@ export class GateRoutes implements IRoutable {
     pushover: PushoverService;
 
     constructor() {
-        this.pushover = new PushoverService();
+       this.pushover = new PushoverService();
     }
 
     public routes(router: core.Router): void {
@@ -19,8 +19,15 @@ export class GateRoutes implements IRoutable {
                 '/gate',
                 (req: Request, res: Response) => {
                     RelayDB.instance.getByCode('k3').then((relay) => {
-//                        relay.impulse(100);
-                        console.log(`User : ${req.headers['user']}`);
+                        relay.impulse(100);
+
+                        let notificationMessage = `Ouverture du portail par ${req.headers['user']}`;
+
+                        this.pushover.send({
+                            title: notificationMessage,
+                            description: notificationMessage,
+                            priority: -2
+                        });
 
                         res.status(200).send({
                             message: 'GET request successfulll!!!!'
