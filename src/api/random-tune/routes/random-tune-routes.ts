@@ -4,18 +4,21 @@ import * as fs from 'fs';
 import * as _ from "lodash";
 import {Configuration} from "../../../configuration/configuration";
 import {Logger} from "../../../common/logger/logger";
+import {PushoverService} from "../../../notifications/services/pushover-service";
 
 export class RandomTuneRoutes {
     private configuration: Configuration;
     private tunes: string[];
     private randomTunePath: string;
     private logger: Logger;
+    private pushover: PushoverService;
 
     constructor() {
         this.configuration = new Configuration();
         this.tunes = fs.readdirSync(this.configuration.doorBell.randomTune.tunePath);
         this.randomTunePath = this.getRandomTunePath();
         this.logger = new Logger('RandomTune');
+        this.pushover = new PushoverService();
     }
 
     public routes(router: core.Router): void {
@@ -32,6 +35,12 @@ export class RandomTuneRoutes {
 
                     randomizeTuneDebounced();
                     this.logger.debug(`Sending ${this.randomTunePath}`);
+                    let message = `Quelqu'un vient de sonner`;
+                    this.pushover.send({
+                       title: message,
+                       description: message,
+                       priority: 1
+                    });
                     res.sendFile(this.randomTunePath);
                 }
             );
