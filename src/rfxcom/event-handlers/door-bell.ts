@@ -39,8 +39,8 @@ export class DoorBell {
         this.rfxcom.on("chime1", (evt: DoorBellEvent) => {
             this.logger.debug(JSON.stringify(evt));
             this.pushover.send({
-                title: 'Réception évènement "chime1"',
-                description: JSON.stringify(evt),
+                title: 'coucou',
+                description: 'coucou',
                 priority: 2
             });
             if (evt.id === this.configuration.doorBell.buttonID) {
