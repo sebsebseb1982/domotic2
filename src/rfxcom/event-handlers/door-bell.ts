@@ -41,7 +41,7 @@ export class DoorBell {
             this.pushover.send({
                 title: 'Réception évènement "chime1"',
                 description: JSON.stringify(evt),
-                priority: -2
+                priority: 2
             });
             if (evt.id === this.configuration.doorBell.buttonID) {
                 this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
