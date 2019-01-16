@@ -4,7 +4,6 @@ import * as fs from 'fs';
 import * as _ from "lodash";
 import {Configuration} from "../../../configuration/configuration";
 import {Logger} from "../../../common/logger/logger";
-import {PushoverService} from "../../../notifications/services/pushover-service";
 
 export class RandomTuneRoutes {
     private configuration: Configuration;
