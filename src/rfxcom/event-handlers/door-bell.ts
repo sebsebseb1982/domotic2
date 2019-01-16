@@ -38,6 +38,11 @@ export class DoorBell {
     listen() {
         this.rfxcom.on("chime1", (evt: DoorBellEvent) => {
             this.logger.debug(JSON.stringify(evt));
+            this.pushover.send({
+                title: 'coucou',
+                description: 'tutu',
+                priority: 2
+            });
             if (evt.id === this.configuration.doorBell.buttonID) {
                 this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
                 let message = `Quelqu'un vient de sonner`;
