@@ -3,8 +3,8 @@ import {Configuration} from "../../configuration/configuration";
 import {MailService} from "../../notifications/services/mailService";
 import {Logger} from "../../common/logger/logger";
 import {TocToc} from "../../toctoc/toctoc";
-import {lamps} from "../../hue/hue-lamps";
 import {HueLamp} from "../../hue/hue-lamp";
+import {PushoverService} from "../../notifications/services/pushover-service";
 
 interface DoorBellEvent {
     "subtype": number,
@@ -22,6 +22,7 @@ export class DoorBell {
     logger: Logger;
     toctoc: TocToc;
     lampSalon: HueLamp;
+    pushover: PushoverService;
 
     constructor(private rfxcom: any) {
         this.configuration = new Configuration();
@@ -31,17 +32,28 @@ export class DoorBell {
         this.logger = new Logger(service);
         this.toctoc = new TocToc();
         this.lampSalon = new HueLamp('salon');
+        this.pushover = new PushoverService();
     }
 
     listen() {
         this.rfxcom.on("chime1", (evt: DoorBellEvent) => {
             this.logger.debug(JSON.stringify(evt));
+            this.pushover.send({
+                title: 'Réception évènement "chime1"',
+                description: JSON.stringify(evt),
+                priority: -2
+            });
             if (evt.id === this.configuration.doorBell.buttonID) {
                 this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
-                let message = 'Quelqu\'un vient de sonner';
+                let message = `Quelqu'un vient de sonner`;
                 this.mailService.send({
                     title: message,
                     description: message
+                });
+                this.pushover.send({
+                    title: message,
+                    description: message,
+                    priority: 1
                 });
                 this.toctoc.ifPresent(() => {
                     this.simulatePresence();
