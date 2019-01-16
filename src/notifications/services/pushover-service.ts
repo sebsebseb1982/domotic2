@@ -1,14 +1,19 @@
 import * as https from "https";
 import {MyNotification} from "../myNotification";
 import {Configuration} from "../../configuration/configuration";
+import {Logger} from "../../common/logger/logger";
 
 export class PushoverService {
     configuration : Configuration;
+    logger: Logger;
     constructor () {
         this.configuration = new Configuration();
+        this.logger = new Logger("Pushover");
     }
 
     send(notification: MyNotification) {
+        this.logger.debug(`Envoi du message ${JSON.stringify(notification)}`);
+
         let postData = JSON.stringify({
             token: this.configuration.pushover.token,
             user: this.configuration.pushover.user,
