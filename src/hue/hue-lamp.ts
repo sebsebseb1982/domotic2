@@ -32,7 +32,7 @@ export class HueLamp {
     }
 
     setState(state: IHueLampState, durationInMs?: number) {
-        this.logger.debug(`HueLamp.setState(${JSON.stringify(state)})`);
+        this.logger.debug(`HueLamp.setState(${JSON.stringify(state)}, ${durationInMs})`);
         if(durationInMs) {
             this.getState().then((previousLampState: IHueLampState) => {
                 this.client.setState(this.hueLampCode, state);
