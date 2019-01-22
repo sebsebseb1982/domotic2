@@ -42,9 +42,9 @@ export class DoorBell {
         this.rfxcom.on("chime1", (evt: DoorBellEvent) => {
             this.logger.debug(JSON.stringify(evt));
             if (evt.id === this.configuration.doorBell.buttonID) {
-                // this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
+                this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
                 let message = `Quelqu'un vient de sonner`;
-                /*this.mailService.send({
+                this.mailService.send({
                     title: message,
                     description: message
                 });
@@ -52,7 +52,7 @@ export class DoorBell {
                     title: message,
                     description: message,
                     priority: 1
-                });*/
+                });
                 this.toctoc.ifPresent(() => {
                     this.simulatePresence();
                 });
