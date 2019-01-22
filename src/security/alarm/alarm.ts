@@ -47,8 +47,13 @@ export class Alarm {
     }
 
     arm(): Promise<void> {
+        this.logger.startRecordSession();
         this.logger.info('Armement alarme');
-        return this.execute('r');
+        let promise = this.execute('r');
+        promise.then(() => {
+            this.logger.stopRecordSession();
+        });
+        return promise;
     }
 
     disarm(): Promise<void> {

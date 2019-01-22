@@ -32,6 +32,7 @@ export class HueLamp {
     }
 
     setState(state: IHueLampState) {
+        this.logger.debug(`HueLamp.setState(${JSON.stringify(state)})`);
         this.client.setState(this.hueLampCode, state);
     }
 

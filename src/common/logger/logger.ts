@@ -2,15 +2,22 @@ import {MailService} from "../../notifications/services/mailService";
 
 export class Logger {
 
-    constructor(private service: string) {}
+    private session: string;
+    private recordSession: boolean;
 
+    constructor(private service: string) {
+    }
 
     info(message: string) {
-        console.log('\x1b[34m%s\x1b[0m', `[INFO] : ${message}`);
+        let formattedMessage = `[INFO] : ${message}`;
+        console.log('\x1b[34m%s\x1b[0m', formattedMessage);
+        this.appendToSession(formattedMessage);
     }
 
     debug(message: string) {
-        console.log('\x1b[32m%s\x1b[0m', `[DEBUG]: ${message}`);
+        let formattedMessage = `[DEBUG]: ${message}`;
+        console.log('\x1b[32m%s\x1b[0m', formattedMessage);
+        this.appendToSession(formattedMessage);
     }
 
     notify(title: string, message?: string) {
@@ -22,7 +29,9 @@ export class Logger {
     }
 
     warn(message: string, warn: string) {
-        console.log('\x1b[33m%s\x1b[0m', `[WARN] : ${message}`);
+        let formattedMessage = `[WARN] : ${message}`;
+        console.log('\x1b[33m%s\x1b[0m', formattedMessage);
+        this.appendToSession(formattedMessage);
         let mail = new MailService('WARN');
         mail.send({
             title: `[${this.service}] ${message}`,
@@ -31,7 +40,9 @@ export class Logger {
     }
 
     error(message: string, err: string) {
-        console.log('\x1b[31m%s\x1b[0m', `[ERROR]: ${message}\n${err}`);
+        let formattedMessage = `[ERROR]: ${message}\n${err}`;
+        console.log('\x1b[31m%s\x1b[0m', formattedMessage);
+        this.appendToSession(formattedMessage);
         let mail = new MailService('ERROR');
         mail.send({
             title: `[${this.service}] ${message}`,
@@ -39,9 +50,25 @@ export class Logger {
         });
     }
 
+    startRecordSession() {
+        this.session = '';
+        this.recordSession = true;
+    }
+
+    stopRecordSession() {
+        this.recordSession = false;
+        this.notify('Log', this.session);
+    }
+
     private getStackTrace() {
         let obj = {};
         Error.captureStackTrace(obj, this.getStackTrace);
         return (obj as any).stack;
     };
+
+    private appendToSession(message: string) {
+        if (this.recordSession) {
+            this.session = `${this.session}<br/>${message}`;
+        }
+    }
 }

@@ -1,14 +1,7 @@
-import {ClientHueLamp} from "../api/domotic/client-hue-lamp";
+import {PushoverService} from "../notifications/services/pushover-service";
+import {Alarm} from "../security/alarm/alarm";
 
-let clientHueLamp = new ClientHueLamp();
+let pushover = new PushoverService();
 
-
-/*
-clientHueLamp.getState('chevetSebastien').then((state) => {
-    console.log(state);
-});
-*/
-
-clientHueLamp.setState('chevetSebastien', {
-    on: false
-});
+let alarm = new Alarm();
+alarm.disarm();
