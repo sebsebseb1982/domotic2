@@ -3,8 +3,9 @@ import {RequestOptions} from "http";
 import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
 import {AbstractClientAPI} from "./routes/abstract-client-api";
+import {duration} from "moment";
 
-export class ClientPowerOutlet extends AbstractClientAPI{
+export class ClientPowerOutlet extends AbstractClientAPI {
     configuration: Configuration;
     logger: Logger;
 
@@ -33,5 +34,23 @@ export class ClientPowerOutlet extends AbstractClientAPI{
         });
         request.write(`{"state":${state}}`);
         request.end();
+    }
+
+    on(powerOutletCode: string) {
+        this.setState(powerOutletCode, true);
+    }
+
+    off(powerOutletCode: string) {
+        this.setState(powerOutletCode, false);
+    }
+
+    impulse(powerOutletCode: string, durationInMs: number) {
+        this.on(powerOutletCode);
+        setInterval(
+            () => {
+                this.off(powerOutletCode);
+            },
+            durationInMs
+        )
     }
 }

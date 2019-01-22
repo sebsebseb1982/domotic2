@@ -5,14 +5,14 @@ import {Alarm} from "../../../security/alarm/alarm";
 import {DenonAVR} from "../../../avr/denonAVR";
 import {Configuration} from "../../../configuration/configuration";
 import {RelayDB} from "../../../relay/relay-db";
-import {PowerOutletDB} from "../../../power-outlet/power-outlet-db";
+import {ClientPowerOutlet} from "../client-power-outlet";
 
 export class AlarmRoutes implements IRoutable {
 
     alarm: Alarm;
     avr: DenonAVR;
     configuration: Configuration;
-    powerOutletDB: PowerOutletDB;
+    clientPowerOutlet: ClientPowerOutlet;
 
     gateRelayCode: string = 'k3';
     floorLampPowerOutletCode: string = 'A1';
@@ -21,7 +21,7 @@ export class AlarmRoutes implements IRoutable {
         this.alarm = new Alarm();
         this.configuration = new Configuration();
         this.avr = new DenonAVR(this.configuration.avr);
-        this.powerOutletDB = new PowerOutletDB();
+        this.clientPowerOutlet = new ClientPowerOutlet();
     }
 
     public routes(router: core.Router): void {
@@ -50,8 +50,6 @@ export class AlarmRoutes implements IRoutable {
     }
 
     private floorLampOff() {
-        this.powerOutletDB.getByCode(this.floorLampPowerOutletCode).then((floorLamp) => {
-            floorLamp.off();
-        });
+        this.clientPowerOutlet.off(this.floorLampPowerOutletCode);
     }
 }

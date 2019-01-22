@@ -5,7 +5,7 @@ import {Logger} from "../../common/logger/logger";
 import {TocToc} from "../../toctoc/toctoc";
 import {HueLamp} from "../../hue/hue-lamp";
 import {PushoverService} from "../../notifications/services/pushover-service";
-import {PowerOutletDB} from "../../power-outlet/power-outlet-db";
+import {ClientPowerOutlet} from "../../api/domotic/client-power-outlet";
 
 interface DoorBellEvent {
     "subtype": number,
@@ -24,7 +24,7 @@ export class DoorBell {
     toctoc: TocToc;
     lampSalon: HueLamp;
     pushover: PushoverService;
-    db: PowerOutletDB;
+    clientPowerOutlet: ClientPowerOutlet;
 
     constructor(private rfxcom: any) {
         this.configuration = new Configuration();
@@ -35,7 +35,7 @@ export class DoorBell {
         this.toctoc = new TocToc();
         this.lampSalon = new HueLamp('salon');
         this.pushover = new PushoverService();
-        this.db = new PowerOutletDB();
+        this.clientPowerOutlet = new ClientPowerOutlet();
     }
 
     listen() {
@@ -83,9 +83,7 @@ export class DoorBell {
     }
 
     private turnOnLivingRoomFloorLamp() {
-        this.db.getByCode('A1').then((powerOutlet) => {
-            powerOutlet.impulse(this.getRandomNumberBetween(15, 30) * 1000)
-        });
+        this.clientPowerOutlet.impulse('A1', this.getRandomNumberBetween(15, 30) * 1000);
     }
 
     private getRandomNumberBetween(start: number, end: number): number {
