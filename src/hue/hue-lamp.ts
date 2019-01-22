@@ -31,9 +31,22 @@ export class HueLamp {
         });
     }
 
-    setState(state: IHueLampState) {
+    setState(state: IHueLampState, durationInMs?: number) {
         this.logger.debug(`HueLamp.setState(${JSON.stringify(state)})`);
-        this.client.setState(this.hueLampCode, state);
+        if(durationInMs) {
+            this.getState().then((previousLampState: IHueLampState) => {
+                this.client.setState(this.hueLampCode, state);
+
+                setTimeout(
+                    () => {
+                        this.client.setState(this.hueLampCode, previousLampState);
+                    },
+                    durationInMs
+                );
+            });
+        } else {
+            this.client.setState(this.hueLampCode, state);
+        }
     }
 
     getState(): Promise<IHueLampState> {
