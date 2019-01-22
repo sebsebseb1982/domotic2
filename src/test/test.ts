@@ -1,7 +1,7 @@
-import {PushoverService} from "../notifications/services/pushover-service";
-import {Alarm} from "../security/alarm/alarm";
+import {HueLamp} from "../hue/hue-lamp";
 
-let pushover = new PushoverService();
+let hueLamp = new HueLamp('salon');
 
-let alarm = new Alarm();
-alarm.disarm();
+hueLamp.setState({
+    on: true
+}, 1000);

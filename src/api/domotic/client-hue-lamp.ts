@@ -29,6 +29,7 @@ export class ClientHueLamp extends AbstractClientAPI {
                 this.logger.error(errorMessage, errorMessage);
             }
         });
+
         request.on('error', (e) => {
             this.logger.error(e.name, `${e.message}\n${e.stack}`);
         });
@@ -40,19 +41,29 @@ export class ClientHueLamp extends AbstractClientAPI {
         return new Promise<IHueLampState>((resolve, reject) => {
             let options: RequestOptions = {
                 ...{
-                    path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`
+                    path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`,
+                    method: 'GET'
                 },
                 ...this.defaultRequestOptions
             };
-            http.get(options, (response) => {
-                let body = '';
-                response.on('data', function(chunk) {
-                    body += chunk;
+            let request = http.request(options, (response) => {
+                if (response.statusCode !== 200) {
+                    let errorMessage = `Impossible de lire l'état de la lampe (code=${hueLampCode}).`;
+                    this.logger.error(errorMessage, errorMessage);
+                }
+                let responseBody = '';
+                response.on('data', (chunk) => {
+                    responseBody += chunk;
                 });
-                response.on('end', function() {
-                    resolve(JSON.parse(body).state);
+                response.on('end', () => {
+                    resolve(JSON.parse(responseBody).state);
                 });
             });
+
+            request.on('error', (e) => {
+                this.logger.error(e.name, `${e.message}\n${e.stack}`);
+            });
+            request.end();
         });
     }
 }
