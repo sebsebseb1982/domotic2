@@ -46,7 +46,7 @@ export class ClientPowerOutlet extends AbstractClientAPI {
 
     impulse(powerOutletCode: string, durationInMs: number) {
         this.on(powerOutletCode);
-        setInterval(
+        setTimeout(
             () => {
                 this.off(powerOutletCode);
             },
