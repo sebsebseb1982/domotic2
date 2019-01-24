@@ -39,17 +39,17 @@ export class Cerberos2 {
     coucou() {
 
         let speakDebounced = _.debounce(
-            this.speak,
+            this.speak.bind(this),
             10*1000
         );
 
         let notifyDebounced = _.debounce(
-            this.notify,
+            this.notify.bind(this),
             10*1000
         );
 
         let turnLightOnDebounced = _.debounce(
-            this.turnLightOn,
+            this.turnLightOn.bind(this),
             10*1000
         );
 
