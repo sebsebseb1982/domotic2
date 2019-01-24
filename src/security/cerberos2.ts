@@ -21,7 +21,7 @@ export class Cerberos2 {
     toctoc: TocToc;
     lampSalon: HueLamp;
     configuration: Configuration;
-    snapshots: Snapshot[];
+    snapshots: Snapshot[] = [];
 
     constructor() {
         this.nLastMinutes = yargs.argv.nLastMinutes ? yargs.argv.nLastMinutes : 2;
