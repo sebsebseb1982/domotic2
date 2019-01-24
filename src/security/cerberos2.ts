@@ -10,6 +10,7 @@ import {TocToc} from "../toctoc/toctoc";
 import {HueLamp} from "../hue/hue-lamp";
 import * as watch from 'node-watch';
 import {Configuration} from "../configuration/configuration";
+import * as fs from "fs";
 
 export class Cerberos2 {
     presenceDetector: PresenceDetector;
@@ -20,6 +21,7 @@ export class Cerberos2 {
     toctoc: TocToc;
     lampSalon: HueLamp;
     configuration: Configuration;
+    snapshots: Snapshot[];
 
     constructor() {
         this.nLastMinutes = yargs.argv.nLastMinutes ? yargs.argv.nLastMinutes : 2;
@@ -33,14 +35,53 @@ export class Cerberos2 {
         this.configuration = new Configuration();
     }
 
+
     coucou() {
+
+        let speakDebounced = _.debounce(
+            this.speak,
+            10*1000
+        );
+
+        let notifyDebounced = _.debounce(
+            this.notify,
+            10*1000
+        );
+
+        let turnLightOnDebounced = _.debounce(
+            this.turnLightOn,
+            10*1000
+        );
 
         this.configuration.cameras.forEach(camera => {
             watch(
                 camera.snapshotPath,
-                {recursive: true},
-                (evt, name) => {
-                    this.logger.debug(`La caméra ${camera.label} vient de détecter quelquechose (${name}\n${evt}).`);
+                {
+                    recursive: true,
+                    filter: /\.jpg$/
+                },
+                (evt, snapshotPath) => {
+                    if (evt == 'update') {
+                        this.logger.debug(`La caméra ${camera.label} vient de détecter quelquechose (${snapshotPath}).`);
+
+                        this.snapshots.push({
+                            camera: camera,
+                            path: snapshotPath,
+                            date: fs.statSync(snapshotPath).birthtime
+                        });
+
+                        if(camera.canTriggerLight) {
+                            turnLightOnDebounced();
+                        }
+
+                        if(camera.canTriggerNotification) {
+                            notifyDebounced();
+                        }
+
+                        if(camera.canTriggerVoice) {
+                            speakDebounced();
+                        }
+                    }
                 }
             );
         });
@@ -103,12 +144,14 @@ export class Cerberos2 {
         this.googleHome.say("Il y a quelqu'un dehors, appelle la police !");
     }
 
-    notify(snapshots: Snapshot[]) {
+    notify() {
         this.notifier.send({
-            title: `${snapshots.length} détection(s) de présence`,
-            description: `<p>Présence détectée sur les caméras suivantes :</p>${new HTML().formatList(this.getCameraNamesFromSnapshots(snapshots))}`,
-            attachments: _.map(snapshots, 'path')
+            title: `${this.snapshots.length} détection(s) de présence`,
+            description: `<p>Présence détectée sur les caméras suivantes :</p>${new HTML().formatList(this.getCameraNamesFromSnapshots(this.snapshots))}`,
+            attachments: _.map(this.snapshots, 'path')
         });
+
+        this.snapshots = [];
     }
 
     private getCameraNamesFromSnapshots(snapshots: Snapshot[]): string[] {
