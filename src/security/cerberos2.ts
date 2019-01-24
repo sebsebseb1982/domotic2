@@ -127,6 +127,7 @@ export class Cerberos2 {
     }
 
     private turnHueLightOn() {
+        this.logger.debug('A');
         this.lampSalon.setState({
             on: true,
             bri: 255,
@@ -141,10 +142,12 @@ export class Cerberos2 {
     }
 
     speak() {
+        this.logger.debug('B');
         this.googleHome.say("Il y a quelqu'un dehors, appelle la police !");
     }
 
     notify() {
+        this.logger.debug('C');
         this.notifier.send({
             title: `${this.snapshots.length} détection(s) de présence`,
             description: `<p>Présence détectée sur les caméras suivantes :</p>${new HTML().formatList(this.getCameraNamesFromSnapshots(this.snapshots))}`,
