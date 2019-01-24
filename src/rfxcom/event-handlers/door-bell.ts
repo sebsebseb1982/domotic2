@@ -53,7 +53,7 @@ export class DoorBell {
                     description: message,
                     priority: 1
                 });
-                this.toctoc.ifPresent(() => {
+                this.toctoc.ifAbsent(() => {
                     this.simulatePresence();
                 });
             }
@@ -64,8 +64,11 @@ export class DoorBell {
         let delayBeforeLight = this.getRandomNumberBetween(10, 15) * 1000;
         setTimeout(
             () => {
-                this.turnOnLivingRoomLamp();
-                this.turnOnLivingRoomFloorLamp();
+                if(Math.random() >= 0.5) {
+                    this.turnOnLivingRoomFloorLamp();
+                } else {
+                    this.turnOnLivingRoomLamp();
+                }
             },
             delayBeforeLight
         );

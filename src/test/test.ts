@@ -1,7 +1,5 @@
-import {HueLamp} from "../hue/hue-lamp";
+import {GoogleHomeService} from "../notifications/services/googleHomeService";
 
-let hueLamp = new HueLamp('salon');
+let googleHomeService = new GoogleHomeService();
 
-hueLamp.setState({
-    on: true
-}, 1000);
+googleHomeService.say("Proute");

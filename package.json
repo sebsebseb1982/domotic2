@@ -18,6 +18,7 @@
     "mongodb": "^2.2.12",
     "node-hue-api": "^2.4.2",
     "node-rest-client": "^3.1.0",
+    "node-watch": "^0.6.0",
     "nodemailer": "^4.6.4",
     "ping": "^0.2.2",
     "request": "^2.85.0",
