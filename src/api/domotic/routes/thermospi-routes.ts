@@ -45,7 +45,7 @@ export class ThermospiRoutes implements IRoutable {
             .post(
                 '/thermostat/setpoint',
                 (req: Request, res: Response) => {
-                    this.logger.debug(`req.body=${req.body}`);
+                    this.logger.debug(`req.body=${JSON.stringify(req.body)}`);
                     this.logger.debug(`req.body.value=${req.body.value}`);
                     let temperature = parseFloat(req.body.value);
                     this.setPointDB.addSetPoint(temperature).then(() => {
