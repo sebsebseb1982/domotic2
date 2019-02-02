@@ -43,8 +43,8 @@ export class ThermospiRoutes implements IRoutable {
                 '/thermostat/setpoint',
                 (req: Request, res: Response) => {
                     let temperature = parseFloat(req.body.value);
-                    this.setPointDB.addSetPoint(temperature).then((newSetPoint: number) => {
-                        let message = `La consigne du chauffage est à ${newSetPoint}°C`;
+                    this.setPointDB.addSetPoint(temperature).then(() => {
+                        let message = `La consigne du chauffage est à ${temperature}°C`;
                         this.googleHomeService.say(message);
                         this.thermostat.update();
 
