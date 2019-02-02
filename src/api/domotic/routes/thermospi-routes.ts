@@ -30,6 +30,7 @@ export class ThermospiRoutes implements IRoutable {
             .put(
                 '/thermostat/setpoint',
                 (req: Request, res: Response) => {
+                    this.logger.debug(`req.body=${JSON.stringify(req.body)}`);
                     let temperatureDelta = parseFloat(req.body.delta);
                     this.setPointDB.increment(temperatureDelta).then((newSetPoint: ISetPoint) => {
                         let message = `La consigne du chauffage est à ${newSetPoint.value}°C`;
@@ -46,7 +47,6 @@ export class ThermospiRoutes implements IRoutable {
                 '/thermostat/setpoint',
                 (req: Request, res: Response) => {
                     this.logger.debug(`req.body=${JSON.stringify(req.body)}`);
-                    this.logger.debug(`req.body.value=${req.body.value}`);
                     let temperature = parseFloat(req.body.value);
                     this.setPointDB.addSetPoint(temperature).then(() => {
                         let message = `La consigne du chauffage est à ${temperature}°C`;
