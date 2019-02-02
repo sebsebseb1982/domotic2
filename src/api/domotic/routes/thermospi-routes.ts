@@ -27,11 +27,31 @@ export class ThermospiRoutes implements IRoutable {
             .put(
                 '/thermostat/setpoint',
                 (req: Request, res: Response) => {
-                    let temperatureDelta = parseFloat(req.body.value);
+                    let temperatureDelta = parseFloat(req.body.delta);
                     this.setPointDB.increment(temperatureDelta).then((newSetPoint: ISetPoint) => {
-                        this.googleHomeService.say(`La consigne du chauffage est à ${newSetPoint.value}°C`);
+                        let message = `La consigne du chauffage est à ${newSetPoint.value}°C`;
+                        this.googleHomeService.say(message);
+                        this.thermostat.update();
+
+                        res.status(200).send({
+                            message: message
+                        });
                     });
-                    this.thermostat.update();
+                }
+            )
+            .post(
+                '/thermostat/setpoint',
+                (req: Request, res: Response) => {
+                    let temperature = parseFloat(req.body.value);
+                    this.setPointDB.addSetPoint(temperature).then((newSetPoint: number) => {
+                        let message = `La consigne du chauffage est à ${newSetPoint}°C`;
+                        this.googleHomeService.say(message);
+                        this.thermostat.update();
+
+                        res.status(200).send({
+                            message: message
+                        });
+                    });
                 }
             )
             .get(
