@@ -7,6 +7,7 @@ import {GoogleHomeService} from "../../../notifications/services/googleHomeServi
 import {ISetPoint} from "../../../thermospi/models/setpoint";
 import {TemperatureDB} from "../../../thermospi/db/TemperatureDB";
 import * as _ from "lodash";
+import {Logger} from "../../../common/logger/logger";
 
 export class ThermospiRoutes implements IRoutable {
 
@@ -14,12 +15,14 @@ export class ThermospiRoutes implements IRoutable {
     temperatureDB: TemperatureDB;
     thermostat: Thermostat;
     googleHomeService: GoogleHomeService;
+    logger: Logger;
 
     constructor() {
         this.setPointDB = new SetPointDB();
         this.temperatureDB = new TemperatureDB();
         this.thermostat = new Thermostat();
         this.googleHomeService = new GoogleHomeService();
+        this.logger = new Logger("Thermospi routes");
     }
 
     public routes(router: core.Router): void {
@@ -42,6 +45,8 @@ export class ThermospiRoutes implements IRoutable {
             .post(
                 '/thermostat/setpoint',
                 (req: Request, res: Response) => {
+                    this.logger.debug(`req.body=${req.body}`);
+                    this.logger.debug(`req.body.value=${req.body.value}`);
                     let temperature = parseFloat(req.body.value);
                     this.setPointDB.addSetPoint(temperature).then(() => {
                         let message = `La consigne du chauffage est à ${temperature}°C`;
