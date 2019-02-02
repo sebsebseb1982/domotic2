@@ -1,13 +1,10 @@
-import {TocToc} from "../../toctoc/toctoc";
 import {MailService} from "../../notifications/services/mailService";
-import {MyNotification} from "../../notifications/myNotification";
 import {WebUILibraries} from "./web-ui-libraries";
 import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
 import * as request from 'request';
 import * as _ from "lodash";
 import {HueLampEffects} from "../../hue/hue-lamp-effects";
-import {lamps} from "../../hue/hue-lamps";
 import {HueLamp} from "../../hue/hue-lamp";
 
 export class Alarm {
@@ -15,6 +12,7 @@ export class Alarm {
     webUILibraries: WebUILibraries;
     configuration: Configuration;
     logger: Logger;
+    timeout: number = 10 * 1000 /*ms*/;
 
     constructor() {
         let service = "Alarme";
@@ -31,7 +29,8 @@ export class Alarm {
                 this.logger.debug(`Ouverture de ${uri}`);
                 request.get(
                     {
-                        uri: uri
+                        uri: uri,
+                        timeout: this.timeout
                     },
                     (error, response: request.Response, html) => {
                         if (error) {
@@ -69,7 +68,8 @@ export class Alarm {
                     this.logger.debug(`Ouverture de ${uri}`);
                     request.get(
                         {
-                            uri: uri
+                            uri: uri,
+                            timeout: this.timeout
                         },
                         (error, response: request.Response, html) => {
                             if (error || response.statusCode != 200) {
@@ -92,7 +92,8 @@ export class Alarm {
             this.logger.debug(`Ouverture de ${uri}`);
             request.get(
                 {
-                    uri: uri
+                    uri: uri,
+                    timeout: this.timeout
                 },
                 (error, response: request.Response, html) => {
                     if (error) {
@@ -147,7 +148,8 @@ export class Alarm {
                 this.logger.debug(`Ouverture de ${uri}`);
                 request.get(
                     {
-                        uri: uri
+                        uri: uri,
+                        timeout: this.timeout
                     },
                     (error, response: request.Response, html) => {
                         if (error) {
@@ -169,7 +171,8 @@ export class Alarm {
             this.logger.debug(`Ouverture de ${uri}`);
             request.get(
                 {
-                    uri: uri
+                    uri: uri,
+                    timeout: this.timeout
                 },
                 (error, response: request.Response, html) => {
                     if (error) {
@@ -192,7 +195,8 @@ export class Alarm {
                 this.logger.debug(`Authentification en cours ...`);
                 request.get(
                     {
-                        uri: uri
+                        uri: uri,
+                        timeout: this.timeout
                     },
                     (error, response: request.Response, html) => {
                         if (_.includes(html, 'prg=4')) {
