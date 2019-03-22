@@ -1,5 +1,3 @@
-import {GoogleHomeService} from "../notifications/services/googleHomeService";
+import {URLMonitor} from "../notify-me/internet/url-monitor";
 
-let googleHomeService = new GoogleHomeService();
-
-googleHomeService.say("Proute");
+URLMonitor.lookForChange();

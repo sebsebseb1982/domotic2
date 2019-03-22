@@ -39,11 +39,12 @@ export class URLMonitor {
     }
 
     private static notifyAlert(alert: Alert, newValue: string) {
-        let message = `L'alerte "${alert.name}" vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
-        URLMonitor.logger.info(message);
-        this.googleHome.say(message, true);
+        let title = `L'alerte "${alert.name}" vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
+        let message = `L'alerte <a href="${alert.url}">${alert.name}</a> vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
+        URLMonitor.logger.info(title);
+        this.googleHome.say(title, true);
 
-        URLMonitor.logger.notify(message);
+        URLMonitor.logger.notify(title, message);
 
         alert.lastValue = newValue;
         this.db.updateAlert(alert);

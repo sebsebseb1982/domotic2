@@ -11,12 +11,12 @@ export class LaChaineMeteo {
             request.get(
                 {
                     uri: urlPageVille,
-                    encoding: 'binary'
+                    encoding: 'utf-8'
                 },
                 (error, response, html) => {
                     let $ = cheerio.load(html);
                     resolve({
-                        texte: $('#texte_description').text().trim().replace(/\s*/g, ' ')
+                        texte: $('.textatorDay').text().trim().replace(/([\n\r]|[\s]{2,})/g, ' ')
                     });
                 }
             );
