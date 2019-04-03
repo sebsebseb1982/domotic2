@@ -65,7 +65,7 @@ export class TemperatureDB {
                 MongoDB.domoticDB.then((db: Db) => {
                     db.collection('temperatures').find(
                         {
-                            location: sensorLocation
+                            sensorId: {$in: _.map(sensors, 'id')}
                         },
                         {
                             sort: [['date', 'desc']],
