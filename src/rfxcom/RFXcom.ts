@@ -1,6 +1,7 @@
 import {Logger} from "../common/logger/logger";
 import {DoorBell} from "./event-handlers/door-bell";
 import {TemperatureSensor} from "./event-handlers/temperature-sensor";
+import {TemperatureHumiditySensor} from "./event-handlers/temperature-humidity-sensor";
 
 let rfxcom = require('rfxcom');
 
@@ -17,6 +18,7 @@ export class RFXcom {
 
             new DoorBell(RFXcom.instance).listen();
             new TemperatureSensor(RFXcom.instance).listen();
+            new TemperatureHumiditySensor(RFXcom.instance).listen();
         }
 
       return RFXcom.instance;
