@@ -1,6 +1,5 @@
 export interface ITemperature {
     value: number;
-    probe: number;
-    batteryLevel?: number;
+    sensorId: string;
     date: Date;
 }

@@ -21,7 +21,7 @@ export class HumidityDB {
             _.forEach(
                 humidityMeasures,
                 (aHumidityMeasure) => {
-                    this.logger.debug(`Enregistrement de la mesure d'humidité ${aHumidityMeasure.value} lue sur la sonde ${aHumidityMeasure.probe}`)
+                    this.logger.debug(`Enregistrement de la mesure d'humidité ${aHumidityMeasure.value}% lue sur la sonde ${aHumidityMeasure.probe}`)
                     batch.insert(aHumidityMeasure);
                 }
             );
