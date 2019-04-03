@@ -29,6 +29,16 @@ export class SensorDB {
         });
     }*/
 
+    getById(id: string): Promise<ISensor> {
+        return new Promise<ISensor>((resolve, reject) => {
+            this.getAll().then((sensors) => {
+                resolve(_.filter(sensors, {
+                   id:id
+                })[0]);
+            });
+        });
+    }
+
     getByTypeAndLocation(type: SensorType, location: SensorLocation): Promise<ISensor[]> {
         return new Promise<ISensor[]>((resolve, reject) => {
             this.getAll().then((sensors) => {
