@@ -18,23 +18,26 @@ export class TemperatureHumiditySensor {
 
     listen() {
         this.rfxcom.on("temperaturehumidity1", (event) => {
-            this.logger.debug(`Sonde de température/humidité ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
-
             SensorDB.instance.getById(event.id).then((sensor: ISensor) => {
-                MeasureHistory.instance.refreshIfPossible(sensor, () => {
-                    this.temperatureDB.saveTemperatures([{
-                        value: event.temperature,
-                        sensorId: sensor.id,
-                        date: new Date()
-                    }]);
+                if(sensor !== undefined){
+                    this.logger.debug(`Réception d'un signal radio du capteur de température/humidité "${sensor.label}" ${event.temperature}°C/${event.humidity}% (batterie = ${event.batteryLevel})`);
+                    MeasureHistory.instance.refreshIfPossible(sensor, () => {
+                        this.temperatureDB.saveTemperatures([{
+                            value: event.temperature,
+                            sensorId: sensor.id,
+                            date: new Date()
+                        }]);
 
-                    this.humidityDB.saveMeasures([{
-                        value: event.humidity,
-                        sensorId: sensor.id,
-                        status: event.humidityStatus,
-                        date: new Date()
-                    }]);
-                });
+                        this.humidityDB.saveMeasures([{
+                            value: event.humidity,
+                            sensorId: sensor.id,
+                            status: event.humidityStatus,
+                            date: new Date()
+                        }]);
+                    });
+                } else {
+                    this.logger.notify(`Réception d'un signal radio d'un capteur de température/humidité inconnu (id=${event.id})`, `${event.temperature}°C/${event.humidity}%`);
+                }
             });
         });
     }
