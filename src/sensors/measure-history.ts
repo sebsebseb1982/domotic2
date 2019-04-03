@@ -24,7 +24,7 @@ export class MeasureHistory {
     refreshIfPossible(sensor: ISensor, callback: Function) {
 
         let nMinutesAgo = moment().add(this.refreshPeriodInMinutes * -1, 'minutes');
-        if (moment(this.lastUpdates[sensor.id]).isBefore(nMinutesAgo)) {
+        if (this.lastUpdates[sensor.id] === undefined || moment(this.lastUpdates[sensor.id]).isBefore(nMinutesAgo)) {
             this.logger.debug(`Le capteur "${sensor.label}" peut être de nouveau mesuré`);
             this.lastUpdates[sensor.id] = new Date();
             callback();
