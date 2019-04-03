@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import {Logger} from "../common/logger/logger";
 import * as _ from "lodash";
-import {ISensor, GeoLocation, TypeSensor} from "./sensor";
+import {ISensor, SensorLocation, SensorType} from "./sensor";
 
 interface IWiredTemperatureSensorRawValue {
     crcOK: boolean;
@@ -11,8 +11,8 @@ interface IWiredTemperatureSensorRawValue {
 export class WiredTemperatureSensor implements ISensor {
     id: string;
     label: string;
-    type: TypeSensor;
-    location: GeoLocation;
+    type: SensorType;
+    location: SensorLocation;
     path?: string;
     radio: boolean;
     logger: Logger;

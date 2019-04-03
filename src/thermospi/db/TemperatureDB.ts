@@ -4,6 +4,8 @@ import * as _ from "lodash";
 import {Db} from "mongodb";
 import {Logger} from "../../common/logger/logger";
 import {MongoDB} from "../../common/mongo-db";
+import {SensorDB} from "../../sensors/db/sensor-db";
+import {SensorLocation, ISensor} from "../../sensors/sensor";
 
 export class TemperatureDB {
     configuration: Configuration;
@@ -46,51 +48,38 @@ export class TemperatureDB {
     }
 
     getCurrentInsideTemperatures(): Promise<number[]> {
-        let probes = [2, 3];
+        return this.getCurrentTemperaturesFromLocation('maison');
+    }
+
+    getCurrentOutsideTemperature(): Promise<number> {
         return new Promise((resolve, reject) => {
-            MongoDB.domoticDB.then((db: Db) => {
-                db.collection('temperatures').find(
-                    {
-                        probe: {$in: probes}
-                    },
-                    {
-                        sort: [['date', 'desc']],
-                        limit: probes.length
-                    }
-                ).toArray((err, results: ITemperature[]) => {
-                    if (err) {
-                        this.logger.error('Erreur lors de la lecture de la température intérieure de la maison', err.message);
-                        reject(err);
-                    } else {
-                        resolve(_.map(results, 'value'));
-                    }
-                    (db as any).close();
-                });
+            this.getCurrentTemperaturesFromLocation('exterieur').then((temperatures: number[]) => {
+                resolve(temperatures[0]);
             });
         });
     }
 
-    getCurrentOutsideTemperature(): Promise<number> {
-        let probes = [1];
+    getCurrentTemperaturesFromLocation(sensorLocation: SensorLocation): Promise<number[]> {
         return new Promise((resolve, reject) => {
-            MongoDB.domoticDB.then((db: Db) => {
-                db.collection('temperatures').find(
-                    {
-                        probe: {$in: probes}
-                    },
-                    {
-                        sort: [['date', 'desc']],
-                        limit: probes.length
-                    }
-                ).toArray((err, results: ITemperature[]) => {
-                    //this.logger.debug(JSON.stringify(results));
-                    if (err) {
-                        this.logger.error('Erreur lors de la lecture de la température extérieure de la maison', err.message);
-                        reject(err);
-                    } else {
-                        resolve(_.mean(_.map(results, 'value')));
-                    }
-                    (db as any).close();
+            SensorDB.instance.getByLocation(sensorLocation).then((sensors: ISensor[]) => {
+                MongoDB.domoticDB.then((db: Db) => {
+                    db.collection('temperatures').find(
+                        {
+                            location: sensorLocation
+                        },
+                        {
+                            sort: [['date', 'desc']],
+                            limit: sensors.length
+                        }
+                    ).toArray((err, results: ITemperature[]) => {
+                        if (err) {
+                            this.logger.error(`Erreur lors de la lecture de la température "${sensorLocation}"`, err.message);
+                            reject(err);
+                        } else {
+                            resolve(_.map(results, 'value'));
+                        }
+                        (db as any).close();
+                    });
                 });
             });
         });

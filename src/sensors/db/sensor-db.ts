@@ -2,7 +2,7 @@ import {Logger} from "../../common/logger/logger";
 import * as _ from "lodash";
 import {MongoDB} from "../../common/mongo-db";
 import {Db} from "mongodb";
-import {GeoLocation, ISensor, TypeSensor} from "../sensor";
+import {SensorLocation, ISensor, SensorType} from "../sensor";
 
 export class SensorDB {
     logger: Logger;
@@ -29,11 +29,21 @@ export class SensorDB {
         });
     }*/
 
-    getByTypeAndLocation(type: TypeSensor, location: GeoLocation): Promise<ISensor[]> {
+    getByTypeAndLocation(type: SensorType, location: SensorLocation): Promise<ISensor[]> {
         return new Promise<ISensor[]>((resolve, reject) => {
             this.getAll().then((sensors) => {
                 resolve(_.filter(sensors, {
                     type: type,
+                    location: location
+                }));
+            });
+        });
+    }
+
+    getByLocation(location: SensorLocation): Promise<ISensor[]> {
+        return new Promise<ISensor[]>((resolve, reject) => {
+            this.getAll().then((sensors) => {
+                resolve(_.filter(sensors, {
                     location: location
                 }));
             });
