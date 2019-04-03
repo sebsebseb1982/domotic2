@@ -2,7 +2,7 @@ import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
 import {MongoDB} from "../../common/mongo-db";
 import {Db} from "mongodb";
-import * as _ from "./TemperatureDB";
+import * as _ from "lodash";
 import {IHumidity} from "../models/humidity";
 
 export class HumidityDB {
