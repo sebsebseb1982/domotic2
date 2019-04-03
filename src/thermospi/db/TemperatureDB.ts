@@ -72,6 +72,9 @@ export class TemperatureDB {
                             limit: sensors.length
                         }
                     ).toArray((err, results: ITemperature[]) => {
+
+                        this.logger.debug(JSON.stringify(results, undefined, 2));
+
                         if (err) {
                             this.logger.error(`Erreur lors de la lecture de la température "${sensorLocation}"`, err.message);
                             reject(err);

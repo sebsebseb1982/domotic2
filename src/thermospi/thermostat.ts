@@ -35,10 +35,6 @@ export class Thermostat {
                 this.temperatureDB.getCurrentInsideTemperature()
             ])
             .then((values) => {
-
-
-                console.log(values);
-
                 let currentSetPoint: number = values[0].value;
                 let insideTemperature: number = values[1];
 
