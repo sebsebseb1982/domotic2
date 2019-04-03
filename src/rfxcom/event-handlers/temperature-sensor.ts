@@ -12,7 +12,6 @@ export class TemperatureSensor {
     listen() {
         this.rfxcom.on("temperature1", (event) => {
             this.logger.debug(`Sonde de température ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
-            console.log(event);
             this.temperatureDB.saveTemperatures([{
                 value: event.temperature,
                 probe: event.id,
