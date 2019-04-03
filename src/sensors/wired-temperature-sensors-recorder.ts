@@ -3,7 +3,7 @@ import {ITemperature} from "../thermospi/models/temperature";
 import {SensorDB} from "./db/sensor-db";
 import {ISensor} from "./sensor";
 import * as _ from "lodash";
-import {WiredTemperatureSensor} from "./wired -temperature-sensor";
+import {WiredTemperatureSensor} from "./wired-temperature-sensor";
 
 export class WiredTemperatureSensorsRecorder {
     temperatureDB: TemperatureDB;
@@ -13,7 +13,7 @@ export class WiredTemperatureSensorsRecorder {
     }
 
     record() {
-        SensorDB.instance.getByType('wired-temperature').then((sensors: ISensor[]) => {
+        SensorDB.instance.getByTypeAndLocation('wired-temperature', 'maison').then((sensors: ISensor[]) => {
             let temperaturesToRecord: ITemperature[] = [];
 
             _.map(sensors, (sensor: ISensor) => {
