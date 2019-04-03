@@ -52,7 +52,7 @@
     "initialize-relay-board": "node -e 'require(\"/home/pi/git/domotic2/src/relay/relay-board.js\").RelayBoard.initialize()'",
     "update-thermostat": "node -e 'let Thermostat = require(\"/home/pi/git/domotic2/src/thermospi/thermostat.js\").Thermostat; new Thermostat().update()'",
     "add-set-point": "node -e 'let Thermostat = require(\"/home/pi/git/domotic2/src/thermospi/thermostat.js\").Thermostat; new Thermostat().addSetPoint(parseFloat(process.argv[1]))'",
-    "record-temperatures": "node -e 'let Recorder = require(\"/home/pi/git/domotic2/src/sensors/wired-temperature-sensors-recorder.js\").WiredTemperatureSensorsRecorder; new WiredTemperatureSensorsRecorder().record()'",
+    "record-temperatures": "node -e 'let Recorder = require(\"/home/pi/git/domotic2/src/sensors/wired-temperature-sensors-recorder.js\").WiredTemperatureSensorsRecorder; new Recorder().record()'",
     "api-domotic": "node -e 'require(\"/home/pi/git/domotic2/src/api/domotic/api.js\")'",
     "api-random-tune": "node -e 'require(\"/home/pi/git/domotic2/src/api/random-tune/api.js\")'",
     "cerberos": "node -e 'require(\"/home/pi/git/domotic2/src/security/cerberos.js\")'"
