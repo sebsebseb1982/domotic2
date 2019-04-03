@@ -14,8 +14,7 @@ export class TemperatureSensor {
             this.logger.debug(`Sonde de température ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
             this.temperatureDB.saveTemperatures([{
                 value: event.temperature,
-                probe: event.id,
-                batteryLevel: event.batteryLevel,
+                sensorId: event.id,
                 date: new Date()
             }]);
         });

@@ -21,7 +21,7 @@ export class TemperatureDB {
             _.forEach(
                 temperatures,
                 (aTemperature) => {
-                    this.logger.debug(`Enregistrement de la température ${aTemperature.value} lue sur la sonde ${aTemperature.probe}`)
+                    this.logger.debug(`Enregistrement de la température ${aTemperature.value} lue sur la sonde ${aTemperature.sensorId}`)
                     batch.insert(aTemperature);
                 }
             );

@@ -1,7 +1,6 @@
 export interface IHumidity {
     value: number;
-    probe: string;
-    batteryLevel?: number;
-    status?: number;
+    sensorId: string;
+    status: number;
     date: Date;
 }

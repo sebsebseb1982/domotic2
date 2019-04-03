@@ -19,15 +19,13 @@ export class TemperatureHumiditySensor{
 
             this.temperatureDB.saveTemperatures([{
                 value: event.temperature,
-                probe: event.id,
-                batteryLevel: event.batteryLevel,
+                sensorId: event.id,
                 date: new Date()
             }]);
 
             this.humidityDB.saveMeasures([{
                 value: event.humidity,
-                probe: event.id,
-                batteryLevel: event.batteryLevel,
+                sensorId: event.id,
                 status: event.humidityStatus,
                 date: new Date()
             }]);
