@@ -17,11 +17,11 @@ export class TemperatureSensor {
         this.rfxcom.on("temperature1", (event) => {
             this.logger.debug(`Sonde de température ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
 
-            SensorDB.instance.getById(event.id).then((sensor: ISensor) => {
+            SensorDB.instance.getById('tutyu').then((sensor: ISensor) => {
                 MeasureHistory.instance.refreshIfPossible(sensor, () => {
                     this.temperatureDB.saveTemperatures([{
                         value: event.temperature,
-                        sensorId: event.id,
+                        sensorId: sensor.id,
                         date: new Date()
                     }]);
                 });
