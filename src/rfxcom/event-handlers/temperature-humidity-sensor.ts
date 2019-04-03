@@ -14,22 +14,5 @@ export class TemperatureHumiditySensor{
             console.log(event);
             this.logger.debug(`Sonde de température/humidité ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
         });
-
-
-        this.rfxcom.on("humidity1", (event) => {
-            console.log(event);
-            this.logger.debug(`Sonde de température/humidité ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
-        });
-
-
-        this.rfxcom.on("temphumbaro1", (event) => {
-            console.log(event);
-            this.logger.debug(`Sonde de température/humidité ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
-        });
-
-        this.rfxcom.on("temperaturerain1", (event) => {
-            console.log(event);
-            this.logger.debug(`Sonde de température/humidité ${event.id} (${event.temperature}°C, batterie = ${event.batteryLevel})`);
-        });
     }
 }
