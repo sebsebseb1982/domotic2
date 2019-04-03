@@ -10,6 +10,7 @@ export class MeasureHistory {
 
     private constructor() {
         this.logger = new Logger(`Gestionnaire de rafraîchissement des capteurs`);
+        this.lastUpdates = {};
     }
 
     static get instance(): MeasureHistory {
