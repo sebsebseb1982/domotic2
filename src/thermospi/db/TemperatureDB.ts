@@ -63,9 +63,11 @@ export class TemperatureDB {
         return new Promise((resolve, reject) => {
             SensorDB.instance.getByLocation(sensorLocation).then((sensors: ISensor[]) => {
                 MongoDB.domoticDB.then((db: Db) => {
+                    let $in = _.map(sensors, 'id');
+                    console.log($in);
                     db.collection('temperatures').find(
                         {
-                            sensorId: {$in: _.map(sensors, 'id')}
+                            sensorId: {$in: $in}
                         },
                         {
                             sort: [['date', 'desc']],
