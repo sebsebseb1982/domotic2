@@ -5,7 +5,7 @@ import {Db} from "mongodb";
 import {Logger} from "../../common/logger/logger";
 import {MongoDB} from "../../common/mongo-db";
 import {SensorDB} from "../../sensors/db/sensor-db";
-import {SensorLocation, ISensor} from "../../sensors/sensor";
+import {ISensor, SensorLocation} from "../../sensors/sensor";
 
 export class TemperatureDB {
     configuration: Configuration;
@@ -63,11 +63,9 @@ export class TemperatureDB {
         return new Promise((resolve, reject) => {
             SensorDB.instance.getByLocation(sensorLocation).then((sensors: ISensor[]) => {
                 MongoDB.domoticDB.then((db: Db) => {
-                    let $in = _.map(sensors, 'id');
-                    console.log($in);
                     db.collection('temperatures').find(
                         {
-                            sensorId: {$in: $in}
+                            sensorId: {$in: _.map(sensors, 'id')}
                         },
                         {
                             sort: [['date', 'desc']],
