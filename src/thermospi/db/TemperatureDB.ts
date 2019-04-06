@@ -5,7 +5,7 @@ import {Db} from "mongodb";
 import {Logger} from "../../common/logger/logger";
 import {MongoDB} from "../../common/mongo-db";
 import {SensorDB} from "../../sensors/db/sensor-db";
-import {ISensor, SensorLocation} from "../../sensors/sensor";
+import {ISensor, SensorTag} from "../../sensors/sensor";
 
 export class TemperatureDB {
     configuration: Configuration;
@@ -48,20 +48,20 @@ export class TemperatureDB {
     }
 
     getCurrentInsideTemperatures(): Promise<number[]> {
-        return this.getCurrentTemperaturesFromLocation('maison');
+        return this.getCurrentTemperaturesBySensorTags(['maison']);
     }
 
     getCurrentOutsideTemperature(): Promise<number> {
         return new Promise((resolve, reject) => {
-            this.getCurrentTemperaturesFromLocation('exterieur').then((temperatures: number[]) => {
+            this.getCurrentTemperaturesBySensorTags(['exterieur']).then((temperatures: number[]) => {
                 resolve(temperatures[0]);
             });
         });
     }
 
-    getCurrentTemperaturesFromLocation(sensorLocation: SensorLocation): Promise<number[]> {
+    getCurrentTemperaturesBySensorTags(sensorTags: SensorTag[]): Promise<number[]> {
         return new Promise((resolve, reject) => {
-            SensorDB.instance.getByLocation(sensorLocation).then((sensors: ISensor[]) => {
+            SensorDB.instance.getByTags(sensorTags).then((sensors: ISensor[]) => {
                 MongoDB.domoticDB.then((db: Db) => {
                     db.collection('temperatures').find(
                         {
@@ -76,7 +76,7 @@ export class TemperatureDB {
                         this.logger.debug(JSON.stringify(results, undefined, 2));
 
                         if (err) {
-                            this.logger.error(`Erreur lors de la lecture de la température "${sensorLocation}"`, err.message);
+                            this.logger.error(`Erreur lors de la lecture de la température "${sensorTags}"`, err.message);
                             reject(err);
                         } else {
                             resolve(_.map(results, 'value'));

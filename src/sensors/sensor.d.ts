@@ -1,11 +1,19 @@
-export type SensorType = 'radio-temperature-humidity' | 'radio-temperature' | 'wired-temperature';
-export type SensorLocation = 'maison' | 'exterieur' | 'cabanon' | 'congelateur';
+export type SensorTag =
+    'maison' |
+    'exterieur' |
+    'cabanon' |
+    'congelateur' |
+    'rdc' |
+    'etage' |
+    'radio' |
+    'wired' |
+    'temperature' |
+    'humidity';
 
 export interface ISensor {
     id: string;
     label: string;
-    type: SensorType;
-    location: SensorLocation;
+    tags: SensorTag[];
     path?: string;
     radio: boolean;
 }

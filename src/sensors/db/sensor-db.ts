@@ -2,7 +2,7 @@ import {Logger} from "../../common/logger/logger";
 import * as _ from "lodash";
 import {MongoDB} from "../../common/mongo-db";
 import {Db} from "mongodb";
-import {SensorLocation, ISensor, SensorType} from "../sensor";
+import {ISensor, SensorTag} from "../sensor";
 
 export class SensorDB {
     logger: Logger;
@@ -21,14 +21,6 @@ export class SensorDB {
         return SensorDB.db;
     }
 
-    /*getByCode(code: string): Promise<ISensor> {
-        return new Promise<Relay>((resolve, reject) => {
-            this.getAll().then((sensors) => {
-                resolve(_.find(sensors, { 'id': code }));
-            });
-        });
-    }*/
-
     getById(id: string): Promise<ISensor> {
         return new Promise<ISensor>((resolve, reject) => {
             this.getAll().then((sensors) => {
@@ -39,23 +31,17 @@ export class SensorDB {
         });
     }
 
-    getByTypeAndLocation(type: SensorType, location: SensorLocation): Promise<ISensor[]> {
+    getByTags(tags : SensorTag[]): Promise<ISensor[]> {
         return new Promise<ISensor[]>((resolve, reject) => {
             this.getAll().then((sensors) => {
-                resolve(_.filter(sensors, {
-                    type: type,
-                    location: location
-                }));
-            });
-        });
-    }
-
-    getByLocation(location: SensorLocation): Promise<ISensor[]> {
-        return new Promise<ISensor[]>((resolve, reject) => {
-            this.getAll().then((sensors) => {
-                resolve(_.filter(sensors, {
-                    location: location
-                }));
+                resolve(
+                    _.filter(
+                        sensors,
+                        (sensor: ISensor) => {
+                            return _.every(sensor.tags, tags);
+                        }
+                    )
+                );
             });
         });
     }

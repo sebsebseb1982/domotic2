@@ -25,11 +25,11 @@ export class MeasureHistory {
 
         let nMinutesAgo = moment().add(this.refreshPeriodInMinutes * -1, 'minutes');
         if (this.lastUpdates[sensor.id] === undefined || moment(this.lastUpdates[sensor.id]).isBefore(nMinutesAgo)) {
-            this.logger.debug(`Le capteur "${sensor.label}" (type=${sensor.type}) peut être de nouveau mesuré`);
+            this.logger.debug(`Le capteur "${sensor.label}" (tags=${sensor.tags}) peut être de nouveau mesuré`);
             this.lastUpdates[sensor.id] = new Date();
             callback();
         } else {
-            this.logger.debug(`Le capteur "${sensor.label}" (type=${sensor.type}) a déjà été mesuré dans les ${this.refreshPeriodInMinutes} dernières minutes`);
+            this.logger.debug(`Le capteur "${sensor.label}" (tags=${sensor.tags}) a déjà été mesuré dans les ${this.refreshPeriodInMinutes} dernières minutes`);
         }
     }
 }
