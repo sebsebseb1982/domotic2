@@ -3,7 +3,7 @@ import {Logger} from "../../common/logger/logger";
 import * as http from "http";
 import {RequestOptions} from "http";
 import {IHueLampState} from "../../hue/hue";
-import {AbstractClientAPI} from "./routes/abstract-client-api";
+import {AbstractClientAPI} from "../common/abstract-client-api";
 
 export class ClientHueLamp extends AbstractClientAPI {
     configuration: Configuration;

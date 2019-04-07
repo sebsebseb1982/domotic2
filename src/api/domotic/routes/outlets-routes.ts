@@ -1,11 +1,8 @@
 import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
-import {RFXcom} from "../../../rfxcom/RFXcom";
-import {IRoutable} from "./routes";
 import {Logger} from "../../../common/logger/logger";
 import {PowerOutletDB} from "../../../power-outlet/power-outlet-db";
-
-let rfxcom = require('rfxcom');
+import {IRoutable} from "../../common/routes";
 
 export class OutletsRoutes implements IRoutable {
 

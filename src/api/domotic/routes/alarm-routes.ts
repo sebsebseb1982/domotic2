@@ -1,11 +1,11 @@
 import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
-import {IRoutable} from "./routes";
 import {Alarm} from "../../../security/alarm/alarm";
 import {DenonAVR} from "../../../avr/denonAVR";
 import {Configuration} from "../../../configuration/configuration";
 import {RelayDB} from "../../../relay/relay-db";
 import {ClientPowerOutlet} from "../client-power-outlet";
+import {IRoutable} from "../../common/routes";
 
 export class AlarmRoutes implements IRoutable {
 

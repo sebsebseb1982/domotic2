@@ -1,10 +1,10 @@
-import {IRoutable} from "./routes";
 import * as core from "express-serve-static-core";
 import {Request, Response} from "express";
 import {IHueLamp, IHueLampState} from "../../../hue/hue";
 import {HueAPIDiscovery, IHueAPI} from "../../../hue/hue-api-discovery";
 import {Logger} from "../../../common/logger/logger";
 import {lamps} from "../../../hue/hue-lamps";
+import {IRoutable} from "../../common/routes";
 
 export class HueRoutes implements IRoutable {
 

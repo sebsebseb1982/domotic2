@@ -38,7 +38,7 @@ export class SensorDB {
                     _.filter(
                         sensors,
                         (sensor: ISensor) => {
-                            return _.every(sensor.tags, tags);
+                            return _.difference(tags, sensor.tags).length === 0;
                         }
                     )
                 );

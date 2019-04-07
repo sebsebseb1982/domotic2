@@ -1,9 +1,8 @@
 import {Request, Response} from "express";
 import * as core from "express-serve-static-core";
-import {IRoutable} from "./routes";
 import {RelayDB} from "../../../relay/relay-db";
 import {PushoverService} from "../../../notifications/services/pushover-service";
-import {Configuration} from "../../../configuration/configuration";
+import {IRoutable} from "../../common/routes";
 
 export class GateRoutes implements IRoutable {
 

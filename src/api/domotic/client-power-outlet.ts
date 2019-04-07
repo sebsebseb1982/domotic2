@@ -2,8 +2,7 @@ import * as http from "http";
 import {RequestOptions} from "http";
 import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
-import {AbstractClientAPI} from "./routes/abstract-client-api";
-import {duration} from "moment";
+import {AbstractClientAPI} from "../common/abstract-client-api";
 
 export class ClientPowerOutlet extends AbstractClientAPI {
     configuration: Configuration;

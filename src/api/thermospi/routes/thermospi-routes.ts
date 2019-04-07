@@ -8,6 +8,7 @@ import {TemperatureDB} from "../../../thermospi/db/TemperatureDB";
 import * as _ from "lodash";
 import {Logger} from "../../../common/logger/logger";
 import {IRoutable} from "../../common/routes";
+import {SensorTag} from "../../../sensors/sensor";
 
 export class ThermospiRoutes implements IRoutable {
 
@@ -78,6 +79,16 @@ export class ThermospiRoutes implements IRoutable {
                             outside: currentOutsideTemperature,
                             setPoint: currentSetPoint.value
                         });
+                    });
+                }
+            )
+            .get(
+                '/temperatures',
+                (req: Request, res: Response) => {
+                    let sensorTags: SensorTag[] = _.split(req.query.sensorTag, ',') as SensorTag[];
+
+                    this.temperatureDB.getCurrentTemperaturesBySensorTags(sensorTags).then((temperatures) => {
+                        res.send(temperatures);
                     });
                 }
             );
