@@ -3,11 +3,13 @@ import {Logger} from "../../common/logger/logger";
 
 let pushover = new PushoverService();
 
-pushover.send({
-    title: 'Domotic',
-    description: 'Reboot',
-    priority: 0
-});
+setTimeout(() => {
+    pushover.send({
+        title: 'Domotic',
+        description: 'Reboot',
+        priority: 0
+    });
+}, 20 * 1000);
 
 let logger = new Logger('Domotic');
 logger.notify('Reboot');
