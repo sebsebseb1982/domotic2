@@ -53,6 +53,12 @@ class URLMonitor {
                                 this.monitor(alert);
                             });
                             previouslyScheduledTask.alert = alert;
+
+                            this.pushover.send({
+                                title: `Mise à jour de l'alerte "${alert.name}"`,
+                                description: JSON.stringify(alert),
+                                priority: 0
+                            });
                         }
                     } else {
                         this.logger.info(`[MAJ surveillances] L'alerte "${alert.name}" est désormais surveillée`);
