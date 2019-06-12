@@ -1,7 +1,7 @@
 import * as request from 'request';
 import {MailService} from "../../notifications/services/mailService";
 import {DB} from "./db";
-import {IAlert, IScheduledCron} from "./alert";
+import {IAlert, IScheduledTask} from "./alert";
 import * as cheerio from 'cheerio';
 import {Logger} from "../../common/logger/logger";
 import {GoogleHomeService} from "../../notifications/services/googleHomeService";
@@ -12,7 +12,7 @@ export class URLMonitor {
     googleHome: GoogleHomeService;
     logger: Logger;
     db: DB;
-    schedueldCrons: IScheduledCron[];
+    scheduledTasks: IScheduledTask[];
 
     constructor() {
         this.mail = new MailService('Surveillance URL');
@@ -21,21 +21,34 @@ export class URLMonitor {
         this.db = new DB();
     }
 
-    lookForChange() {
+    start() {
+        cron.schedule('* * * * *', () => {
+            this.deletePreviousScheduledTasks();
+            this.updateCrons();
+        });
+    }
+
+    private updateCrons() {
         this.db.getAlerts().then((alerts) => {
             alerts.forEach((alert: IAlert) => {
-
                 if (cron.validate(alert.schedule)) {
-                    this.schedueldCrons.push({
-                        id: alert._id,
-                        cron: cron.schedule(alert.schedule, () => {
+                    this.scheduledTasks.push({
+                        alert: alert,
+                        task: cron.schedule(alert.schedule, () => {
                             this.monitor(alert);
                         })
                     });
+                    this.logger.info(`Planification (${alert.schedule}) de l'alerte "${alert.name}"`);
                 } else {
                     this.logger.error(`Syntaxe CRON incorrecte`, `Syntaxe CRON ${alert.schedule} incorrecte pour l'alerte "${alert.name}"`);
                 }
             })
+        });
+    }
+
+    private deletePreviousScheduledTasks() {
+        this.scheduledTasks.forEach((scheduledTask: IScheduledTask) => {
+            scheduledTask.task.destroy();
         });
     }
 

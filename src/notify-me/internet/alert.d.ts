@@ -1,3 +1,5 @@
+import {ScheduledTask} from "node-cron";
+
 export interface IAlert {
     _id: any;
     name: string;
@@ -9,7 +11,7 @@ export interface IAlert {
     field: any;
 }
 
-export interface IScheduledCron {
-    id: string;
-    cron:any;
+export interface IScheduledTask {
+    alert: IAlert;
+    task:ScheduledTask;
 }
