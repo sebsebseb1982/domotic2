@@ -54,11 +54,14 @@ class URLMonitor {
                             });
                             previouslyScheduledTask.alert = alert;
 
+                            let message = `MAJ de l'alerte "${alert.name}"`;
                             this.pushover.send({
-                                title: `Mise à jour de l'alerte "${alert.name}"`,
-                                description: JSON.stringify(alert),
+                                title: message,
+                                description: message,
                                 priority: 0
                             });
+
+                            this.logger.notify(message, JSON.stringify(alert));
                         }
                     } else {
                         this.logger.info(`[MAJ surveillances] L'alerte "${alert.name}" est désormais surveillée`);
