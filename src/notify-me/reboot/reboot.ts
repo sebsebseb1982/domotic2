@@ -5,10 +5,9 @@ let pushover = new PushoverService();
 
 pushover.send({
     title: 'Domotic',
-    description: 'Redémarrage',
+    description: 'Reboot',
     priority: 0
 });
-/*
 
 let logger = new Logger('Domotic');
-logger.notify('Redémarrage');*/
+logger.notify('Reboot');
