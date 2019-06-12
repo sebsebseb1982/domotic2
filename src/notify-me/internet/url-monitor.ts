@@ -111,7 +111,7 @@ class URLMonitor {
         let title = `L'alerte "${alert.name}" vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
         let message = `L'alerte <a href="${alert.url}">${alert.name}</a> vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
         this.logger.info(`[Surveillance] ${title}`);
-        this.googleHome.say(title, true);
+        //this.googleHome.say(title, true);
 
         this.logger.notify(title, message);
 
