@@ -1,4 +1,4 @@
-import {Alert} from "./alert";
+import {IAlert} from "./alert";
 import {MongoDB} from "../../common/mongo-db";
 import {Db} from "mongodb";
 import {Logger} from "../../common/logger/logger";
@@ -10,13 +10,13 @@ export class DB {
         this.logger = new Logger('DB alerte Internet');
     }
 
-    getAlerts(): Promise<Alert[]> {
+    getAlerts(): Promise<IAlert[]> {
         return new Promise((resolve, reject) => {
             MongoDB.domoticDB.then((db: Db) => {
                 db.collection('alerts').find(
                     {},
                     {}
-                ).toArray((err, alerts: Alert[]) => {
+                ).toArray((err, alerts: IAlert[]) => {
                     if (err) {
                         this.logger.error('Erreur lors de la lecture des alertes', err.message);
                         reject(err);
@@ -29,7 +29,7 @@ export class DB {
         });
     }
 
-    updateAlert(alert: Alert) {
+    updateAlert(alert: IAlert) {
         MongoDB.domoticDB.then((db: Db) => {
             db.collection('alerts').replaceOne(
                 {_id: alert._id},
