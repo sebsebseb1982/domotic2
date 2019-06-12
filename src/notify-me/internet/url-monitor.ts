@@ -116,8 +116,8 @@ class URLMonitor {
         this.logger.notify(title, message);
 
         this.pushover.send({
-            title: title,
-            description: message,
+            title: 'Alerte',
+            description: title,
             priority: 0
         });
 
