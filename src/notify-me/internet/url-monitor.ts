@@ -4,7 +4,7 @@ import {DB} from "./db";
 import {IAlert, IScheduledTask} from "./alert";
 import * as cheerio from 'cheerio';
 import {Logger} from "../../common/logger/logger";
-import {GoogleHomeService} from "../../notifications/services/googleHomeService";
+//import {GoogleHomeService} from "../../notifications/services/googleHomeService";
 import * as cron from 'node-cron';
 import * as _ from "lodash";
 import {PushoverService} from "../../notifications/services/pushover-service";
@@ -12,7 +12,7 @@ import {PushoverService} from "../../notifications/services/pushover-service";
 
 class URLMonitor {
     mail: MailService;
-    googleHome: GoogleHomeService;
+    //  googleHome: GoogleHomeService;
     pushover: PushoverService;
     logger: Logger;
     db: DB;
@@ -20,7 +20,7 @@ class URLMonitor {
 
     constructor() {
         this.mail = new MailService('Surveillance URL');
-        this.googleHome = new GoogleHomeService();
+        //    this.googleHome = new GoogleHomeService();
         this.pushover = new PushoverService();
         this.logger = new Logger('Surveillance URL');
         this.db = new DB();
