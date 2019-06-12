@@ -8,6 +8,7 @@ pushover.send({
     description: 'Redémarrage',
     priority: 0
 });
+/*
 
 let logger = new Logger('Domotic');
-logger.notify('Redémarrage');
+logger.notify('Redémarrage');*/
