@@ -44,7 +44,7 @@ class URLMonitor {
                     });
 
                     if (previouslyScheduledTask) {
-                        if (JSON.stringify(alert) === JSON.stringify(previouslyScheduledTask.alert)) {
+                        if (this.isSameAlerts(alert, previouslyScheduledTask.alert)) {
                             this.logger.info(`[MAJ surveillances] L'alerte "${alert.name}" est déjà surveillée`);
                         } else {
                             this.logger.info(`[MAJ surveillances] La surveillance de l'alerte "${alert.name}" doit être mise à jour`);
@@ -124,6 +124,17 @@ class URLMonitor {
 
         alert.lastValue = newValue;
         this.db.updateAlert(alert);
+    }
+
+    private isSameAlerts(alert1: IAlert, alert2: IAlert) {
+        return JSON.stringify(alert1._id) === JSON.stringify(alert2._id)
+            && JSON.stringify(alert1.name) === JSON.stringify(alert2.name)
+            && JSON.stringify(alert1.url) === JSON.stringify(alert2.url)
+            && JSON.stringify(alert1.schedule) === JSON.stringify(alert2.schedule)
+            && JSON.stringify(alert1.announceChange) === JSON.stringify(alert2.announceChange)
+            && JSON.stringify(alert1.cssSelector) === JSON.stringify(alert2.cssSelector)
+            && JSON.stringify(alert1.field) === JSON.stringify(alert2.field);
+
     }
 
     private extractValueFromHTML(html: string, selector: string): string {
