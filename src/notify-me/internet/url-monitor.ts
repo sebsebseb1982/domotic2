@@ -109,7 +109,7 @@ class URLMonitor {
 
     private notifyAlert(alert: IAlert, newValue: string) {
         let title = `L'alerte "${alert.name}" vient de detecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
-        let message = `L'alerte <a href="${alert.url}">${alert.name}</a> vient de détecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
+        let message = `L'alerte <a href="${alert.url}">${alert.name}</a> vient de détecter un changement de valeur${true ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
         this.logger.info(`[Surveillance] ${title}`);
         //this.googleHome.say(title, true);
 
