@@ -8,6 +8,7 @@ import {Logger} from "../../common/logger/logger";
 import * as cron from 'node-cron';
 import * as _ from "lodash";
 import {PushoverService} from "../../notifications/services/pushover-service";
+import * as diff from "diff";
 
 
 class URLMonitor {
@@ -92,10 +93,6 @@ class URLMonitor {
                 value = content;
             }
 
-            if (alert.announceChange) {
-                this.logger.debug(`[Surveillance] Valeur lue depuis la page "${value}"`);
-            }
-
             if (!value || value === '') {
                 let messageErreur = `[Surveillance] L'alerte "${alert.name}" ne renvoit plus aucune valeur`;
                 this.logger.error(messageErreur, messageErreur);
@@ -108,8 +105,22 @@ class URLMonitor {
     }
 
     private notifyAlert(alert: IAlert, newValue: string) {
+
+        let compareResultParts = diff.diffChars(alert.lastValue, newValue);
+        let compareResult = '';
+        compareResultParts.forEach((part) => {
+            if (part.added) {
+                compareResult += `<strong style="color:green;">${part.value}</strong>`;
+            } else if (part.removed) {
+                compareResult += `<del style="color:red;">${part.value}</del>`;
+            } else {
+                compareResult += part.value;
+            }
+        });
+
+
         let title = `L'alerte "${alert.name}" vient de detecter un changement de valeur${alert.announceChange ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
-        let message = `L'alerte <a href="${alert.url}">${alert.name}</a> vient de détecter un changement de valeur${true ? ` : ${alert.lastValue} --> ${newValue}` : ''}`;
+        let message = `L'alerte <a href="${alert.url}">${alert.name}</a> vient de détecter un changement de valeur : <br/>${compareResult}`;
         this.logger.info(`[Surveillance] ${title}`);
         //this.googleHome.say(title, true);
 
@@ -139,11 +150,7 @@ class URLMonitor {
 
     private extractValueFromHTML(html: string, selector: string): string {
         let $ = cheerio.load(html);
-        //this.logger.debug(`html=${html}`);
-        this.logger.debug(`selector=${selector}`);
-        let value = $(selector).text();
-        this.logger.debug(`value=${value}`);
-        return value;
+        return $(selector).text();
     }
 
     private readURLContent(url: string): Promise<string> {
