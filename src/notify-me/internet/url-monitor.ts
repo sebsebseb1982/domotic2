@@ -94,7 +94,7 @@ class URLMonitor {
             }
 
             if (!value || value === '') {
-                let messageErreur = `[Surveillance] L'alerte "${alert.name}" ne renvoit plus aucune valeur`;
+                let messageErreur = `[Surveillance] L'alerte "${alert.name}" (url=${alert.url},selecteur=${alert.cssSelector}) ne renvoit plus aucune valeur`;
                 this.logger.error(messageErreur, messageErreur);
             } else if (value != alert.lastValue) {
                 this.notifyAlert(alert, value);
