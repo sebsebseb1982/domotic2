@@ -150,7 +150,7 @@ class URLMonitor {
 
     private extractValueFromHTML(html: string, selector: string): string {
         let $ = cheerio.load(html);
-        this.logger.debug(JSON.stringify($(selector)));
+        //this.logger.debug(JSON.stringify($(selector)));
         return $(selector).text();
     }
 
