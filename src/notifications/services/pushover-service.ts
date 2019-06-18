@@ -12,7 +12,7 @@ export class PushoverService {
     }
 
     send(notification: MyNotification) {
-        this.logger.debug(`Envoi du message ${JSON.stringify(notification)}`);
+        this.logger.debug(`Envoi du message "${notification.title}"`);
 
         let postData = JSON.stringify({
             token: this.configuration.pushover.token,

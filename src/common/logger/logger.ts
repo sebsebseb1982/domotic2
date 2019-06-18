@@ -9,13 +9,13 @@ export class Logger {
     }
 
     info(message: string) {
-        let formattedMessage = `[INFO] : ${message}`;
+        let formattedMessage = `[${this.service}][INFO] : ${message}`;
         console.log('\x1b[34m%s\x1b[0m', formattedMessage);
         this.appendToSession(formattedMessage);
     }
 
     debug(message: string) {
-        let formattedMessage = `[DEBUG]: ${message}`;
+        let formattedMessage = `[${this.service}][DEBUG]: ${message}`;
         console.log('\x1b[32m%s\x1b[0m', formattedMessage);
         this.appendToSession(formattedMessage);
     }
@@ -29,7 +29,7 @@ export class Logger {
     }
 
     warn(message: string, warn: string) {
-        let formattedMessage = `[WARN] : ${message}`;
+        let formattedMessage = `[${this.service}][WARN] : ${message}`;
         console.log('\x1b[33m%s\x1b[0m', formattedMessage);
         this.appendToSession(formattedMessage);
         let mail = new MailService('WARN');
@@ -40,7 +40,7 @@ export class Logger {
     }
 
     error(message: string, err: string) {
-        let formattedMessage = `[ERROR]: ${message}\n${err}`;
+        let formattedMessage = `[${this.service}][ERROR]: ${message}\n${err}`;
         console.log('\x1b[31m%s\x1b[0m', formattedMessage);
         this.appendToSession(formattedMessage);
         let mail = new MailService('ERROR');
