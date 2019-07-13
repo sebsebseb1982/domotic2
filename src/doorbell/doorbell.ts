@@ -1,27 +1,27 @@
-import * as gpio from 'gpio';
+import {Logger} from "../common/logger/logger";
 
+let exec = require('child_process').execSync;
 
 export class Doorbell {
+
+    private static logger: Logger = new Logger('Sonnette');
+
     constructor() {
-        var gpio4 = gpio.export(3, {
-            // When you export a pin, the default direction is out. This allows you to set
-            // the pin value to either LOW or HIGH (3.3V) from your program.
-            direction: gpio.DIRECTION.IN,
+        Doorbell.executeCommand(`sudo gpio mode 3 in`);
 
-            // set the time interval (ms) between each read when watching for value changes
-            // note: this is default to 100, setting value too low will cause high CPU usage
-            interval: 200,
+        setInterval(() => {
+            Doorbell.executeCommand(`sudo gpio read 3`);
 
-            // Due to the asynchronous nature of exporting a header, you may not be able to
-            // read or write to the header right away. Place your logic in this ready
-            // function to guarantee everything will get fired properly
-            ready: function() {
-                gpio4.on("change", function(val) {
-                    // value will report either 1 or 0 (number) when the value changes
-                    console.log(val)
-                });
+       }, 100);
+    }
+
+    static executeCommand(command: string) {
+        this.logger.debug(command);
+        exec(command, (error, stdout, stderr) => {
+            this.logger.debug(stdout);
+            if(error) {
+                this.logger.error(error.message, stderr);
             }
         });
-
-    }
+    };
 }
