@@ -11,17 +11,16 @@ export class Doorbell {
 
         setInterval(() => {
             Doorbell.executeCommand(`sudo gpio read 3`);
-
-       }, 100);
+        }, 100);
     }
 
     static executeCommand(command: string) {
         this.logger.debug(command);
-        exec(command, (error, stdout, stderr) => {
+        console.log(exec(command, (error, stdout, stderr) => {
             this.logger.debug(stdout);
-            if(error) {
+            if (error) {
                 this.logger.error(error.message, stderr);
             }
-        });
+        }));
     };
 }
