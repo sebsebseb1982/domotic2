@@ -1,10 +1,4 @@
-import {PushoverService} from "../notifications/services/pushover-service";
-import {GoogleHomeService} from "../notifications/services/googleHomeService";
+import {Doorbell} from "../doorbell/doorbell";
 
-new PushoverService().send({
-    title: 'test',
-    description:'description',
-    priority:0
-});
+let test = new Doorbell();
 
-new GoogleHomeService().say('coucou');

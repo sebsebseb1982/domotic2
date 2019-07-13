@@ -16,6 +16,7 @@ export class RelayBoard {
                 this.executeCommand(`sudo gpio write ${relay.gpio} 0`);
             });
         });
+        this.executeCommand(`sudo gpio mode 18 in`);
     }
 
     static executeCommand(command: string) {
