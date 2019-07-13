@@ -7,6 +7,8 @@ import {PushoverService} from "../notifications/services/pushover-service";
 import {TocToc} from "../toctoc/toctoc";
 import {HueLamp} from "../hue/hue-lamp";
 import {ClientPowerOutlet} from "../api/domotic/client-power-outlet";
+import * as _ from "lodash";
+
 
 let exec = require('child_process').execSync;
 
@@ -35,20 +37,22 @@ export class Doorbell {
         setInterval(() => {
             let state = this.gpio.readState();
             if (state == 1) {
-                this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
-                let message = `Quelqu'un vient de sonner`;
-                this.mailService.send({
-                    title: message,
-                    description: message
-                });
-                this.pushover.send({
-                    title: message,
-                    description: message,
-                    priority: 1
-                });
-                this.toctoc.ifAbsent(() => {
-                    this.simulatePresence();
-                });
+                _.throttle(() => {
+                    this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
+                    let message = `Quelqu'un vient de sonner`;
+                    this.mailService.send({
+                        title: message,
+                        description: message
+                    });
+                    this.pushover.send({
+                        title: message,
+                        description: message,
+                        priority: 1
+                    });
+                    this.toctoc.ifAbsent(() => {
+                        this.simulatePresence();
+                    });
+                }, 5000);
             }
         }, 100);
     }
