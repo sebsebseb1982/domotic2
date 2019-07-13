@@ -34,25 +34,27 @@ export class Doorbell {
         this.lampSalon = new HueLamp('salon');
         this.clientPowerOutlet = new ClientPowerOutlet();
 
+        let onDoorBellRing = _.throttle(() => {
+            this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
+            let message = `Quelqu'un vient de sonner`;
+            this.mailService.send({
+                title: message,
+                description: message
+            });
+            this.pushover.send({
+                title: message,
+                description: message,
+                priority: 1
+            });
+            this.toctoc.ifAbsent(() => {
+                this.simulatePresence();
+            });
+        }, 5000);
+
         setInterval(() => {
             let state = this.gpio.readState();
             if (state == 1) {
-                _.throttle(() => {
-                    this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
-                    let message = `Quelqu'un vient de sonner`;
-                    this.mailService.send({
-                        title: message,
-                        description: message
-                    });
-                    this.pushover.send({
-                        title: message,
-                        description: message,
-                        priority: 1
-                    });
-                    this.toctoc.ifAbsent(() => {
-                        this.simulatePresence();
-                    });
-                }, 5000);
+                onDoorBellRing();
             }
         }, 100);
     }
