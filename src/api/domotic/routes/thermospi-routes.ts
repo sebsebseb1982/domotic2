@@ -80,6 +80,29 @@ export class ThermospiRoutes implements IRoutable {
                         });
                     });
                 }
+            )
+            .get(
+                '/thermostat/ventilate/status',
+                (req: Request, res: Response) => {
+                    Promise.all([
+                        this.temperatureDB.getCurrentInsideTemperatures(),
+                        this.temperatureDB.getCurrentOutsideTemperature()
+
+                    ]).then((temperatures) => {
+                        let currentInsideTemperatures = temperatures[0];
+                        let currentOutsideTemperature = temperatures[1];
+
+                        let currentInsideTemperature = _.mean(currentInsideTemperatures);
+
+                        if (currentInsideTemperature > currentOutsideTemperature ) {
+                            this.googleHomeService.say(`Oui, il fait ${_.round(currentInsideTemperature - currentOutsideTemperature,1)}°C de plus à l'intérieur`);
+                        } else {
+                            this.googleHomeService.say(`Non, il fait ${_.round(currentOutsideTemperature - currentInsideTemperature,1)}°C de plus à l'extérieur`);
+                        }
+
+                        res.sendStatus(200);
+                    });
+                }
             );
     }
 }
