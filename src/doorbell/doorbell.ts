@@ -21,6 +21,6 @@ export class Doorbell {
             if (error) {
                 this.logger.error(error.message, stderr);
             }
-        }));
+        }).toString());
     };
 }
