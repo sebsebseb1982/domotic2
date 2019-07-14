@@ -19,12 +19,15 @@ export class GPIO {
     }
 
     private executeCommand(command: string): string {
-        this.logger.debug(command);
-        return exec(command, (error, stdout, stderr) => {
+        let returnValue = exec(command, (error, stdout, stderr) => {
             this.logger.debug(stdout);
             if (error) {
                 this.logger.error(error.message, stderr);
             }
         }).toString();
+
+        this.logger.debug(`Exécution commande "${command}" (retour=${returnValue})`);
+
+        return returnValue;
     }
 }
