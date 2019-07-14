@@ -41,6 +41,7 @@ export class DoorBell {
         let onDoorBellRing = _.throttle(() => {
             this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
             let message = `Quelqu'un vient de sonner`;
+            this.logger.info(message);
             this.mailService.send({
                 title: message,
                 description: message
@@ -53,7 +54,7 @@ export class DoorBell {
             this.toctoc.ifAbsent(() => {
                 this.simulatePresence();
             });
-        }, 5000);
+        }, 10 * 1000);
 
         setInterval(() => {
             if (this.gpio.readState()) {
@@ -66,7 +67,7 @@ export class DoorBell {
         let delayBeforeLight = this.getRandomNumberBetween(10, 15) * 1000;
         setTimeout(
             () => {
-                if(Math.random() >= 0.5) {
+                if (Math.random() >= 0.5) {
                     this.turnOnLivingRoomFloorLamp();
                 } else {
                     this.turnOnLivingRoomLamp();
