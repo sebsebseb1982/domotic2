@@ -15,7 +15,7 @@ export class GPIO {
     }
 
     readState(): boolean {
-        return this.executeCommand(`sudo gpio read ${this.pinNumber}`) == '1';
+        return parseInt(this.executeCommand(`sudo gpio read ${this.pinNumber}`)) == 1;
     }
 
     private executeCommand(command: string): string {
