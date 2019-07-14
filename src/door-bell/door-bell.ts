@@ -38,23 +38,26 @@ export class DoorBell {
     }
 
     watch() {
-        let onDoorBellRing = _.throttle(() => {
-            this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
-            let message = `Quelqu'un vient de sonner`;
-            this.logger.info(message);
-            this.mailService.send({
-                title: message,
-                description: message
-            });
-            this.pushover.send({
-                title: message,
-                description: message,
-                priority: 1
-            });
-            this.toctoc.ifAbsent(() => {
-                this.simulatePresence();
-            });
-        }, 10 * 1000);
+        let onDoorBellRing = _.debounce(() => {
+                this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
+                let message = `Quelqu'un vient de sonner`;
+                this.logger.info(message);
+                this.mailService.send({
+                    title: message,
+                    description: message
+                });
+                this.pushover.send({
+                    title: message,
+                    description: message,
+                    priority: 1
+                });
+                this.toctoc.ifAbsent(() => {
+                    this.simulatePresence();
+                });
+            },
+            10 * 1000,
+            {leading: true, trailing: false}
+        );
 
         setInterval(() => {
             if (this.gpio.readState()) {
