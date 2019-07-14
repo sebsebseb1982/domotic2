@@ -59,7 +59,7 @@ export class DoorBell {
             if (this.gpio.readState()) {
                 onDoorBellRing();
             }
-        }, 100);
+        }, 200);
     }
 
     private simulatePresence() {
