@@ -12,7 +12,9 @@ import * as _ from "lodash";
 
 let exec = require('child_process').execSync;
 
-export class Doorbell {
+let DOOR_BELL_PIN = 3;
+
+export class DoorBell {
 
     logger: Logger = new Logger('Sonnette');
     gpio: GPIO;
@@ -25,7 +27,7 @@ export class Doorbell {
     clientPowerOutlet: ClientPowerOutlet;
 
     constructor() {
-        this.gpio = new GPIO(3, 'in');
+        this.gpio = new GPIO(DOOR_BELL_PIN, 'in');
         this.googleHome = new GoogleHomeService();
         this.configuration = new Configuration();
         this.mailService = new MailService('Sonnette');
@@ -33,7 +35,9 @@ export class Doorbell {
         this.toctoc = new TocToc();
         this.lampSalon = new HueLamp('salon');
         this.clientPowerOutlet = new ClientPowerOutlet();
+    }
 
+    watch() {
         let onDoorBellRing = _.throttle(() => {
             this.googleHome.play(`http://${this.configuration.doorBell.randomTune.publicHostname}:${this.configuration.doorBell.randomTune.port}${this.configuration.doorBell.randomTune.root}/random-tune`);
             let message = `Quelqu'un vient de sonner`;
@@ -52,12 +56,12 @@ export class Doorbell {
         }, 5000);
 
         setInterval(() => {
-            let state = this.gpio.readState();
-            if (state == 1) {
+            if (this.gpio.readState()) {
                 onDoorBellRing();
             }
         }, 100);
     }
+
     private simulatePresence() {
         let delayBeforeLight = this.getRandomNumberBetween(10, 15) * 1000;
         setTimeout(
@@ -91,3 +95,5 @@ export class Doorbell {
         return Math.floor(Math.random() * (end - start)) + start;
     }
 }
+
+new DoorBell().watch();

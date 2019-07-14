@@ -59,6 +59,7 @@
     "api-domotic": "node -e 'require(\"/home/pi/git/domotic2/src/api/domotic/api.js\")'",
     "api-random-tune": "node -e 'require(\"/home/pi/git/domotic2/src/api/random-tune/api.js\")'",
     "cerberos": "node -e 'require(\"/home/pi/git/domotic2/src/security/cerberos.js\")'",
-    "postinstall": "rm -rf  node_modules/google-home-notifier/node_modules/google-tts-api && mv node_modules/google-tts-api node_modules/google-home-notifier/node_modules/google-tts-api"
+    "postinstall": "rm -rf  node_modules/google-home-notifier/node_modules/google-tts-api && mv node_modules/google-tts-api node_modules/google-home-notifier/node_modules/google-tts-api",
+    "watch-doorbell": "node -e 'require(\"/home/pi/git/domotic2/src/door-bell/door-bell.js\")'"
   }
 }

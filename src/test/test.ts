@@ -1,4 +1,4 @@
-import {Doorbell} from "../doorbell/doorbell";
+import {DoorBell} from "../door-bell/door-bell";
 
-let test = new Doorbell();
+let test = new DoorBell();
 

@@ -1,6 +1,8 @@
+import {GPIO} from "../gpio/gpio";
+
 export interface IRelay {
     code: string;
     label: string;
-    gpio: number;
+    gpioPinNumber:number;
     pin: number;
 }

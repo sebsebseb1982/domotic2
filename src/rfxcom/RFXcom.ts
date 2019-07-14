@@ -16,7 +16,7 @@ export class RFXcom {
                 new Logger('RFXcom').debug('RFXcom initialisé');
             });
 
-            new DoorBell(RFXcom.instance).listen();
+            //new DoorBell(RFXcom.instance).listen();
             new TemperatureSensor(RFXcom.instance).listen();
             new TemperatureHumiditySensor(RFXcom.instance).listen();
         }
