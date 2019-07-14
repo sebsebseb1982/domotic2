@@ -58,6 +58,7 @@ export class DoorBell {
 
         setInterval(() => {
             if (this.gpio.readState()) {
+                this.logger.debug('Appui sur la sonnette');
                 onDoorBellRing();
             }
         }, 200);
