@@ -29,7 +29,7 @@ export class HealthCheck {
                     this.getUnhealthyPingableAppliance('Raspberry Pi Cabanon', '192.168.1.50'),
                     //this.getUnhealthyPingableAppliance('Bridge Hue', this.configuration.hue.),
                     this.getUnhealthyPingableAppliance('Synology DS416play', this.configuration.synology.hostname),
-                    this.getUnhealthyPingableAppliance('Alarme', '192.168.1.6')
+                    this.getUnhealthyPingableAppliance('Alarme', this.configuration.alarm.hostname)
                 ]
             )
             .then((promisesResults) => {
