@@ -9,7 +9,7 @@ interface IHueBridge {
 }
 
 export interface IHueAPI {
-    setLightState(id: number, state: {});
+    setLightState(id: number, state: {}, callback: (err, lights) => void);
     lightStatusWithRGB(id: number, callback: (err, status) => void): void;
 }
 

@@ -27,12 +27,16 @@ export class HueRoutes implements IRoutable {
 
                     this.futureAPI.then((api) => {
                         this.logger.info(`Affectation de l'état suivant à la lampe ${lamp.label} : ${JSON.stringify(state)}`);
-                        api.setLightState(lamp.id, state)
-                            .fail(this.logSetStateError)
-                            .done();
-                    });
 
-                    res.sendStatus(200);
+                        api.setLightState(5, state, function(err, lights) {
+                            if (err) {
+                                this.logSetStateError(err);
+                                res.sendStatus(500);
+                            } else {
+                                res.sendStatus(200);
+                            }
+                        });
+                    });
                 }
             )
             .get(
