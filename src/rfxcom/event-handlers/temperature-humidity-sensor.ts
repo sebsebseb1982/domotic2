@@ -36,7 +36,7 @@ export class TemperatureHumiditySensor {
                         }]);
                     });
                 } else {
-                    this.logger.notify(`Réception d'un signal radio d'un capteur de température/humidité inconnu (id=${event.id})`, `${event.temperature}°C/${event.humidity}%`);
+                    //this.logger.notify(`Réception d'un signal radio d'un capteur de température/humidité inconnu (id=${event.id})`, `${event.temperature}°C/${event.humidity}%`);
                 }
             });
         });
