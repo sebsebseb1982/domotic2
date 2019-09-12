@@ -47,9 +47,6 @@ class Health extends AbstractClientAPI {
                 response.on('data', (chunk) => {
                     responseBody += chunk;
                 });
-                response.on('end', () => {
-                    resolve(JSON.parse(responseBody).state === 200);
-                });
             });
 
             request.on('error', (e) => {
