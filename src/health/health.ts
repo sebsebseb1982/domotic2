@@ -5,6 +5,8 @@ import * as http from "http";
 import {AbstractClientAPI} from "../api/common/abstract-client-api";
 import {Logger} from "../common/logger/logger";
 
+let exec = require('child_process').exec;
+
 class Health extends AbstractClientAPI {
 
     configuration: IConfiguration;
@@ -21,7 +23,8 @@ class Health extends AbstractClientAPI {
     testDomoticAPI() {
         this.getStatus(`${this.configuration.api.root}/sante`).then((status: boolean) => {
             if (!status) {
-                console.log('coucou');
+                this.logger.notify(`L'API Domotic ne répond plus`, `Restart de l'API en cours`);
+                exec(`${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`);
             }
         });
     }
@@ -37,8 +40,7 @@ class Health extends AbstractClientAPI {
             };
             let request = http.request(options, (response) => {
                 if (response.statusCode !== 200) {
-                    let errorMessage = `L'URL ${path} ne répond pas (code=${response.statusCode}).`;
-                    this.logger.error(errorMessage, errorMessage);
+                    this.logger.debug(`L'URL ${path} ne répond pas correctement (code=${response.statusCode}).`);
                     resolve(false);
                 }
                 let responseBody = '';
@@ -51,7 +53,7 @@ class Health extends AbstractClientAPI {
             });
 
             request.on('error', (e) => {
-                this.logger.error(e.name, `${e.message}\n${e.stack}`);
+                this.logger.debug(`L'URL ${path} ne répond pas.`);
                 resolve(false);
             });
             request.end();

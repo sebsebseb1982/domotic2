@@ -45,6 +45,7 @@ export interface IConfigurationGoogleHome {
 
 export interface IGeneralConfiguration {
     tempDir:string;
+    installDir:string;
 }
 
 export interface ICCTVConfiguration {
