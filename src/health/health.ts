@@ -5,7 +5,7 @@ import * as http from "http";
 import {AbstractClientAPI} from "../api/common/abstract-client-api";
 import {Logger} from "../common/logger/logger";
 
-let exec = require('child_process').exec;
+let spawn = require('child_process').spawn;
 
 class Health extends AbstractClientAPI {
 
@@ -24,7 +24,9 @@ class Health extends AbstractClientAPI {
         this.getStatus(`${this.configuration.api.root}/sante`).then((status: boolean) => {
             if (!status) {
                 this.logger.notify(`L'API Domotic ne répond plus`, `Restart de l'API en cours`);
-                exec(`${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`);
+                spawn(`${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`, {}, {
+                    detached: true
+                });
             }
         });
     }
