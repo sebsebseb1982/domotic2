@@ -26,7 +26,7 @@ class Health extends AbstractClientAPI {
                 this.logger.notify(`L'API Domotic ne répond plus`, `Restart de l'API en cours`);
                 spawn(`${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`, {}, {
                     detached: true
-                });
+                }).unref();
             }
         });
     }
