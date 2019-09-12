@@ -52,6 +52,7 @@ class Health extends AbstractClientAPI {
 
             request.on('error', (e) => {
                 this.logger.error(e.name, `${e.message}\n${e.stack}`);
+                resolve(false);
             });
             request.end();
         });
