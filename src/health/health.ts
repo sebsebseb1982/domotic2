@@ -34,7 +34,8 @@ class Health extends AbstractClientAPI {
             } else {
                 this.logger.error(`L'API ${name} ne répond plus`, `Restart de l'API ${name} en cours`);
                 spawn(restartCommand, [], {
-                    detached: true
+                    detached: true,
+                    stdio: 'ignore'
                 }).unref();
             }
         });
