@@ -14,9 +14,7 @@ class Health extends AbstractClientAPI {
 
     constructor() {
         super();
-
         this.logger = new Logger('Health Check');
-
         this.testDomoticAPI();
     }
 
