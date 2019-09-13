@@ -17,7 +17,8 @@ export abstract class AbstractClientAPI {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Basic ${Buffer.from(`${systemUser.name}:${systemUser.token}`, 'utf8').toString("base64")}`
-            }
+            },
+            timeout: 1000
         };
     }
 
@@ -29,7 +30,8 @@ export abstract class AbstractClientAPI {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Basic ${Buffer.from(`${systemUser.name}:${systemUser.token}`, 'utf8').toString("base64")}`
-            }
+            },
+            timeout: 1000
         };
     }
 }
