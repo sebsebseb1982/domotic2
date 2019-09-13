@@ -10,7 +10,6 @@ let exec = require('child_process').exec;
 
 class Health extends AbstractClientAPI {
 
-    configuration: IConfiguration;
     logger: Logger;
 
     constructor() {
