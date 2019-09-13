@@ -1,7 +1,5 @@
-import {IConfiguration} from "../configuration/configurationType";
-import {IHueLampState} from "../hue/hue";
-import {RequestOptions} from "http";
 import * as http from "http";
+import {RequestOptions} from "http";
 import {AbstractClientAPI} from "../api/common/abstract-client-api";
 import {Logger} from "../common/logger/logger";
 
@@ -34,9 +32,7 @@ class Health extends AbstractClientAPI {
             if (status) {
                 this.logger.info(`L'API ${name} fonctionne correctement`);
             } else {
-                let error = `L'API ${name} ne répond plus`;
-                this.logger.error(error, `Restart de l'API ${name} en cours`);
-                this.logger.debug(error);
+                this.logger.error(`L'API ${name} ne répond plus`, `Restart de l'API ${name} en cours`);
                 spawn(restartCommand, [], {
                     detached: true,
                     stdio: 'ignore'
