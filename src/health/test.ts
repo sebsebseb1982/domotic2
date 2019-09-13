@@ -9,7 +9,9 @@ class Test {
     constructor() {
         this.configuration = new Configuration();
 
-        spawn(`${this.configuration.general.installDir}/src/health/scripts/test.sh`)
+        let command = `${this.configuration.general.installDir}/src/health/scripts/test.sh`;
+        console.log(`executing ${command}`);
+        spawn(command);
     }
 }
 
