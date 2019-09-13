@@ -34,8 +34,7 @@ class Health extends AbstractClientAPI {
             } else {
                 this.logger.error(`L'API ${name} ne répond plus`, `Restart de l'API ${name} en cours`);
                 spawn(restartCommand, [], {
-                    detached: true,
-                    stdio: 'ignore'
+                    detached: true
                 }).unref();
             }
         });
@@ -51,14 +50,13 @@ class Health extends AbstractClientAPI {
                 ...apiRequestOption
             };
             let request = http.request(options, (response) => {
-                if (response.statusCode !== 200) {
+                if (response.statusCode === 200) {
+                    this.logger.debug(`L'URL ${path} ne répond correctement (code=${response.statusCode}).`);
+                    resolve(true);
+                } else {
                     this.logger.debug(`L'URL ${path} ne répond pas correctement (code=${response.statusCode}).`);
                     resolve(false);
                 }
-                let responseBody = '';
-                response.on('data', (chunk) => {
-                    responseBody += chunk;
-                });
             });
 
             request.on('error', (e) => {

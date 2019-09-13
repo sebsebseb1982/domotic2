@@ -16,7 +16,7 @@ export abstract class AbstractClientAPI {
             port: this.configuration.api.port,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Basic ${new Buffer(`${systemUser.name}:${systemUser.token}`, 'utf8').toString("base64")}`
+                'Authorization': `Basic ${Buffer.from(`${systemUser.name}:${systemUser.token}`, 'utf8').toString("base64")}`
             }
         };
     }
@@ -28,7 +28,7 @@ export abstract class AbstractClientAPI {
             port: this.configuration.doorBell.randomTune.port,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Basic ${new Buffer(`${systemUser.name}:${systemUser.token}`, 'utf8').toString("base64")}`
+                'Authorization': `Basic ${Buffer.from(`${systemUser.name}:${systemUser.token}`, 'utf8').toString("base64")}`
             }
         };
     }
