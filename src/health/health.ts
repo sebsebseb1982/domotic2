@@ -16,7 +16,7 @@ class Health extends AbstractClientAPI {
         this.testAPI(
             'Domotic',
             `${this.configuration.api.root}/health`,
-            `${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`,
+            `${this.configuration.general.installDir}/src/health/scripts/restart-domotic-api.sh`,
             this.domoticAPIRequestOptions
         );
         this.testAPI(
