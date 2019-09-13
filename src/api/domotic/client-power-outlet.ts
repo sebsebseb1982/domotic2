@@ -20,7 +20,7 @@ export class ClientPowerOutlet extends AbstractClientAPI {
                 path: `${this.configuration.api.root}/outlet/${powerOutletCode}`,
                 method: 'POST'
             },
-            ...this.defaultRequestOptions
+            ...this.domoticAPIRequestOptions
         };
         let errorMessage = `Impossible de passer la prise (code=${powerOutletCode}) à l'état ${state}.`;
         let request = http.request(options, (response) => {

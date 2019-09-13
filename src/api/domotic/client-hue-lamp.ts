@@ -21,7 +21,7 @@ export class ClientHueLamp extends AbstractClientAPI {
                 path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`,
                 method: 'PUT'
             },
-            ...this.defaultRequestOptions
+            ...this.domoticAPIRequestOptions
         };
         let errorMessage = `Impossible de passer la lampe (code=${hueLampCode}) à l'état ${state}.`;
         let request = http.request(options, (response) => {
@@ -44,7 +44,7 @@ export class ClientHueLamp extends AbstractClientAPI {
                     path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`,
                     method: 'GET'
                 },
-                ...this.defaultRequestOptions
+                ...this.domoticAPIRequestOptions
             };
             let request = http.request(options, (response) => {
                 if (response.statusCode !== 200) {

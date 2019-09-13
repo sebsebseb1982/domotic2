@@ -2,6 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import {RandomTuneRoutes} from "./routes/random-tune-routes";
 import {Configuration} from "../../configuration/configuration";
+import {HealthRoutes} from "../common/routes/health-routes";
 
 class App {
     public app: express.Application;
@@ -17,6 +18,7 @@ configuration: Configuration;
 
         // Routes
         new RandomTuneRoutes().routes(router);
+        new HealthRoutes().routes(router);
 
         this.app.use(this.configuration.doorBell.randomTune.root, router);
     }

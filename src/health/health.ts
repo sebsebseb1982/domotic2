@@ -15,31 +15,44 @@ class Health extends AbstractClientAPI {
     constructor() {
         super();
         this.logger = new Logger('Health Check');
-        this.testDomoticAPI();
+        this.testAPI(
+            'Domotic',
+            `${this.configuration.api.root}/health`,
+            `${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`,
+            this.domoticAPIRequestOptions
+        );
+        this.testAPI(
+            'Random Tune',
+            `${this.configuration.doorBell.randomTune.root}/health`,
+            `${this.configuration.general.installDir}/src/health/scripts/restart-random-tune-api.sh`,
+            this.randomTuneAPIRequestOptions
+        );
     }
 
-    testDomoticAPI() {
-        this.getStatus(`${this.configuration.api.root}/health`).then((status: boolean) => {
-            if (!status) {
-                this.logger.notify(`L'API Domotic ne répond plus`, `Restart de l'API en cours`);
-               spawn(`${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`, [], {
+    testAPI(name: string, path: string, restartCommand: string, apiRequestOption: RequestOptions) {
+        this.getStatus(path, apiRequestOption).then((status: boolean) => {
+            if (status) {
+                this.logger.info(`L'API ${name} fonctionne correctement`);
+            } else {
+                let error = `L'API ${name} ne répond plus`;
+                this.logger.error(error, `Restart de l'API ${name} en cours`);
+                this.logger.debug(error);
+                spawn(restartCommand, [], {
                     detached: true,
                     stdio: 'ignore'
                 }).unref();
-
-               //exec(`${this.configuration.general.installDir}/src/health/scripts/restart-api.sh`);
             }
         });
     }
 
-    getStatus(path: string): Promise<boolean> {
+    getStatus(path: string, apiRequestOption: RequestOptions): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             let options: RequestOptions = {
                 ...{
                     path: path,
                     method: 'GET'
                 },
-                ...this.defaultRequestOptions
+                ...apiRequestOption
             };
             let request = http.request(options, (response) => {
                 if (response.statusCode !== 200) {

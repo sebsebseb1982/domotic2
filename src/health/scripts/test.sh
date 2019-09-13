@@ -1,1 +1,0 @@
-echo "Exécution de $0"

@@ -1,7 +1,7 @@
 import * as core from "express-serve-static-core";
 import {Request, Response} from "express";
 import {Logger} from "../../../common/logger/logger";
-import {IRoutable} from "../../common/routes";
+import {IRoutable} from "../routes";
 
 export class HealthRoutes implements IRoutable {
 

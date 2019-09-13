@@ -8,7 +8,7 @@ import {GateRoutes} from "./routes/gate-routes";
 import {AlarmRoutes} from "./routes/alarm-routes";
 import {ThermospiRoutes} from "./routes/thermospi-routes";
 import {HueRoutes} from "./routes/hue-routes";
-import {HealthRoutes} from "./routes/health-routes";
+import {HealthRoutes} from "../common/routes/health-routes";
 
 class App {
     public app: express.Application;
