@@ -49,6 +49,9 @@ export class HueRoutes implements IRoutable {
                     let state: IHueLampState = req.body.state;
                     let hueLampCode = req.params.hueLampCode;
                     let lamp = this.getLampByCode(hueLampCode);
+
+                    this.logger.info(`La lampe ${lamp.label} (code=${hueLampCode},ID=${lamp.id}) va avoir pour nouvel état ${JSON.stringify(state)}`);
+
                     this.hueAPI.lights.setLightState(lamp.id, state);
                 }
             )
