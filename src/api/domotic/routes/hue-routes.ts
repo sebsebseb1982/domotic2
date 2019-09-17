@@ -5,15 +5,40 @@ import {HueAPIDiscovery, IHueAPI} from "../../../hue/hue-api-discovery";
 import {Logger} from "../../../common/logger/logger";
 import {lamps} from "../../../hue/hue-lamps";
 import {IRoutable} from "../../common/routes";
+import {v3, HueApi} from "node-hue-api";
+import {Relay} from "../../../relay/relay";
+import * as _ from "lodash";
+import {IConfiguration} from "../../../configuration/configurationType";
+import {Configuration} from "../../../configuration/configuration";
+
+const LightState = v3.lightStates.LightState;
+
 
 export class HueRoutes implements IRoutable {
 
-    private futureAPI: Promise<IHueAPI>;
+    private configuration: IConfiguration;
     logger: Logger;
+    private hueAPI: HueApi;
 
     constructor() {
-        this.futureAPI = HueAPIDiscovery.instance;
+        this.configuration = new Configuration();
         this.logger = new Logger(`API Hue`);
+        this.initHueAPI().then((hueAPI) => {
+            this.hueAPI = hueAPI;
+        });
+    }
+
+    initHueAPI(): Promise<HueApi> {
+        return new Promise<HueApi>((resolve, reject) => {
+            v3.discovery.nupnpSearch()
+                .then(searchResults => {
+                    const host = searchResults[0].ipaddress;
+                    return v3.api.create(host, this.configuration.hue.username);
+                })
+                .then((api) => {
+                    resolve(api);
+                });
+        });
     }
 
     routes(router: core.Router): void {
@@ -24,19 +49,7 @@ export class HueRoutes implements IRoutable {
                     let state: IHueLampState = req.body.state;
                     let hueLampCode = req.params.hueLampCode;
                     let lamp = this.getLampByCode(hueLampCode);
-
-                    this.futureAPI.then((api) => {
-                        this.logger.info(`Affectation de l'état suivant à la lampe ${lamp.label} : ${JSON.stringify(state)}`);
-
-                        api.setLightState(5, state, function(err, lights) {
-                            if (err) {
-                                this.logSetStateError(err);
-                                res.sendStatus(500);
-                            } else {
-                                res.sendStatus(200);
-                            }
-                        });
-                    });
+                    this.hueAPI.lights.setLightState(lamp.id, state);
                 }
             )
             .get(
@@ -45,7 +58,7 @@ export class HueRoutes implements IRoutable {
                     let hueLampCode = req.params.hueLampCode;
                     let lamp = this.getLampByCode(hueLampCode);
 
-                    this.futureAPI.then((api) => {
+                    /*this.futureAPI.then((api) => {
                         this.logger.info(`Récupération de l'état de la lampe ${lamp.label}`);
                         api.lightStatusWithRGB(lamp.id, (err, status) => {
                             if (err) {
@@ -57,12 +70,12 @@ export class HueRoutes implements IRoutable {
                                 });
                             }
                         });
-                    });
+                    });*/
                 }
             );
     }
 
-    private getLampByCode(hueLampCode:string): IHueLamp {
+    private getLampByCode(hueLampCode: string): IHueLamp {
         if (!lamps[hueLampCode]) {
             this.logger.error(`Impossible de trouver une lampe`, `Aucune lampe n'existe avec le code ${hueLampCode}`);
         }
