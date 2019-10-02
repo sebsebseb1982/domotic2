@@ -61,8 +61,7 @@ export class HueRoutes implements IRoutable {
                             }
                         })
                         .catch((error) => {
-                            res.sendStatus(500);
-                            res.send(error);
+                            this.logger.error(error,error);
                         });
                 }
             )
