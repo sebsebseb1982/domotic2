@@ -46,7 +46,7 @@ export class AlarmClock {
                 setTimeout(() => {
                     this.lamp.setState({
                         on: true,
-                        bri: Math.round(Math.max(0, Math.min(254, i * (256 / (256 + blueDelay))))),
+                        bri: Math.round(Math.max(1, Math.min(254, i * (256 / (256 + blueDelay))))),
                         rgb: [
                             this.red(i),
                             this.green(i),
