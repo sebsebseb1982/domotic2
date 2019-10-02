@@ -52,13 +52,18 @@ export class HueRoutes implements IRoutable {
 
                     this.logger.info(`La lampe ${lamp.label} (code=${hueLampCode},ID=${lamp.id}) va avoir pour nouvel état ${JSON.stringify(state)}`);
 
-                    this.hueAPI.lights.setLightState(lamp.id, state).then((isOK) => {
-                        if(isOK) {
-                            res.sendStatus(200);
-                        } else {
+                    this.hueAPI.lights.setLightState(lamp.id, state)
+                        .then((isOK) => {
+                            if (isOK) {
+                                res.sendStatus(200);
+                            } else {
+                                res.sendStatus(500);
+                            }
+                        })
+                        .catch((error) => {
                             res.sendStatus(500);
-                        }
-                    });
+                            res.send(error);
+                        });
                 }
             )
             .get(
