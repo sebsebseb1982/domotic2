@@ -104,7 +104,7 @@ export class Cerberos2 {
         this.logger.info(`Allumage lumière pour simuler une présence`);
         this.lampSalon.setState({
             on: true,
-            bri: 255,
+            bri: 254,
             rgb: [255, 255, 255]
         });
         setTimeout(

@@ -85,7 +85,7 @@ export class DoorBell {
         this.lampSalon.setState(
             {
                 on: true,
-                bri: 255,
+                bri: 254,
                 rgb: [255, 255, 255]
             },
             this.getRandomNumberBetween(15, 30) * 1000

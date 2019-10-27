@@ -72,7 +72,7 @@ export class Cerberos {
     private turnHueLightOn() {
         this.lampSalon.setState({
             on: true,
-            bri: 255,
+            bri: 254,
             rgb: [255, 255, 255]
         });
         setTimeout(

@@ -54,7 +54,7 @@ export class Heater {
     private rampUpLight() {
         this.lampSalon.setState({
             "on": true,
-            bri: 255,
+            bri: 254,
             rgb: [255, 0, 0],
             transition: this.animationDuration
         });
@@ -67,7 +67,7 @@ export class Heater {
     private rampDownLight() {
         this.lampSalon.setState({
             "on": true,
-            bri: 255,
+            bri: 254,
             rgb: [255, 0, 0],
             transition: 0
         });
