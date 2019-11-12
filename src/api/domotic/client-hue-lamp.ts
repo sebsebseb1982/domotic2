@@ -23,10 +23,11 @@ export class ClientHueLamp extends AbstractClientAPI {
             },
             ...this.domoticAPIRequestOptions
         };
+        let titreMessage = `Impossible de setter un état à la lampe (code=${hueLampCode}).`;
         let errorMessage = `Impossible de passer la lampe (code=${hueLampCode}) à l'état ${JSON.stringify(state, null, 2)}.`;
         let request = http.request(options, (response) => {
             if (response.statusCode !== 200) {
-                this.logger.error(errorMessage, `${errorMessage}<br/>${response.statusMessage}`);
+                this.logger.error(titreMessage, `${errorMessage}<br/>${response.statusMessage}`);
             }
         });
 
