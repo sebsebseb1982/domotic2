@@ -34,7 +34,7 @@ export class ThermospiRoutes implements IRoutable {
                     let temperatureDelta = parseFloat(req.body.delta);
                     this.setPointDB.increment(temperatureDelta).then((newSetPoint: ISetPoint) => {
                         let message = `La consigne du chauffage est à ${newSetPoint.value}°C`;
-                        let announce:boolean = req.query.announce;
+                        let announce:boolean = (req.query.announce == 'true');
 
                         if(announce) {
                             this.googleHomeService.say(message);
@@ -54,7 +54,7 @@ export class ThermospiRoutes implements IRoutable {
                     let temperature = parseFloat(req.body.value);
                     this.setPointDB.addSetPoint(temperature).then(() => {
                         let message = `La consigne du chauffage est à ${temperature}°C`;
-                        let announce:boolean = req.query.announce;
+                        let announce:boolean = (req.query.announce == 'true');
 
                         if(announce) {
                             this.googleHomeService.say(message);
@@ -79,7 +79,7 @@ export class ThermospiRoutes implements IRoutable {
                         let currentOutsideTemperature = temperatures[1];
                         let currentSetPoint = temperatures[2];
 
-                        let announce:boolean = req.query.announce;
+                        let announce:boolean = (req.query.announce == 'true');
 
                         if(announce) {
                             this.googleHomeService.say(`Actuellement, il fait ${_.round(currentInsideTemperatures[0], 1)}°C au rez-de-chaussée, ${_.round(currentInsideTemperatures[1], 1)}°C à l'étage, ${_.round(currentOutsideTemperature, 1)}°C à l'extérieur et la consigne du chauffage est réglée à ${_.round(currentSetPoint.value, 1)}°C.`);
