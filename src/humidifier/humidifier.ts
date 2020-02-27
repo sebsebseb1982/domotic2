@@ -22,7 +22,7 @@ export class Humidifier {
     updateStatus() {
         this.humidityDB.getCurrentHumidityValueBySensorTags([this.sensor, 'humidity']).then((humidityMeasures) => {
             let humidityMeasure = humidityMeasures[0];
-            this.logger.debug(`Humidité : ${humidityMeasure.value}%`);
+            this.logger.debug(`Humidité mesurée par le capteur '${this.sensor}' : ${humidityMeasure.value}%`);
             this.powerOutlet.setState('A2', humidityMeasure.value < this.setPoint);
         });
     }

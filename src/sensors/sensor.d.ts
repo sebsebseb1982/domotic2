@@ -4,6 +4,8 @@ export type SensorTag =
     'exterieur' |
     'cabanon' |
     'congelateur' |
+    'garage' |
+    'cuisine' |
     'rdc' |
     'etage' |
     'radio' |
