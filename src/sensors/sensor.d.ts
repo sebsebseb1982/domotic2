@@ -1,5 +1,6 @@
 export type SensorTag =
     'maison' |
+    'chambre' |
     'exterieur' |
     'cabanon' |
     'congelateur' |

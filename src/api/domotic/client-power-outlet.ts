@@ -26,6 +26,8 @@ export class ClientPowerOutlet extends AbstractClientAPI {
         let request = http.request(options, (response) => {
             if (response.statusCode !== 200) {
                 this.logger.error(errorMessage, errorMessage);
+            } else {
+                this.logger.info(`Prise '${powerOutletCode}' passée à l'état ${state}`);
             }
         });
         request.on('error', (e) => {
