@@ -4,9 +4,10 @@ import {Configuration} from "../../configuration/configuration";
 import {Logger} from "../../common/logger/logger";
 
 export class PushoverService {
-    configuration : Configuration;
+    configuration: Configuration;
     logger: Logger;
-    constructor () {
+
+    constructor() {
         this.configuration = new Configuration();
         this.logger = new Logger("Pushover");
     }
@@ -17,10 +18,12 @@ export class PushoverService {
         let postData = JSON.stringify({
             token: this.configuration.pushover.token,
             user: this.configuration.pushover.user,
-            title: notification.title,
-            message: notification.description,
+            title: notification.title.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+            message: notification.description.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
             priority: notification.priority ? notification.priority : 0
         });
+
+        console.log(postData)
 
         let options = {
             hostname: 'api.pushover.net',
@@ -28,7 +31,7 @@ export class PushoverService {
             path: '/1/messages.json',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json; charset=iso-8859-1',
                 'Content-Length': postData.length
             }
         };
@@ -36,6 +39,7 @@ export class PushoverService {
         let req = https.request(options, (res) => {
             console.log('statusCode:', res.statusCode);
             console.log('headers:', res.headers);
+            console.log('message:', res.statusMessage);
 
             res.on('data', (d) => {
                 process.stdout.write(d);
@@ -43,7 +47,7 @@ export class PushoverService {
         });
 
         req.on('error', (e) => {
-            console.error(e);
+            this.logger.error(e.name, e.message);
         });
 
         req.write(postData);
