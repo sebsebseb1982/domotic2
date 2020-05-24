@@ -9,7 +9,7 @@ export class ClientHueLamp extends AbstractClientAPI {
     configuration: Configuration;
     logger: Logger;
 
-    constructor() {
+    constructor(private clientName:string) {
         super();
         this.configuration = new Configuration();
         this.logger = new Logger('Client Hue lamp');
@@ -19,7 +19,10 @@ export class ClientHueLamp extends AbstractClientAPI {
         let options: RequestOptions = {
             ...{
                 path: `${this.configuration.api.root}/hue-lamps/${hueLampCode}/state`,
-                method: 'PUT'
+                method: 'PUT',
+                headers: {
+                    client: this.clientName
+                }
             },
             ...this.domoticAPIRequestOptions
         };

@@ -1,13 +1,10 @@
 import * as core from "express-serve-static-core";
 import {Request, Response} from "express";
 import {IHueLamp, IHueLampState} from "../../../hue/hue";
-import {HueAPIDiscovery, IHueAPI} from "../../../hue/hue-api-discovery";
 import {Logger} from "../../../common/logger/logger";
 import {lamps} from "../../../hue/hue-lamps";
 import {IRoutable} from "../../common/routes";
-import {v3, HueApi} from "node-hue-api";
-import {Relay} from "../../../relay/relay";
-import * as _ from "lodash";
+import {HueApi, v3} from "node-hue-api";
 import {IConfiguration} from "../../../configuration/configurationType";
 import {Configuration} from "../../../configuration/configuration";
 
@@ -48,9 +45,10 @@ export class HueRoutes implements IRoutable {
                 (req: Request, res: Response) => {
                     let state: IHueLampState = req.body.state;
                     let hueLampCode = req.params.hueLampCode;
+                    let client = req.header('client');
                     let lamp = this.getLampByCode(hueLampCode);
 
-                    this.logger.info(`La lampe ${lamp.label} (code=${hueLampCode},ID=${lamp.id}) va avoir pour nouvel état ${JSON.stringify(state)}`);
+                    this.logger.info(`La lampe ${lamp.label} (code=${hueLampCode},ID=${lamp.id}) va avoir pour nouvel état ${JSON.stringify(state)} à la demande de ${client}`);
 
                     this.hueAPI.lights.setLightState(lamp.id, state)
                         .then((isOK) => {

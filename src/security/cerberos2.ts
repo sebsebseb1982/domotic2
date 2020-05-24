@@ -31,7 +31,7 @@ export class Cerberos2 {
         this.notifier = new MailService(service);
         this.logger = new Logger(service);
         this.toctoc = new TocToc();
-        this.lampSalon = new HueLamp('salon');
+        this.lampSalon = new HueLamp('salon', service);
         this.configuration = new Configuration();
     }
 

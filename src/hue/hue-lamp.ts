@@ -8,13 +8,13 @@ export class HueLamp {
     logger: Logger;
     client: ClientHueLamp;
 
-    constructor(private hueLampCode: string) {
+    constructor(private hueLampCode: string, private clientName:string) {
         this.logger = new Logger(`Lampe Hue ${hueLampCode}`);
         if (!lamps[hueLampCode]) {
             this.logger.error(`Erreur lors de l'instanciation`, `aucune lampe n'existe avec le code ${hueLampCode}`);
         }
         this.label = lamps[hueLampCode].label;
-        this.client = new ClientHueLamp();
+        this.client = new ClientHueLamp(clientName);
     }
 
     on() {

@@ -19,9 +19,10 @@ export class AlarmClock {
         this.progressiveWakeUpDuration = (yargs.argv.progressiveWakeUpDuration ? yargs.argv.progressiveWakeUpDuration : 45)* 60 * 1000;
         this.wakeUpDuration = (yargs.argv.wakeUpDuration ? yargs.argv.wakeUpDuration : 5)* 60 * 1000;
         this.lampCode = yargs.argv.lampCode ? yargs.argv.lampCode : 'bureau';
-        this.lamp = new HueLamp(this.lampCode);
+        let service = `Simulateur d'aube`;
+        this.lamp = new HueLamp(this.lampCode, service);
         this.toctoc = new TocToc();
-        this.logger = new Logger(`Simulateur d'aube`);
+        this.logger = new Logger(service);
     }
 
     private red(index) {

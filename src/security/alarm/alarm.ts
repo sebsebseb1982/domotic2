@@ -13,13 +13,14 @@ export class Alarm {
     configuration: Configuration;
     logger: Logger;
     timeout: number = 10 * 1000 /*ms*/;
+    service: string;
 
     constructor() {
-        let service = "Alarme";
-        this.mail = new MailService(service);
+        this.service = 'Alarme';
+        this.mail = new MailService(this.service);
         this.webUILibraries = new WebUILibraries();
         this.configuration = new Configuration();
-        this.logger = new Logger(service);
+        this.logger = new Logger(this.service);
     }
 
     isArmed(): Promise<boolean> {
@@ -189,7 +190,7 @@ export class Alarm {
     private waitForWEBUI(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             let interval = setInterval(() => {
-                let lamp = new HueLampEffects(new HueLamp('salon'));
+                let lamp = new HueLampEffects(new HueLamp('salon', this.service));
                 lamp.rampUpDown(1500);
                 let uri = `http://${this.configuration.alarm.hostname}:80/waitlive.html`;
                 this.logger.debug(`Authentification en cours ...`);

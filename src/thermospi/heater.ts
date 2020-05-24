@@ -16,10 +16,11 @@ export class Heater {
     heaterRelayCode: string = 'k4';
 
     constructor() {
-        this.logger = new Logger('Commande chauffage');
+        let service = 'Commande chauffage';
+        this.logger = new Logger(service);
         this.realHeaterStateDB = new RealHeaterStateDB();
         this.googleHomeService = new GoogleHomeService();
-        this.lampSalon = new HueLamp('salon');
+        this.lampSalon = new HueLamp('salon', service);
     }
 
     on() {

@@ -33,7 +33,7 @@ export class DoorBell {
         this.mailService = new MailService(service);
         this.logger = new Logger(service);
         this.toctoc = new TocToc();
-        this.lampSalon = new HueLamp('salon');
+        this.lampSalon = new HueLamp('salon', service);
         this.pushover = new PushoverService();
         this.clientPowerOutlet = new ClientPowerOutlet();
     }

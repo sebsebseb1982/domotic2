@@ -30,10 +30,11 @@ export class DoorBell {
         this.gpio = new GPIO(DOOR_BELL_PIN, 'in');
         this.googleHome = new GoogleHomeService();
         this.configuration = new Configuration();
-        this.mailService = new MailService('Sonnette');
+        let service = 'Sonnette';
+        this.mailService = new MailService(service);
         this.pushover = new PushoverService();
         this.toctoc = new TocToc();
-        this.lampSalon = new HueLamp('salon');
+        this.lampSalon = new HueLamp('salon', service);
         this.clientPowerOutlet = new ClientPowerOutlet();
     }
 
