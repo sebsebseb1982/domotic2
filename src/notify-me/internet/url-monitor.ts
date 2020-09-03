@@ -29,9 +29,11 @@ class URLMonitor {
     }
 
     start() {
-        cron.schedule('*/15 * * * *', () => {
-            this.updateCrons();
-        });
+        this.updateCrons();
+        cron.schedule(
+            '*/15 * * * *',
+            this.updateCrons
+        );
     }
 
     private updateCrons() {
@@ -160,7 +162,7 @@ class URLMonitor {
                 {
                     uri: url,
                     encoding: 'utf8',
-                    headers:{
+                    headers: {
                         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0'
                     }
                 },
