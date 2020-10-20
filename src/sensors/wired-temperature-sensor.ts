@@ -12,6 +12,7 @@ export class WiredTemperatureSensor implements ISensor {
     id: string;
     label: string;
     path?: string;
+    virtualID: number;
     tags: SensorTag[];
     radio: boolean;
     logger: Logger;
@@ -21,6 +22,7 @@ export class WiredTemperatureSensor implements ISensor {
         this.label = sensor.label;
         this.path = sensor.path;
         this.tags = sensor.tags;
+        this.virtualID = sensor.virtualID;
         this.radio = false;
         this.logger = new Logger(`Sonde de température "${this.label}" (${this.tags})`);
     }

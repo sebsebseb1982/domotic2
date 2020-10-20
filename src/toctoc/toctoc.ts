@@ -3,6 +3,8 @@ import {SurveillanceStation} from "../synology/surveillanceStation";
 import {Logger} from "../common/logger/logger";
 import {VentilationStatusDB} from "../thermospi/db/VentilationStatusDB";
 import {Alarm} from "../security/alarm/alarm";
+import {VirtualService} from "../jeedom/VirtualService";
+
 
 let exec = require('child_process').exec;
 let MongoClient = require('mongodb').MongoClient;
@@ -13,6 +15,7 @@ export class TocToc {
     ventilationStatusDB: VentilationStatusDB;
     alarm: Alarm;
     logger: Logger;
+    virtualService: VirtualService;
 
     constructor() {
         this.configuration = new Configuration();
@@ -20,6 +23,7 @@ export class TocToc {
         this.ventilationStatusDB = new VentilationStatusDB();
         this.alarm = new Alarm();
         this.logger = new Logger('Toc Toc');
+        this.virtualService = new VirtualService();
     }
 
     updatePresence(): Promise<boolean> {
@@ -38,6 +42,13 @@ export class TocToc {
 
                     if (lastPresenceStatus != currentPresenceStatus) {
                         this.saveNewPresenceStatus(currentPresenceStatus);
+                        this.virtualService.updateVirtual(
+                            {
+                                id: 224,
+                                name: 'Alarme'
+                            },
+                            currentPresenceStatus
+                        );
                     }
 
                     resolve(currentPresenceStatus);

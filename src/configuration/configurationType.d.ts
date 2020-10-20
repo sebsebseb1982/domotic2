@@ -91,6 +91,13 @@ export interface IConfigurationPushover {
     token: string;
 }
 
+export interface IConfigurationJeedom {
+    hostname:string;
+    port:number;
+    apiKey: string;
+    alarmVirtualID: number;
+}
+
 export interface IConfiguration {
     api: IConfigurationAPI;
     hue: IConfigurationHueBridge;
@@ -109,4 +116,5 @@ export interface IConfiguration {
     timelapse: IConfigurationTimelapse;
     alarm: IConfigurationAlarm;
     pushover: IConfigurationPushover;
+    jeedom: IConfigurationJeedom;
 }

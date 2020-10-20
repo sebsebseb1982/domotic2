@@ -17,6 +17,7 @@ export interface ISensor {
     id: string;
     label: string;
     tags: SensorTag[];
+    virtualID:number;
     path?: string;
     radio: boolean;
 }
