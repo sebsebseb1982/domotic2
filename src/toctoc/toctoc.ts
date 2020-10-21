@@ -47,7 +47,7 @@ export class TocToc {
                                 id: 224,
                                 name: 'Alarme'
                             },
-                            currentPresenceStatus
+                            !currentPresenceStatus
                         );
                     }
 
