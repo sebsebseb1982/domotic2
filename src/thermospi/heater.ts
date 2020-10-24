@@ -4,6 +4,7 @@ import {IHeaterState} from "./models/heater-status";
 import {GoogleHomeService} from "../notifications/services/googleHomeService";
 import {RelayDB} from "../relay/relay-db";
 import {HueLamp} from "../hue/hue-lamp";
+import {VirtualService} from "../jeedom/VirtualService";
 
 export class Heater {
 
@@ -11,6 +12,7 @@ export class Heater {
     realHeaterStateDB: RealHeaterStateDB;
     googleHomeService: GoogleHomeService;
     lampSalon: HueLamp;
+    virtualService: VirtualService;
 
     animationDuration: number = 4 * 1000 /* ms */;
     heaterRelayCode: string = 'k4';
@@ -21,6 +23,7 @@ export class Heater {
         this.realHeaterStateDB = new RealHeaterStateDB();
         this.googleHomeService = new GoogleHomeService();
         this.lampSalon = new HueLamp('salon', service);
+        this.virtualService = new VirtualService();
     }
 
     on() {
@@ -39,12 +42,26 @@ export class Heater {
             if (newHeaterState != lastHeaterState.value) {
                 this.realHeaterStateDB.add(newHeaterState);
                 let message;
-                if(newHeaterState) {
+                if (newHeaterState) {
                     message = 'Allumage du chauffage';
                     this.rampUpLight();
+                    this.virtualService.updateVirtual(
+                        {
+                            id: 288,
+                            name: "Chaudière"
+                        },
+                        true
+                    );
                 } else {
                     message = 'Extinction du chauffage';
                     this.rampDownLight();
+                    this.virtualService.updateVirtual(
+                        {
+                            id: 288,
+                            name: "Chaudière"
+                        },
+                        false
+                    );
                 }
                 this.logger.info(message);
                 //this.googleHomeService.say(message, true);
